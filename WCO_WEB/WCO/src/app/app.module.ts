@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { CreateTournamentComponent } from './components/create-tournament/create-tournament.component';
 import { TournamentsComponent } from './components/tournaments/tournaments.component';
 import { MatchDetailsComponent } from './components/match-details/match-details.component';
+import { MatchesComponent } from './components/matches/matches.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { MatchDetailsComponent } from './components/match-details/match-details.
     CreateTournamentComponent,
     TournamentsComponent,
     MatchDetailsComponent,
+    MatchesComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
