@@ -17,6 +17,7 @@ import { TournamentsComponent } from './components/tournaments/tournaments.compo
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
 import { TournamentDetailsComponent } from './components/tournament-details/tournament-details.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { TournamentDetailsComponent } from './components/tournament-details/tour
     HttpClientModule,
     HttpClientJsonpModule,
     ReactiveFormsModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

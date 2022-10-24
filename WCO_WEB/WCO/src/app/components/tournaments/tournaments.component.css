@@ -1,0 +1,48 @@
+body{
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+
+}
+.container{
+  max-width: 1700px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.295);
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.20);
+}
+
+
+.input-box{
+  display: flex;
+  margin-bottom: 15px;
+  margin-left: 17%;
+  width: 70%;
+  font-size: 20px;
+}
+
+.title{
+  width: 40%;
+  font-size: 30px;
+  font-weight: 500;
+  margin-top: 1%;
+  position: relative;
+  justify-content: space-between;
+
+}
+
+.input-box input{
+  height: 45px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+

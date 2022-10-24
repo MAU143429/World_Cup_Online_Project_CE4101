@@ -1,1 +1,40 @@
-<p>tournament-details works!</p>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="tournament-details.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<!---Componentes que conforman la seccion de ver los detalles de un torneo--->
+<app-navbar></app-navbar>
+<div class="title">Nombre de torneo</div>
+<div class="subtitle">Fecha inicio - Fecha Final  Tipo de torneo: Seleccion/Equipo Local</div>
+<body>
+  <div class="container">
+    <div class="content">
+      <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+        <ngb-panel title="Simple">
+          <ng-template ngbPanelContent>
+            <button routerLink="">Partido 1</button>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel>
+          <ng-template ngbPanelTitle>
+            <span>&#9733; <b>Fancy</b> title &#9733;</span>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <button routerLink="">Partido 1</button>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel title="Disabled">
+          <ng-template ngbPanelContent>
+            <button routerLink="">Partido 1</button>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+
+    </div>
+  </div>
+</body>
+</html>
