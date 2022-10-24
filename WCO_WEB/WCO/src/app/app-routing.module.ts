@@ -1,3 +1,4 @@
+import { MatchesComponent } from './components/matches/matches.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateTournamentComponent } from './components/create-tournament/create-tournament.component';
