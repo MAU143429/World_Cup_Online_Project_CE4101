@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class WcoService {
 
   constructor(private http: HttpClient, private envUrl: EnvUrlService){}
-  
+
   /**
    * Creates full path for a relative object address in api
    * @param route 
