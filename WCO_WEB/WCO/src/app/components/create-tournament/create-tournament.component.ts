@@ -6,7 +6,6 @@ import { CreateTournament } from '../../model/create-tournament';
 import { setOptions, localeEs } from '@mobiscroll/angular';
 import { TournamentService } from '../../services/tournament.service';
 import { Teams } from '../../interface/teams';
-import { ThisReceiver } from '@angular/compiler';
 
 export interface bracketName {
   name: string;

@@ -21,11 +21,11 @@
           </div>
           <div class="input-box">
             <span class="details">Fecha de inicio<span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="datetime-local" [(ngModel)]= "newTournament.startDate" [ngModelOptions]="{standalone: true}" required>
+            <input type="date"  [(ngModel)]= "newTournament.startDate" [ngModelOptions]="{standalone: true}" required>
           </div>
           <div class="input-box">
             <span class="details"  >Fecha de final<span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="datetime-local" [(ngModel)]= "newTournament.endDate" [ngModelOptions]="{standalone: true}"  required>
+            <input type="date"  [(ngModel)]= "newTournament.endDate" [ngModelOptions]="{standalone: true}"  required>
           </div>
           <div class="input-box2">
             <span class="details" >Descripción del torneo </span>
@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="button">
-          <input  value="Crear Torneo" (click)="addTournament()" routerLink="">
+          <input type="submit" value="Crear Torneo" (click)="addTournament()" routerLink="">
         </div>
       </form>
     </div>
