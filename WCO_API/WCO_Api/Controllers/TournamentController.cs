@@ -41,7 +41,11 @@ namespace ApiPrueba.Controllers
             var tournament = tournaments.Find(t => t.Id == id);
             if (tournament == null)
                 return BadRequest("Tournament not found");
-            return Ok(tournament);
+
+            List<Tournament> tour = new List<Tournament>();
+            tour.Add(tournament);
+
+            return Ok(tour);
         }
 
         // GET: api/getSelectionsTeams/<TorneoController>
