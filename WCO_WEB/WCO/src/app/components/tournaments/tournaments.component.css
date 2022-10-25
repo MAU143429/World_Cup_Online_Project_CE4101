@@ -19,8 +19,8 @@ body{
 .input-box{
   display: flex;
   margin-bottom: 15px;
-  margin-left: 17%;
-  width: 70%;
+  margin-left: 7%;
+  width: 90%;
   font-size: 20px;
 }
 
@@ -29,20 +29,22 @@ body{
   font-size: 30px;
   font-weight: 500;
   margin-top: 1%;
-  position: relative;
-  justify-content: space-between;
 
 }
 
 .input-box input{
   height: 45px;
-  width: 100%;
-  font-size: 16px;
+  width: 11%;
+  margin-top: 1%;
+  margin-left: 47%;
+  font-size: 20px;
   border-radius: 5px;
   padding-left: 15px;
   border: 1px solid #ccc;
   border-bottom-width: 2px;
   transition: all 0.3s ease;
+  color: white;
+  background: linear-gradient(135deg, #1277D9, #7bb0e6, #1277D9);
 }
 
 

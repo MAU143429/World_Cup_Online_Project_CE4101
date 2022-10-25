@@ -1,7 +1,7 @@
 <h1 mat-dialog-title><strong>{{action}}</strong></h1>
-<div mat-dialog-content>
+<div mat-dialog-content @.disabled>
   <mat-form-field *ngIf="action != 'Eliminar'; else elseTemplate">
-    <input class="input" placeholder="{{action}} fase.." matInput [(ngModel)]="local_data.name">
+    <input minlength="5" maxlength="30"  class="input" placeholder="{{action}} fase.." matInput [(ngModel)]="local_data.name">
   </mat-form-field>
   <ng-template #elseTemplate>
     Seguro que desea eliminar <b>{{local_data.name}}</b>?

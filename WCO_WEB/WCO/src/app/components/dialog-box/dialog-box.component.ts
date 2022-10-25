@@ -1,15 +1,11 @@
 import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { setOptions, localeEs } from '@mobiscroll/angular';
+
 export interface UsersData {
   name: string;
   id: number;
 }
 
-setOptions({
-  locale: localeEs,
-  themeVariant: 'light',
-});
 @Component({
   selector: 'app-dialog-box',
   templateUrl: './dialog-box.component.html',

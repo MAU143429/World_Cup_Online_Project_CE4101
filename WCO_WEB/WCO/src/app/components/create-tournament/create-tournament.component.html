@@ -17,25 +17,25 @@
         <div class="tournament-details">
           <div class="input-box1">
             <span class="details" >Nombre del torneo<span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="text"  placeholder="Ingrese un nombre para el torneo aquí..." required>
+            <input type="text" [(ngModel)]= "newTournament.name" minlength="5" maxlength="30" [ngModelOptions]="{standalone: true}"  placeholder="Ingrese un nombre para el torneo aquí..." required>
           </div>
           <div class="input-box">
             <span class="details">Fecha de inicio<span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="datetime-local" required>
+            <input type="datetime-local" [(ngModel)]= "newTournament.startDate" [ngModelOptions]="{standalone: true}" required>
           </div>
           <div class="input-box">
             <span class="details"  >Fecha de final<span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="datetime-local"  required>
+            <input type="datetime-local" [(ngModel)]= "newTournament.endDate" [ngModelOptions]="{standalone: true}"  required>
           </div>
           <div class="input-box2">
             <span class="details" >Descripción del torneo </span>
-            <textarea class="textarea" placeholder="Ingrese una descripción del torneo aquí.." ></textarea>
+            <textarea class="textarea" minlength="5" maxlength="1000" [(ngModel)]= "newTournament.description" [ngModelOptions]="{standalone: true}"  placeholder="Ingrese una descripción del torneo aquí.." ></textarea>
           </div>
           <div class="input-box1">
             <span class="details"  >Seleccione el tipo de torneo <span style="color: rgb(245, 59, 59);">*</span></span>
-            <div class="details">
-              <input type="radio" name="rol" id="dot-1">
-              <input type="radio" name="rol" id="dot-2">
+            <div class="details" >
+              <input type="radio"  id="dot-1" [(ngModel)]="radioSelected" name="list_name" value="Selecciones" (change)="onItemChange()">
+              <input type="radio"  id="dot-2" [(ngModel)]="radioSelected" name="list_name" value="Equipos Locales" (change)="onItemChange()">
               <div class="category">
                 <label for="dot-1">
                 <span class="dot one"></span>
@@ -48,11 +48,10 @@
               </div>
             </div>
           </div>
-
           <div class="input-box">
             <span class="details">Equipos del torneo<span style="color: rgb(245, 59, 59);">*</span></span>
             <mbsc-page>
-              <mbsc-select [data]="myData" [selectMultiple]="true"  labelStyle="stacked"  placeholder="Seleccione los equipos..."></mbsc-select>
+              <mbsc-select [data]="dropdownData" [(ngModel)]="newTournament.teams" [ngModelOptions]="{standalone: true}" [selectMultiple]="true"  labelStyle="stacked"  placeholder="Seleccione los equipos..."></mbsc-select>
             </mbsc-page>
           </div>
 
@@ -70,7 +69,6 @@
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> Opciones </th>
                 <td mat-cell *matCellDef="let element" class="action-link">
-                  <a (click)="openDialog('Editar',element)"> Editar</a> |
                   <a (click)="openDialog('Eliminar',element)"> Eliminar</a>
                 </td>
               </ng-container>
@@ -83,7 +81,7 @@
           </div>
         </div>
         <div class="button">
-          <input type="submit" value="Crear Torneo"  routerLink="">
+          <input  value="Crear Torneo" (click)="addTournament()" routerLink="">
         </div>
       </form>
     </div>
