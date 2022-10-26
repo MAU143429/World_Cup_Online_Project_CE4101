@@ -1,23 +1,26 @@
-﻿namespace WCO_Api.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace WCO_Api.Models
 {
-    public class Tournament
-    {
-        // Revisar como se tratará las varas de los ID, usando los UUID o como se hace esto en la 
-        //base de datos
-        public string? Id { get; set; }
+    public partial class Tournament
+    { 
+        public Tournament()
+        {
+            Brackets = new HashSet<Bracket>();
+            Pruebas = new HashSet<Prueba>();
+            Teams = new HashSet<Team>();
+        }
 
-        public string name { get; set; }
+        public string TId { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string StartDate { get; set; } = null!;
+        public string EndDate { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public string Type { get; set; } = null!;
 
-        public DateTime startDate { get; set; }
-
-        public DateTime endDate { get; set; }
-
-        public string description { get; set; }
-
-        public string type { get; set; }
-
-        public List<string> teams { get; set; }
-
-        public List<string> brackets { get; set; }
+        public virtual ICollection<Bracket> Brackets { get; set; }
+        public virtual ICollection<Prueba> Pruebas { get; set; }
+        public virtual ICollection<Team> Teams { get; set; }
     }
 }
