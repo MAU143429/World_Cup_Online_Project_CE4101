@@ -19,22 +19,15 @@ export class TournamentService {
   }
 
   setTournament(newTournament: CreateTournament): Observable<any> {
-    console.log('VOY A ENVIAR');
     console.table(newTournament);
-    console.log(this.url + '/Tournament');
     return this.httpclient.post(this.url + '/Tournament', newTournament);
   }
 
-  /**
-   * Allows all the needed CORS for requests
-   * @returns Headers
-   */
-  private generateHeaders = () => {
-    return {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      }),
-    };
-  };
+  getTournaments(): Observable<any> {
+    return this.httpclient.get(this.url + '/Tournament');
+  }
+
+  getTournamentbyID(id: any): Observable<any> {
+    return this.httpclient.get(this.url + '/Tournament/' + id);
+  }
 }

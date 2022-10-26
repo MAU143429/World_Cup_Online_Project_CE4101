@@ -5,15 +5,9 @@ import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { CreateTournament } from '../../model/create-tournament';
 import { setOptions, localeEs } from '@mobiscroll/angular';
 import { TournamentService } from '../../services/tournament.service';
-import { Teams } from '../../interface/teams';
-
-export interface bracketName {
-  name: string;
-}
-
-export interface Type {
-  type: string;
-}
+import { Type } from '../../interface/type';
+import { Router } from '@angular/router';
+import { BracketName } from '../../interface/bracket-name';
 
 export const ITEMS: Type[] = [
   { type: 'Selecciones' },
@@ -37,13 +31,23 @@ export class CreateTournamentComponent implements OnInit {
   radioSel: any;
   radioSelected: string = '';
   Option: Type[] = ITEMS;
-  dropdownData: Teams[] = [];
+  dropdownData: String[] = [];
   displayedColumns: string[] = ['name', 'action'];
-  bracketSource: bracketName[] = [];
+  bracketSource: BracketName[] = [];
   selectedTeams: string[] = [];
 
+  async delay(ms: number) {
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
+      () => console.log('fired')
+    );
+  }
+
   @ViewChild(MatTable, { static: true }) table: MatTable<any> | any;
-  constructor(public dialog: MatDialog, private service: TournamentService) {}
+  constructor(
+    public dialog: MatDialog,
+    private service: TournamentService,
+    private router: Router
+  ) {}
 
   /**
    * @brief Este metodo permite obtener el valor seleccionado en el radio button y realizar alguna acciones
@@ -78,6 +82,10 @@ export class CreateTournamentComponent implements OnInit {
     this.service
       .setTournament(this.newTournament)
       .subscribe((tournament) => console.log(this.newTournament));
+
+    this.delay(100).then(() => {
+      this.router.navigate(['']);
+    });
   }
 
   ngOnInit(): void {}

@@ -8,28 +8,21 @@
    </head>
 <!---Componentes que conforman la seccion de ver los detalles de un torneo--->
 <app-navbar></app-navbar>
-<div class="title">Nombre de torneo</div>
-<div class="subtitle">Fecha inicio - Fecha Final  Tipo de torneo: Seleccion/Equipo Local</div>
+<div *ngFor="let data of tournamentsData">
+  <div class="title">{{data.name}}</div>
+  <div class="subtitle">{{data.startDate}} - {{data.endDate}}  Tipo de torneo: {{data.type}}</div>
+</div>
+
 <body>
   <div class="container">
     <div class="content">
       <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-        <ngb-panel title="Simple">
-          <ng-template ngbPanelContent>
-            <button routerLink="">Partido 1</button>
-          </ng-template>
-        </ngb-panel>
-        <ngb-panel>
-          <ng-template ngbPanelTitle>
-            <span>&#9733; <b>Fancy</b> title &#9733;</span>
+        <ngb-panel *ngFor="let bracket of bracketsData">
+          <ng-template ngbPanelTitle class="bracket-title">
+            <span>{{bracket}}</span>
           </ng-template>
           <ng-template ngbPanelContent>
-            <button routerLink="">Partido 1</button>
-          </ng-template>
-        </ngb-panel>
-        <ngb-panel title="Disabled">
-          <ng-template ngbPanelContent>
-            <button routerLink="">Partido 1</button>
+            <input class="create-match-btn" type="button"  value="+ Agregar Partido" routerLink="" >
           </ng-template>
         </ngb-panel>
       </ngb-accordion>

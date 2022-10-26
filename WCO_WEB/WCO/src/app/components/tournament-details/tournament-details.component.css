@@ -27,3 +27,12 @@ body{
   margin-left: 5%;
   position: relative;
 }
+.bracket-title{
+  font-size: 25px;
+  font-weight: 300;
+}
+
+.create-match-btn{
+  background-color: transparent;
+  border: none;
+}
