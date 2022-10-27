@@ -1,3 +1,5 @@
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -16,8 +18,18 @@ import { MatchesComponent } from './components/matches/matches.component';
     MatchDetailsComponent,
     MatchesComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
+
+/**
+ * @NgModule({
+  imports: [
+    [...]
+    FormsModule
+  ],
+  [...]
+})
+ */
 export class AppModule {}
