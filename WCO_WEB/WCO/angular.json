@@ -65,9 +65,8 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "proxyConfig": "proxy.config.json"
-          },
+          "options": {},
+
           "configurations": {
             "production": {
               "browserTarget": "WCO:build:production"
@@ -106,6 +105,6 @@
     }
   },
   "cli": {
-    "analytics": "03b3ad83-95b7-42e4-99ac-788a810eae53"
+    "analytics": "972d4d84-fd52-499b-ae5c-666c5fcc8242"
   }
 }

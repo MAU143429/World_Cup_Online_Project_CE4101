@@ -43,9 +43,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     HttpClientJsonpModule,
     ReactiveFormsModule,
+    AppRoutingModule,
     NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
+
 export class AppModule {}

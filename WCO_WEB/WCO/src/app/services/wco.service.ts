@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { EnvUrlService } from './env-url.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -18,16 +19,15 @@ export class WcoService {
   };
 
   /**
-   * GET request
-   * @param route for relative endpoint
-   * @returns Observable with server response
-   */
-  public getData = (route: string) => {
-    return this.http.get(
-      this.createCompleteRoute(route, this.envUrl.urlAddress),
-      { observe: 'response' }
-    );
-  };
+
+ * GET request
+ * @param route for relative endpoint
+ * @returns Observable with server response
+ */
+    public getData (route: string):Observable<any> {
+    return this.http.get(this.createCompleteRoute(route, this.envUrl.urlAddress), { observe: 'response' });
+  }
+
 
   /**
    * POST request
@@ -35,25 +35,21 @@ export class WcoService {
    * @param body JSON content for all data needed to POST an object
    * @returns Observable with server response
    */
-  public create = (route: string, body: any) => {
-    return this.http.post(
-      this.createCompleteRoute(route, this.envUrl.urlAddress),
-      body,
-      { headers: this.generateHeaders().headers, observe: 'response' }
-    );
-  };
 
+   public create(route: string, body: any):Observable<any> {
+    return this.http.post(this.createCompleteRoute(route, this.envUrl.urlAddress), body, this.generateHeaders());
+  }
+  
   /**
    * DELETE request
    * @param route for relative endpoint
    * @returns Observable with server response
    */
-  public delete = (route: string) => {
-    return this.http.delete(
-      this.createCompleteRoute(route, this.envUrl.urlAddress),
-      { headers: this.generateHeaders().headers, observe: 'response' }
-    );
-  };
+
+    public delete(route: string): Observable<any>{
+      return this.http.delete(this.createCompleteRoute(route, this.envUrl.urlAddress), this.generateHeaders());
+    } 
+
 
   /**
    * PUT request
@@ -61,13 +57,10 @@ export class WcoService {
    * @param body JSON content for all data needed to POST an object
    * @returns Observable with server response
    */
-  public edit = (route: string, body: any) => {
-    return this.http.put(
-      this.createCompleteRoute(route, this.envUrl.urlAddress),
-      body,
-      { headers: this.generateHeaders().headers, observe: 'response' }
-    );
-  };
+
+   public edit (route: string, body: any):Observable<any> {
+    return this.http.put(this.createCompleteRoute(route, this.envUrl.urlAddress), body, this.generateHeaders());
+   }
 
   /**
    * Allows all the needed CORS for requests
