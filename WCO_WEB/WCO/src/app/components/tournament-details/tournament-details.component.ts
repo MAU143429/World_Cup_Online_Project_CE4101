@@ -3,6 +3,7 @@ import { TournamentService } from '../../services/tournament.service';
 import { Tournaments } from '../../interface/tournaments';
 import { InternalService } from '../../services/internal.service';
 import { BracketName } from '../../interface/bracket-name';
+import { DbBracket } from 'src/app/model/db-bracket';
 @Component({
   selector: 'app-tournament-details',
   templateUrl: './tournament-details.component.html',
@@ -10,7 +11,7 @@ import { BracketName } from '../../interface/bracket-name';
 })
 export class TournamentDetailsComponent implements OnInit {
   tournamentsData: Tournaments[] = [];
-  bracketsData: String[] = [];
+  bracketsData: DbBracket[] = [];
 
   async delay(ms: number) {
     await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(

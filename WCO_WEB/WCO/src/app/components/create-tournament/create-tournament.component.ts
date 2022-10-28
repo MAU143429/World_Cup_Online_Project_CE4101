@@ -9,6 +9,10 @@ import { Type } from '../../interface/type';
 import { Router } from '@angular/router';
 import { BracketName } from '../../interface/bracket-name';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DbTeam } from 'src/app/model/db-team';
+import { InternalService } from 'src/app/services/internal.service';
+import th from '@mobiscroll/angular/dist/js/i18n/th';
+import { Dropdown } from 'src/app/model/dropdown';
 
 export const ITEMS: Type[] = [
   { type: 'Selecciones' },
@@ -32,7 +36,8 @@ export class CreateTournamentComponent implements OnInit {
   radioSel: any;
   radioSelected: string = '';
   Option: Type[] = ITEMS;
-  dropdownData: String[] = [];
+  allAvailableTeams: DbTeam[] = [];
+  dropdownData: Dropdown[] = [];
   displayedColumns: string[] = ['name', 'action'];
   bracketSource: BracketName[] = [];
   selectedTeams: string[] = [];
@@ -49,6 +54,7 @@ export class CreateTournamentComponent implements OnInit {
     private modalService: NgbModal,
     public dialog: MatDialog,
     private service: TournamentService,
+    private internal: InternalService,
     private router: Router
   ) {}
 
@@ -92,9 +98,33 @@ export class CreateTournamentComponent implements OnInit {
     this.radioSel = ITEMS.find((Item) => Item.type === this.radioSelected);
     this.newTournament.type = this.radioSelected;
     if (this.radioSelected == 'Selecciones') {
-      this.service.getTeams().subscribe((data) => (this.dropdownData = data));
+      this.service.getTeams().subscribe((data) => {
+        this.allAvailableTeams = data;
+
+        var teams: Dropdown[] = [];
+        this.allAvailableTeams.forEach((value) => {
+          var dropdownObject: Dropdown = { text: '', value: 0 };
+          dropdownObject.text = value.name;
+          dropdownObject.value = value.teId;
+          teams.push(dropdownObject);
+        });
+
+        this.dropdownData = teams;
+      });
     } else {
-      this.service.getCFTeams().subscribe((data) => (this.dropdownData = data));
+      this.service.getCFTeams().subscribe((data) => {
+        this.allAvailableTeams = data;
+
+        var teams: Dropdown[] = [];
+        this.allAvailableTeams.forEach((value) => {
+          var dropdownObject: Dropdown = { text: '', value: 0 };
+          dropdownObject.text = value.name;
+          dropdownObject.value = value.teId;
+          teams.push(dropdownObject);
+        });
+
+        this.dropdownData = teams;
+      });
     }
   }
 

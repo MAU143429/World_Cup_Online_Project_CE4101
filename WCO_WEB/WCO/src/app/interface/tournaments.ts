@@ -1,10 +1,13 @@
+import { DbBracket } from '../model/db-bracket';
+import { DbTeam } from '../model/db-team';
+
 export interface Tournaments {
-  id: string;
+  toId: string;
   name: string;
   startDate: string;
   endDate: string;
   type: string;
   description: string;
-  teams: String[];
-  brackets: String[];
+  teams: DbTeam[];
+  brackets: DbBracket[];
 }

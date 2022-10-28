@@ -26,10 +26,10 @@
         </tr>
       <tr *ngFor="let data of tournamentsData">
         <td>{{data.name}}</td>
-          <td>{{data.id}}</td>
+          <td>{{data.toId}}</td>
           <td>{{data.startDate}}</td>
           <td>{{data.endDate}}</td>
-          <td><button class="viewbtn" routerLink="/tournament-details" (click)="openTournament(data.id)" >Ver Torneo</button></td>
+          <td><button class="viewbtn" routerLink="/tournament-details" (click)="openTournament(data.toId)" >Ver Torneo</button></td>
       </tr>
       </table>
     </div>
