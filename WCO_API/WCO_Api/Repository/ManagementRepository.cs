@@ -28,6 +28,11 @@ namespace WCO_Api.Data
             return await sQLDB.getTournaments();
         }
 
+        public async Task<IEnumerable<Tournament>> getTournamentsById(string id)
+        {
+            return await sQLDB.getTournamentsById(id);
+        }
+
         public async Task<IEnumerable<TeamWEB>> getTeamByTournamentId(string id)
         {
             return await sQLDB.getTeamByTournamentId(id);

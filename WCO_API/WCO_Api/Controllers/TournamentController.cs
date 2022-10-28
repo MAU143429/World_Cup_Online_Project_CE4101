@@ -55,14 +55,13 @@ namespace WCO_Api.Controllers
         }
 
         [HttpGet("getTournamentById")]
-        public async Task<List<TournamentOut>> getTournamentById()
+        public async Task<List<TournamentOut>> getTournamentById(string id)
         {
 
             List<TournamentOut> allTournaments = new List<TournamentOut>();
             IEnumerable<Tournament> dbTournaments;
 
-            dbTournaments = await managementRepository.getTournaments();
-
+            dbTournaments = await managementRepository.getTournamentsById(id);
 
             foreach (var tournament in dbTournaments)
             {

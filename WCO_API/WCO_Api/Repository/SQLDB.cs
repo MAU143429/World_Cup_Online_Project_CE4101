@@ -119,6 +119,44 @@ namespace WCO_Api.Data
             return tournaments;
         }
 
+        public async Task<List<Tournament>> getTournamentsById(string id)
+        {
+            SqlDataReader reader = null;
+            SqlConnection myConnection = new SqlConnection();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                        $"FROM [dbo].[Tournament]" +
+                        $"WHERE to_id = '{id}'";
+
+            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+
+            myConnection.Open();
+
+            reader = sqlCmd.ExecuteReader();
+
+            List<Tournament> tournaments = new List<Tournament>();
+
+            while (reader.Read())
+            {
+                Tournament tournament = new Tournament();
+
+                tournament.ToId = reader.GetValue(0).ToString();
+                tournament.Name = reader.GetValue(1).ToString();
+                tournament.StartDate = reader.GetValue(2).ToString();
+                tournament.EndDate = reader.GetValue(3).ToString();
+                tournament.Description = reader.GetValue(4).ToString();
+                tournament.Type = reader.GetValue(5).ToString();
+
+                tournaments.Add(tournament);
+
+            }
+            myConnection.Close();
+
+            return tournaments;
+        }
+
 
 
         public async Task<List<TeamWEB>> getTeamByTournamentId(string id)
