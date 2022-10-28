@@ -17,7 +17,12 @@ namespace WCO_Api.Data
         {
             return await sQLDB.insertBracket(bracket);
         }
-        
+
+        public async Task<int> createNewMatch(MatchWEB match)
+        {
+            return await sQLDB.insertMatch(match);
+        }
+
         public async Task<int> updateTeamId(Team team)
         {
             return await sQLDB.updateTeam(team);
@@ -51,6 +56,11 @@ namespace WCO_Api.Data
         public async Task<int> getTotalBrackets()
         {
             return await sQLDB.getTotalBrackets();
+        }
+
+        public async Task<int> getTotalMatches()
+        {
+            return await sQLDB.getTotalMatches();
         }
 
     }
