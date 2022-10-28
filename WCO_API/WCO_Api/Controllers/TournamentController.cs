@@ -54,7 +54,7 @@ namespace WCO_Api.Controllers
             return allTournaments;
         }
 
-        [HttpGet("getTournamentById")]
+        [HttpGet("getTournamentById/{id}")]
         public async Task<List<TournamentOut>> getTournamentById(string id)
         {
 
