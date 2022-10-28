@@ -20,10 +20,10 @@ namespace WCO_Api.Controllers
         }
 
         [HttpGet]
-        public async Task<List<TournamentWEB>> getTournaments()
+        public async Task<List<TournamentOut>> getTournaments()
         {
 
-            List<TournamentWEB> allTournaments = new List<TournamentWEB>();
+            List<TournamentOut> allTournaments = new List<TournamentOut>();
             IEnumerable<Tournament> dbTournaments;
 
             dbTournaments = await managementRepository.getTournaments();
@@ -31,7 +31,7 @@ namespace WCO_Api.Controllers
 
             foreach (var tournament in dbTournaments)
             {
-                TournamentWEB newTournament = new TournamentWEB();
+                TournamentOut newTournament = new TournamentOut();
 
                 newTournament.ToId = tournament.ToId;
                 newTournament.Name = tournament.Name;
@@ -42,16 +42,10 @@ namespace WCO_Api.Controllers
                 newTournament.teams = (List<TeamWEB>)await managementRepository.getTeamByTournamentId(tournament.ToId);
 
                 List<BracketWEB> brackets = new List<BracketWEB>();
-                List<string> finalbrackets = new List<string>();
 
-                brackets = (List<BracketWEB>) await managementRepository.getBracketsByTournamentId(tournament.ToId);
+                brackets = (List<BracketWEB>)await managementRepository.getBracketsByTournamentId(tournament.ToId);
 
-                foreach (var bracket in brackets)
-                {
-                    finalbrackets.Add(bracket.Name);
-                }
-
-                newTournament.brackets = finalbrackets;
+                newTournament.brackets = brackets;
 
                 allTournaments.Add(newTournament);
 
@@ -66,7 +60,13 @@ namespace WCO_Api.Controllers
             return await managementRepository.getTeamsByType(type);
         }
 
-        [HttpPost("Add")]
+        [HttpGet("GetTeamsByTournamentId/{id}")]
+        public async Task<IEnumerable<TeamWEB>> GetTeamsByTournamentId(string id)
+        {
+            return await managementRepository.getTeamByTournamentId(id);
+        }
+
+        [HttpPost("AddTournament")]
         public async Task<IActionResult> createTournament([FromBody] TournamentWEB tournament)
         {
             if (tournament == null)
@@ -126,10 +126,7 @@ namespace WCO_Api.Controllers
                 var created3 = await managementRepository.updateTeamId(dbTeam);
 
             }
-            
 
-            
-            
             return Created("created", created);
         }
     }
