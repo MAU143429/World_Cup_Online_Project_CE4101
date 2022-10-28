@@ -43,7 +43,7 @@ namespace WCO_Api.Models
 
         }
 
-        [HttpPost("getMatchesByBracketId/{id}")]
+        [HttpGet("getMatchesByBracketId/{id}")]
         public async Task<List<MatchOut>> getMatchesByBracketId(int id)
         {
 
