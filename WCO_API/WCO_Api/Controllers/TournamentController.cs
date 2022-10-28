@@ -54,6 +54,41 @@ namespace WCO_Api.Controllers
             return allTournaments;
         }
 
+        [HttpGet("getTournamentById")]
+        public async Task<List<TournamentOut>> getTournamentById()
+        {
+
+            List<TournamentOut> allTournaments = new List<TournamentOut>();
+            IEnumerable<Tournament> dbTournaments;
+
+            dbTournaments = await managementRepository.getTournaments();
+
+
+            foreach (var tournament in dbTournaments)
+            {
+                TournamentOut newTournament = new TournamentOut();
+
+                newTournament.ToId = tournament.ToId;
+                newTournament.Name = tournament.Name;
+                newTournament.StartDate = tournament.StartDate;
+                newTournament.EndDate = tournament.EndDate;
+                newTournament.Description = tournament.Description;
+                newTournament.Type = tournament.Type;
+                newTournament.teams = (List<TeamWEB>)await managementRepository.getTeamByTournamentId(tournament.ToId);
+
+                List<BracketWEB> brackets = new List<BracketWEB>();
+
+                brackets = (List<BracketWEB>)await managementRepository.getBracketsByTournamentId(tournament.ToId);
+
+                newTournament.brackets = brackets;
+
+                allTournaments.Add(newTournament);
+
+            }
+
+            return allTournaments;
+        }
+
         [HttpGet("GetTeamsByType/{type}")]
         public async Task<IEnumerable<TeamWEB>> getTeamsByType(string type)
         {
@@ -119,8 +154,7 @@ namespace WCO_Api.Controllers
             {
                 Team dbTeam= new Team();
 
-                dbTeam.TeId = team.TeId;
-                dbTeam.Name = team.Name;
+                dbTeam.TeId = team;
                 dbTeam.TournamentId = newuuid;
 
                 var created3 = await managementRepository.updateTeamId(dbTeam);

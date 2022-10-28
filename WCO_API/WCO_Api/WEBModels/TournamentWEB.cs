@@ -9,7 +9,7 @@
         public string Description { get; set; }
         public string Type { get; set; }
 
-        public List<TeamWEB> teams { get; set; }
+        public List<int> teams { get; set; }
         public List<String> brackets { get; set; }
 
     }
