@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="button">
-          <input type="submit" value="Crear Torneo" (click)="addTournament()" routerLink="">
+          <input type="submit" value="Crear Torneo" (click)="addTournament()">
         </div>
       </form>
     </div>
@@ -93,4 +93,11 @@
 
 
 </body>
+
+<ng-template #content let-modal>
+  <div class="popup">
+    <button class="close cbtn" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+</ng-template>
+
 </html>
