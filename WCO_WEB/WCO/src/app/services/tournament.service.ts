@@ -38,4 +38,10 @@ export class TournamentService {
       this.url + '/Tournament/getTournamentById/' + id
     );
   }
+
+  getTournamentTeams(id: any): Observable<any> {
+    return this.httpclient.get(
+      this.url + '/Tournament/GetTeamsByTournamentId/' + id
+    );
+  }
 }

@@ -1,13 +1,13 @@
 body{
-  height: 100vh;
-  display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
   background-color: white;
+  height: auto;
+  min-height: 100%;
 
 }
 .container{
+  height: auto;
   max-width: 1400px;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.295);
@@ -146,7 +146,8 @@ form .input-box2 span.details{
  /* Aspecto del boton de crear torneo */
  form .button input{
   height: 100%;
-  width: 100%;
+  width: 40%;
+  margin-left: 30%;
   border-radius: 5px;
   border: none;
   color: #fff;

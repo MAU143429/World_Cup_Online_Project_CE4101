@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="create-match.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<app-navbar></app-navbar>
+<body>
+  <div class="container">
+    <div class="title">Crear un partido</div>
+    <div class="content">
+      <form>
+        <div class="match-details" *ngFor="let data of tournamentsData">
+
+          <div class="input-box1">
+            <span class="subtitle" >Torneo: {{data.name}} </span>
+          </div>
+          <div class="input-box1">
+            <span class="subtitle" >Fase: {{bracket.name}} </span>
+          </div>
+          <div class="input-box">
+            <span class="details" >Sede del partido<span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="text" [(ngModel)]= "newMatch.venue" minlength="5" maxlength="30" [ngModelOptions]="{standalone: true}"  placeholder="Ingrese la sede aquí..." required>
+          </div>
+          <div class="input-box">
+            <span class="details">Fecha y hora de inicio<span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="datetime-local"  [(ngModel)]= "datetime" [ngModelOptions]="{standalone: true}" required>
+          </div>
+          <div class="input-box">
+
+            <span class="details" >Equipo 1<span style="color: rgb(245, 59, 59);">*</span></span>
+            <mbsc-select [data]="myTeams" [touchUi]="false"  [(ngModel)]= "newMatch.idTeam1" [ngModelOptions]="{standalone: true}" placeholder="Seleccione equipo 1" ></mbsc-select>
+
+          </div>
+        <div class="input-box">
+          <span class="details" >Equipo 2<span style="color: rgb(245, 59, 59);">*</span></span>
+          <mbsc-select [data]="myTeams" [touchUi]="false" [(ngModel)]= "newMatch.idTeam2" [ngModelOptions]="{standalone: true}" placeholder="Seleccione equipo 2" ></mbsc-select>
+        </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Agregar Partido" (click)="insertMatch()" >
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
