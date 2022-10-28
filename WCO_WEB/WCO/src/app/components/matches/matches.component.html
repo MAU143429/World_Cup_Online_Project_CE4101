@@ -14,6 +14,8 @@
         <main>
             <div class="testbox">
                 <form action="/">
+                    <label for="sede">Sede del partido<span>*</span></label><br>
+                      <input  class="form-control" id="sede" type="text" name="sede" [(ngModel)]="newMatch.venue" [ngModelOptions]="{standalone: true}" placeholder="Ingrese sede del partido" required/>
                   <div class="banner">
                     <h1>Crear partido</h1>
                   </div>
@@ -34,7 +36,7 @@
                     </div>
                     <div class="item">
                         <label for="equipo1">Equipo 1<span>*</span></label><br>
-                        <select class="form-control" type="text" name="equipo1" id="equipo1" [(ngModel)]="newMatch.team1" [ngModelOptions]="{standalone: true}"  placeholder="Seleccione equipo 1">
+                        <select class="form-control" type="text" name="equipo1" id="equipo1" [(ngModel)]="newMatch.team1" [ngModelOptions]="{standalone: true}"  placeholder="Seleccione equipo 1" required>
                             <option value="1">Brasil</option>
                             <option value="2">Costa Rica</option>
                             <option value="3">Canadá</option>
@@ -42,7 +44,7 @@
                     </div>
                     <div class="item">
                         <label for="equipo2">Equipo 2<span>*</span></label><br>
-                        <select class="form-control" type="text" name="equipo2" [(ngModel)]="newMatch.team2" [ngModelOptions]="{standalone: true}" id="equipo2" placeholder="Seleccione equipo 2">
+                        <select class="form-control" type="text" name="equipo2" [(ngModel)]="newMatch.team2" [ngModelOptions]="{standalone: true}" id="equipo2" placeholder="Seleccione equipo 2" required>
                             <option value="1">Croacia</option>
                             <option value="2">España</option>
                             <option value="3">Senegal</option>
@@ -52,7 +54,9 @@
                     
                   </div>
                   <div class="btn-block">
-                    <button class="form-control" (click)="insertMatch(newMatch)" type="submit" >Agregar partido</button>
+                    <button class="form-control" (click)="insertMatch(newMatch)" [disabled]="!newMatch.startDate || !newMatch.venue || 
+                    !newMatch.team1|| !newMatch.team2
+                    " type="submit" >Agregar partido</button>
                   </div>
                 </form>
             </div>
@@ -64,45 +68,3 @@
 </body>
 </html>
 
-<!-- 
-            <div class="container">
-             
-                <div class="title">Crear partido</div>
-                
-                <div class="content">
-                    <form action="#">
-                        <div class="matches-form">
-                            <div class="input-sede">
-                                <span >Sede del partido <span style="color: rgb(245, 59, 59);">*</span> </span>
-                                <input type="text"  placeholder="Ingrese la sede del torneo " required>
-                            </div>
-    
-                            <div class="input-sede">
-                                <span >Fecha y hora de inicio <span style="color: rgb(245, 59, 59);">*</span> </span>
-                                <input type="datetime-local"  placeholder="Ingrese la hora de inicio del partido" required>
-                            </div>
-    
-                            <div>
-                                    <span >Equipo 1 <span style="color: rgb(245, 59, 59);">*</span> </span>
-                                    <select name="team1" id="team1" placeholder="Seleccione equipo 1">
-                                        <option value="1">Brasil</option>
-                                        <option value="2">Costa Rica</option>
-                                        <option value="3">Canadá</option>
-                                    </select>
-                            </div>
-                            <div>
-                                    <span>Equipo 2 <span style="color: rgb(245, 59, 59);">*</span> </span>
-                                    <select name="team2" id="team2" placeholder="Seleccione equipo 2">
-                                        <option value="1">Croacia</option>
-                                        <option value="2">España</option>
-                                        <option value="3">Senegal</option>
-                                    </select>
-                              
-                            </div>
-                        </div>
-                        <div class="button">
-                            <input type="submit" value="Crear partido"  routerLink="">
-                        </div>
-                    </form>
-                </div>
-            </div> -->

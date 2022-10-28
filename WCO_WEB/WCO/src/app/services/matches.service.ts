@@ -10,6 +10,11 @@ export class MatchesService {
   url = "api/Match"
   constructor(private wco:WcoService) { }
 
+  /**
+   * Adds a new match for a given tournament and posts it to the database
+   * @param newMatch object extracted from users response to the form
+   * @returns 
+   */
   public addNewMatch(newMatch:Match):Observable<any>{
     return this.wco.create(this.url, newMatch)
   }
