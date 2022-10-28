@@ -8,6 +8,7 @@ import { TournamentService } from '../../services/tournament.service';
 import { Type } from '../../interface/type';
 import { Router } from '@angular/router';
 import { BracketName } from '../../interface/bracket-name';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export const ITEMS: Type[] = [
   { type: 'Selecciones' },
@@ -35,6 +36,7 @@ export class CreateTournamentComponent implements OnInit {
   displayedColumns: string[] = ['name', 'action'];
   bracketSource: BracketName[] = [];
   selectedTeams: string[] = [];
+  closeResult = '';
 
   async delay(ms: number) {
     await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
@@ -44,10 +46,43 @@ export class CreateTournamentComponent implements OnInit {
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any> | any;
   constructor(
+    private modalService: NgbModal,
     public dialog: MatDialog,
     private service: TournamentService,
     private router: Router
   ) {}
+
+  /**
+   * Este metodo permite la creacion de un pop up
+   * @param content es el template que contiene el contenido del popup
+   */
+  open(content: any) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
+  /**
+   * Metodo que permite crear las acciones del boton exit del popup
+   * @param reason
+   * @returns
+   */
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
   /**
    * @brief Este metodo permite obtener el valor seleccionado en el radio button y realizar alguna acciones
