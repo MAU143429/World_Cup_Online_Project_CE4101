@@ -43,5 +43,25 @@ namespace WCO_Api.Models
 
         }
 
+        [HttpPost("getMatchesByBracketId")]
+        public async Task<List<MatchOut>> getMatchesByBracketId(int id)
+        {
+
+            List<MatchOut> matchesWeb= new List<MatchOut>();
+
+            matchesWeb = (List<MatchOut>)await managementRepository.getMatchesByBracketId(id);
+
+            foreach (MatchOut dbMatch in matchesWeb) {
+
+                Console.WriteLine("PARTIDOS DEL BRACKET" + id);
+                Console.WriteLine(dbMatch.MId);
+
+                List<TeamWEB> teams = (List<TeamWEB>)await managementRepository.getTeamsByMatchId(dbMatch.MId);
+                dbMatch.teams = teams;
+   
+            }
+            
+            return matchesWeb;
+        }
     }
 }

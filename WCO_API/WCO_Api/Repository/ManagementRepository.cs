@@ -48,6 +48,16 @@ namespace WCO_Api.Data
             return await sQLDB.getBracketsByTournamentId(id);
         }
 
+        public async Task<IEnumerable<MatchOut>> getMatchesByBracketId(int id)
+        {
+            return await sQLDB.getMatchesByBracketId(id);
+        }
+
+        public async Task<IEnumerable<TeamWEB>> getTeamsByMatchId(int id)
+        {
+            return await sQLDB.getTeamsByMatchId(id);
+        }
+
         public async Task<IEnumerable<TeamWEB>> getTeamsByType(string type)
         {
             return await sQLDB.getTeamsByType(type);

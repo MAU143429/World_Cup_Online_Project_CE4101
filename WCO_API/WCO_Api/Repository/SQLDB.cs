@@ -293,6 +293,85 @@ namespace WCO_Api.Data
         }
 
 
+
+        public async Task<List<MatchOut>> getMatchesByBracketId(int id)
+        {
+            SqlDataReader reader = null;
+            SqlDataReader reader2 = null;
+            SqlConnection myConnection = new SqlConnection();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Match]" +
+                $"WHERE bracket_id = '{id}'";
+
+            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+
+            myConnection.Open();
+
+            reader = sqlCmd.ExecuteReader();
+
+            List<MatchOut> matches = new List<MatchOut>();
+
+            while (reader.Read())
+            {
+                MatchOut newMatch = new MatchOut();
+
+                //Obtener info del partido en si
+
+                newMatch.MId = (int)reader.GetValue(0);
+                newMatch.startTime = reader.GetValue(1).ToString();
+                newMatch.date = reader.GetValue(2).ToString();
+                newMatch.venue = reader.GetValue(3).ToString();
+                newMatch.bracketId = (int)reader.GetValue(4);
+
+                matches.Add(newMatch);
+
+            }
+
+            myConnection.Close();
+
+            return matches;
+        }
+
+
+        public async Task<List<TeamWEB>> getTeamsByMatchId(int id)
+        {
+            
+            SqlDataReader reader = null;
+            SqlConnection myConnection = new SqlConnection();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT [te_id], [name] " +
+                $"FROM [dbo].[Match_Team]" +
+                $"INNER JOIN[dbo].[Team]" +
+                $"ON[dbo].[Team].[te_id] = [dbo].[Match_Team].[team_id] AND[dbo].[Match_Team].match_id = '{id}'";
+
+            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+
+            myConnection.Open();
+
+            reader = sqlCmd.ExecuteReader();
+
+            List<TeamWEB> teams = new List<TeamWEB>();
+
+            while (reader.Read())
+            {
+                TeamWEB team = new TeamWEB();
+
+                team.TeId = (int)reader.GetValue(0);
+                team.Name = reader.GetValue(1).ToString();
+
+                teams.Add(team);
+
+            }
+
+            return teams;
+        }
+
+
         public async Task<List<TeamWEB>> getTeamsByType(string type)
         {
             Console.WriteLine("GETTEAMSBYTYPE");
