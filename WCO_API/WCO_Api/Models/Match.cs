@@ -1,19 +1,22 @@
-﻿namespace WCO_Api.Models
+using System;
+using System.Collections.Generic;
+
+namespace WCO_Api.Models
 {
-    public class Match
+    public partial class Match
     {
-        public string Id { get; set; }
+        public Match()
+        {
+            MatchTeams = new HashSet<MatchTeam>();
+        }
 
-        public string tournamentName { get; set; }
+        public int MId { get; set; }
+        public string StartTime { get; set; } = null!;
+        public string Date { get; set; } = null!;
+        public string Venue { get; set; } = null!;
+        public int BracketId { get; set; }
 
-        public string phaseName { get; set; }
-
-        public string venue { get; set; }
-
-        public DateTime startDate { get; set; }
-
-        public string team1 { get; set; }
-
-        public string team2 { get; set; }
+        public virtual Bracket Bracket { get; set; } = null!;
+        public virtual ICollection<MatchTeam> MatchTeams { get; set; }
     }
 }
