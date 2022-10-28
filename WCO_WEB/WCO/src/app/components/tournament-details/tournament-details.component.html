@@ -19,7 +19,7 @@
       <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
         <ngb-panel *ngFor="let bracket of bracketsData">
           <ng-template ngbPanelTitle class="bracket-title">
-            <span>{{bracket}}</span>
+            <span>{{bracket.name}}</span>
           </ng-template>
           <ng-template ngbPanelContent>
             <input class="create-match-btn" type="button"  value="+ Agregar Partido" routerLink="" >

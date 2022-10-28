@@ -34,6 +34,8 @@ export class TournamentService {
   }
 
   getTournamentbyID(id: any): Observable<any> {
-    return this.httpclient.get(this.url + '/Tournament/' + id);
+    return this.httpclient.get(
+      this.url + '/Tournament/getTournamentById/' + id
+    );
   }
 }
