@@ -11,7 +11,6 @@ import { BracketName } from '../../interface/bracket-name';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DbTeam } from 'src/app/model/db-team';
 import { InternalService } from 'src/app/services/internal.service';
-import th from '@mobiscroll/angular/dist/js/i18n/th';
 import { Dropdown } from 'src/app/model/dropdown';
 
 export const ITEMS: Type[] = [

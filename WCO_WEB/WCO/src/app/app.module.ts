@@ -18,6 +18,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
 import { TournamentDetailsComponent } from './components/tournament-details/tournament-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CreateMatchComponent } from './components/create-match/create-match.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NavbarComponent,
     DialogBoxComponent,
     TournamentDetailsComponent,
+    CreateMatchComponent,
   ],
   imports: [
     MbscModule,
@@ -49,5 +51,4 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   providers: [],
   bootstrap: [AppComponent],
 })
-
 export class AppModule {}

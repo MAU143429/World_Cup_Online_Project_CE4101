@@ -4,4 +4,6 @@
   background-color: #1277D9;
   font-weight: 500;
   font-size: 18px;
+  position: fixed;
+  width: 100%;
 }

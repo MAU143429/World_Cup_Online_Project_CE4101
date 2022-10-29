@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class InternalService {
   private selectedTournament: any;
-  private avTeams: any;
+  private selectedBracket: any;
 
   sendTournamentKey(tournamentKey: any) {
     this.selectedTournament = tournamentKey;
@@ -15,11 +15,10 @@ export class InternalService {
     return this.selectedTournament;
   }
 
-  setAvTeams(availableTeams: any) {
-    this.avTeams = availableTeams;
+  setSelectedBracket(bracket: any) {
+    this.selectedBracket = bracket;
   }
-
-  getAvTeams(): Observable<any> {
-    return this.avTeams;
+  getSelectedBracket(): Observable<any> {
+    return this.selectedBracket;
   }
 }

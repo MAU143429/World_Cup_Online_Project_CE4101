@@ -1,9 +1,8 @@
 export class Match {
-    Id: string = "string"
-    tournamentName: string  = ''
-    phaseName: string = ''
-    venue:string = ''
-    startDate: Date= new Date()
-    team1: string = ''
-    team2: string = ''
+  startTime: String = '';
+  date: String = '';
+  venue: String = '';
+  bracketId: String = '';
+  idTeam1: number = 0;
+  idTeam2: number = 0;
 }

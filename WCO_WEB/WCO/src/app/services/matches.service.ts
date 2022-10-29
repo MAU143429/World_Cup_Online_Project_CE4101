@@ -4,19 +4,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MatchesService {
-  url = "api/Match"
-  constructor(private wco:WcoService) { }
+  url = 'api/Match';
+  constructor(private wco: WcoService) {}
 
   /**
    * Adds a new match for a given tournament and posts it to the database
    * @param newMatch object extracted from users response to the form
-   * @returns 
+   * @returns
    */
-  public addNewMatch(newMatch:Match):Observable<any>{
-    return this.wco.create(this.url, newMatch)
+  public addNewMatch(newMatch: Match): Observable<any> {
+    return this.wco.create(this.url + '/AddMatch', newMatch);
   }
-  //public getTournaments():
+
+  public getMatchesByBracketId(id: any): Observable<any> {
+    return this.wco.getData(this.url + '/getMatchesByBracketId/' + id);
+  }
 }
