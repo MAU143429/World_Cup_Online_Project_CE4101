@@ -9,9 +9,9 @@ import { Type } from '../../interface/type';
 import { Router } from '@angular/router';
 import { BracketName } from '../../interface/bracket-name';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DbTeam } from 'src/app/model/db-team';
-import { InternalService } from 'src/app/services/internal.service';
-import { Dropdown } from 'src/app/model/dropdown';
+import { DbTeam } from '../../model/db-team';
+import { InternalService } from '..//../services/internal.service';
+import { Dropdown } from '../../model/dropdown';
 
 export const ITEMS: Type[] = [
   { type: 'Selecciones' },
@@ -141,15 +141,29 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   addTournament() {
+    const now = new Date();
     this.setBracketList();
+    if(this.newTournament.startDate > this.newTournament.endDate || this.newTournament.startDate < now.toISOString()) {
+      this.open('errorFechas')
+    }
+    else if (this.newTournament.brackets.length == 0){
+      this.open('errorFases')
+    }
+    else if (this.newTournament.teams.length < 2) {
+      this.open('errorEquipos')
+    }
+    else if (this.newTournament.endDate == "" || this.newTournament.name == "" || this.newTournament.startDate == "" || this.newTournament.type.length==0) {
+      this.open('errorRequeridos')
+    } 
+    else{
+      this.service
+        .setTournament(this.newTournament)
+        .subscribe((tournament) => console.log(this.newTournament));
 
-    this.service
-      .setTournament(this.newTournament)
-      .subscribe((tournament) => console.log(this.newTournament));
-
-    this.delay(100).then(() => {
-      this.router.navigate(['']);
-    });
+      this.delay(100).then(() => {
+        this.router.navigate(['']);
+      });
+    }
   }
 
   ngOnInit(): void {}
