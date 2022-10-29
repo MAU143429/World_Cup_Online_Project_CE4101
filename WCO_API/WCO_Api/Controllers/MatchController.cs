@@ -4,7 +4,7 @@ using WCO_Api.Data;
 using WCO_Api.WEBModels;
 
 /**
- * Controlador encargado de realizar las acciones relacionadas con los torneos, acciones como get, post, put
+ * Controlador encargado de realizar las acciones relacionadas con los Partidos, acciones como get, post, put
  * 
 */
 namespace WCO_Api.Models
@@ -16,13 +16,17 @@ namespace WCO_Api.Models
 
         ManagementRepository managementRepository = new ManagementRepository();
 
+        /**
+         *  Constructor
+         */
+
         public MatchController()
         {
 
         }
 
         /**
-         * 
+         * Petición que se encarga de agregar un partido a la tabla Matches
          */
 
         [HttpPost("AddMatch")]
@@ -43,8 +47,6 @@ namespace WCO_Api.Models
             match.venue = match.venue;
             match.bracketId = match.bracketId;
 
-            //guardar relacion partidos
-
             var created = await managementRepository.createNewMatch(match);
 
             return Created("created", created);
@@ -56,7 +58,7 @@ namespace WCO_Api.Models
          * Revibe un entero que representa el id del bracket en la base de datos
          */
 
-        [HttpGet("getMatchesByBracketId/{id}")]
+        [HttpGet("getMatchesByTournamentId/{id}")]
         public async Task<List<List<MatchOut>>> getMatchesByTournamentId(string id)
         {
 
