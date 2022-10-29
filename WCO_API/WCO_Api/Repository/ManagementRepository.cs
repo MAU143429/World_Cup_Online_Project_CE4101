@@ -1,6 +1,10 @@
 ﻿using WCO_Api.Models;
 using WCO_Api.WEBModels;
 
+/**
+ * Repositorio donde se centralizan las peticiones a querys de la base de datos, esto para tener orden en esto
+*/
+
 namespace WCO_Api.Data
 {
     public class ManagementRepository

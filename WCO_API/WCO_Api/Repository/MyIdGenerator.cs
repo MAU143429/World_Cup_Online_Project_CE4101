@@ -1,14 +1,17 @@
 ﻿using WCO_Api.Data;
 using WCO_Api.Models;
 
+/*
+ * Clase que servirá para poder generar y validar el identificador alfanumérico de los torneos 
+*/
+
 namespace WCO_Api.Repository
 {
     public class MyIdGenerator
     {
 
+        //Se crea un managementRepositiry para hacer consultas a la base de datos en caso de ser necesario
         ManagementRepository managementRepository = new ManagementRepository();
-
-        //----- Métodos para creacion y verificación de llaves alfanuméricas -------
 
 
         /* Función que me permite crear una llave alfanumérica única

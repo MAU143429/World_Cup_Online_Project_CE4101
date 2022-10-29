@@ -5,6 +5,10 @@ using WCO_Api.Models;
 using WCO_Api.Repository;
 using WCO_Api.WEBModels;
 
+/*
+ *Controlador donde se van a hacer peticiones para los torneos, se pueden hacer post y get 
+*/
+
 namespace WCO_Api.Controllers
 {
     [Route("api/[controller]")]
@@ -18,6 +22,10 @@ namespace WCO_Api.Controllers
         {
 
         }
+
+        /*
+         * Obtiene una lista con objetos TournamentOut que se mandarán a la web, no recibe nada
+         */
 
         [HttpGet]
         public async Task<List<TournamentOut>> getTournaments()
@@ -54,6 +62,10 @@ namespace WCO_Api.Controllers
             return allTournaments;
         }
 
+        /*
+         * Obtiene una lista con objetos TournamentOut que se mandarán a la web, recibe el string con el id del torneo
+         */
+
         [HttpGet("getTournamentById/{id}")]
         public async Task<List<TournamentOut>> getTournamentById(string id)
         {
@@ -88,17 +100,35 @@ namespace WCO_Api.Controllers
             return allTournaments;
         }
 
+        /*
+         * Obtiene una lista con objetos TeamWEB filtrándolos por medio de su tipo, el resultado se mandará al navegador, tiene de entrada un string type
+         */
+
         [HttpGet("GetTeamsByType/{type}")]
         public async Task<IEnumerable<TeamWEB>> getTeamsByType(string type)
         {
             return await managementRepository.getTeamsByType(type);
         }
 
+
+        /*
+         * Obtiene una lista con objetos TeamWEB filtrándolos por medio del torneo al que pertenecen, el resultado se mandará al navegador, tiene de entrada un string con
+         * el id del torneo
+         */
+
+
         [HttpGet("GetTeamsByTournamentId/{id}")]
         public async Task<IEnumerable<TeamWEB>> GetTeamsByTournamentId(string id)
         {
             return await managementRepository.getTeamByTournamentId(id);
         }
+
+
+        /*
+         * Recibe un objeto TournamentWEB, se hacen las operaciones necesarias para que se meta la información a la base de datos.
+         * Retorna un Task<IActionResult> que indica si la opracion tuvo exito o no
+         */
+
 
         [HttpPost("AddTournament")]
         public async Task<IActionResult> createTournament([FromBody] TournamentWEB tournament)
