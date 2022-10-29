@@ -20,6 +20,6 @@ export class MatchesService {
   }
 
   public getMatchesByBracketId(id: any): Observable<any> {
-    return this.wco.getData(this.url + '/getMatchesByBracketId/' + id);
+    return this.wco.getData(this.url + '/getMatchesByTournamentId/' + id);
   }
 }

@@ -11,6 +11,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { MatchesService } from 'src/app/services/matches.service';
 import { DbMatch } from 'src/app/interface/db-match';
+import { AllInfo } from 'src/app/interface/all-info';
 @Component({
   selector: 'app-tournament-details',
   templateUrl: './tournament-details.component.html',
@@ -19,25 +20,8 @@ import { DbMatch } from 'src/app/interface/db-match';
 export class TournamentDetailsComponent implements OnInit {
   tournamentsData: Tournaments[] = [];
   bracketsData: DbBracket[] = [];
-  matchData: DbMatch[] = [
-    {
-      mId: 0,
-      startTime: '',
-      date: '',
-      venue: '',
-      bracketId: 0,
-      teams: [
-        {
-          teId: 0,
-          name: '',
-        },
-        {
-          teId: 0,
-          name: '',
-        },
-      ],
-    },
-  ];
+  matchData: AllInfo[] = [];
+  bracketMatches: DbMatch[] = [];
 
   async delay(ms: number) {
     await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
@@ -60,6 +44,19 @@ export class TournamentDetailsComponent implements OnInit {
     this.delay(100).then(() => {
       this.bracketsData = this.tournamentsData[0].brackets;
     });
+
+    this.delay(100).then(() => {
+      this.matchService
+        .getMatchesByBracketId(this.tournamentsData[0].toId)
+        .subscribe((data) => {
+          this.matchData = data;
+          console.table(this.matchData);
+        });
+    });
+  }
+
+  toArray(answers: any) {
+    return Object.keys(answers).map((key) => answers[key]);
   }
 
   redirectMatch(bracket: any) {
@@ -69,11 +66,21 @@ export class TournamentDetailsComponent implements OnInit {
     });
   }
   public openBracket(event: NgbPanelChangeEvent, bracket: any): void {
-    if (event.nextState === true) {
-      this.matchService.getMatchesByBracketId(bracket.bId).subscribe((data) => {
-        this.matchData = data;
-        console.log(this.matchData);
-      });
-    }
+    console.log('Se abrio un bracket');
+    var length = 0;
+    this.matchData.forEach((value) => {
+      length = length + 1;
+    });
+    console.log(length);
+
+    /**
+    for (let i = 0; i < this.matchData.length; i++) {
+      console.log(this.matchData[i][0].bracketId);
+      if (bracket.bId == this.matchData[i][0].bracketId) {
+        this.bracketMatches = this.matchData[i];
+        console.log(this.bracketMatches);
+        return;
+      }
+    }*/
   }
 }

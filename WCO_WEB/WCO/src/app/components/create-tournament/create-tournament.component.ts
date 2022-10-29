@@ -141,21 +141,33 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   addTournament() {
+    this.service
+      .setTournament(this.newTournament)
+      .subscribe((tournament) => console.log(this.newTournament));
+
+    this.delay(100).then(() => {
+      this.router.navigate(['']);
+    });
+    /**
     const now = new Date();
     this.setBracketList();
-    if(this.newTournament.startDate > this.newTournament.endDate || this.newTournament.startDate < now.toISOString()) {
-      this.open('errorFechas')
-    }
-    else if (this.newTournament.brackets.length == 0){
-      this.open('errorFases')
-    }
-    else if (this.newTournament.teams.length < 2) {
-      this.open('errorEquipos')
-    }
-    else if (this.newTournament.endDate == "" || this.newTournament.name == "" || this.newTournament.startDate == "" || this.newTournament.type.length==0) {
-      this.open('errorRequeridos')
-    } 
-    else{
+    if (
+      this.newTournament.endDate == '' ||
+      this.newTournament.name == '' ||
+      this.newTournament.startDate == '' ||
+      this.newTournament.type.length == 0
+    ) {
+      this.open('Falta al menos uno de los espacios requeridos!');
+    } else if (
+      this.newTournament.startDate > this.newTournament.endDate ||
+      this.newTournament.startDate < now.toISOString()
+    ) {
+      this.open('Error en fechas ingresadas!');
+    } else if (this.newTournament.teams.length < 2) {
+      this.open('Se requiere al menos dos equipos en torneo!');
+    } else if (this.newTournament.brackets.length == 0) {
+      this.open('Se requiere al menos una fase!');
+    } else {
       this.service
         .setTournament(this.newTournament)
         .subscribe((tournament) => console.log(this.newTournament));
@@ -164,6 +176,7 @@ export class CreateTournamentComponent implements OnInit {
         this.router.navigate(['']);
       });
     }
+    */
   }
 
   ngOnInit(): void {}
