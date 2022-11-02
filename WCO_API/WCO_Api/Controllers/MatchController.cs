@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WCO_Api.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using WCO_Api.Repository;
 using WCO_Api.WEBModels;
 
 /**
@@ -14,16 +13,8 @@ namespace WCO_Api.Models
     public class MatchController : ControllerBase
     {
 
-        ManagementRepository managementRepository = new ManagementRepository();
-
-        /**
-         *  Constructor
-         */
-
-        public MatchController()
-        {
-
-        }
+        MatchRepository matchRepository = new MatchRepository();
+        TournamentRepository tournamentRepository = new TournamentRepository();
 
         /**
          * Petición que se encarga de agregar un partido a la tabla Matches
@@ -39,7 +30,7 @@ namespace WCO_Api.Models
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var total = await managementRepository.getTotalMatches();
+            var total = await matchRepository.getTotalMatches();
 
             match.MId = total + 1;
             match.startTime = match.startTime;
@@ -47,7 +38,7 @@ namespace WCO_Api.Models
             match.venue = match.venue;
             match.bracketId = match.bracketId;
 
-            var created = await managementRepository.createNewMatch(match);
+            var created = await matchRepository.createNewMatch(match);
 
             return Created("created", created);
 
@@ -62,19 +53,19 @@ namespace WCO_Api.Models
         public async Task<List<List<MatchOut>>> getMatchesByTournamentId(string id)
         {
 
-            List<BracketWEB> allBrackets = (List<BracketWEB>)await managementRepository.getBracketsByTournamentId(id);
+            List<BracketWEB> allBrackets = (List<BracketWEB>)await tournamentRepository.getBracketsByTournamentId(id);
             List<List<MatchOut>> allMatches = new List<List<MatchOut>>();
 
             foreach (var bracket in allBrackets)
             {
                 List<MatchOut> matchesWeb = new List<MatchOut>();
 
-                matchesWeb = (List<MatchOut>)await managementRepository.getMatchesByBracketId(bracket.BId);
+                matchesWeb = (List<MatchOut>)await matchRepository.getMatchesByBracketId(bracket.BId);
 
                 foreach (MatchOut dbMatch in matchesWeb)
                 {
 
-                    List<TeamWEB> teams = (List<TeamWEB>)await managementRepository.getTeamsByMatchId(dbMatch.MId);
+                    List<TeamWEB> teams = (List<TeamWEB>)await matchRepository.getTeamsByMatchId(dbMatch.MId);
                     dbMatch.teams = teams;
 
                 }

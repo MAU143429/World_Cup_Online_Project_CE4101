@@ -1,17 +1,17 @@
-﻿using WCO_Api.Data;
-using WCO_Api.Models;
+﻿using WCO_Api.Models;
+using WCO_Api.Repository;
 
 /*
  * Clase que servirá para poder generar y validar el identificador alfanumérico de los torneos 
 */
 
-namespace WCO_Api.Repository
+namespace WCO_Api.Logic
 {
     public class MyIdGenerator
     {
 
         //Se crea un managementRepositiry para hacer consultas a la base de datos en caso de ser necesario
-        ManagementRepository managementRepository = new ManagementRepository();
+        TournamentRepository tournamentRepository = new TournamentRepository();
 
 
         /* Función que me permite crear una llave alfanumérica única
@@ -27,6 +27,12 @@ namespace WCO_Api.Repository
             //Shorten to 6 characters 
             uuid = uuid.Substring(0, 6);
 
+            while (!isUUIDUnique(uuid).Result)
+            {
+
+                uuid = GetUUID();
+            }
+
             return uuid;
 
         }
@@ -38,15 +44,15 @@ namespace WCO_Api.Repository
          * Restricciones: Entrada debe ser un string
          */
 
-        public async Task<bool> isUUIDUnique(string uuid)
+        private async Task<bool> isUUIDUnique(string uuid)
         {
 
             //Se revisa si existe el UUID en la base de datos, en este caso se revisa tournaments
             //de manera local
 
             IEnumerable<Tournament> tournaments;
-            tournaments = await managementRepository.getTournaments();
-            
+            tournaments = await tournamentRepository.getTournaments();
+
             foreach (var dbTournament in tournaments)
             {
                 if (dbTournament.ToId == uuid)
@@ -54,7 +60,7 @@ namespace WCO_Api.Repository
                     return false;
                 }
             }
-            
+
             return true;
 
         }

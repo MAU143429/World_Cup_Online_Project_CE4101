@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WCO_Api.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using WCO_Api.Logic;
 using WCO_Api.Models;
 using WCO_Api.Repository;
 using WCO_Api.WEBModels;
@@ -16,12 +15,7 @@ namespace WCO_Api.Controllers
     public class TournamentController : ControllerBase
     {
 
-        ManagementRepository managementRepository = new ManagementRepository();
-
-        public TournamentController()
-        {
-
-        }
+        TournamentRepository tournamentRepository = new TournamentRepository();
 
         /*
          * Obtiene una lista con objetos TournamentOut que se mandarán a la web, no recibe nada
@@ -34,7 +28,7 @@ namespace WCO_Api.Controllers
             List<TournamentOut> allTournaments = new List<TournamentOut>();
             IEnumerable<Tournament> dbTournaments;
 
-            dbTournaments = await managementRepository.getTournaments();
+            dbTournaments = await tournamentRepository.getTournaments();
 
 
             foreach (var tournament in dbTournaments)
@@ -47,11 +41,11 @@ namespace WCO_Api.Controllers
                 newTournament.EndDate = tournament.EndDate;
                 newTournament.Description = tournament.Description;
                 newTournament.Type = tournament.Type;
-                newTournament.teams = (List<TeamWEB>)await managementRepository.getTeamByTournamentId(tournament.ToId);
+                newTournament.teams = (List<TeamWEB>)await tournamentRepository.getTeamByTournamentId(tournament.ToId);
 
                 List<BracketWEB> brackets = new List<BracketWEB>();
 
-                brackets = (List<BracketWEB>)await managementRepository.getBracketsByTournamentId(tournament.ToId);
+                brackets = (List<BracketWEB>)await tournamentRepository.getBracketsByTournamentId(tournament.ToId);
 
                 newTournament.brackets = brackets;
 
@@ -73,7 +67,7 @@ namespace WCO_Api.Controllers
             List<TournamentOut> allTournaments = new List<TournamentOut>();
             IEnumerable<Tournament> dbTournaments;
 
-            dbTournaments = await managementRepository.getTournamentsById(id);
+            dbTournaments = await tournamentRepository.getTournamentsById(id);
 
             foreach (var tournament in dbTournaments)
             {
@@ -85,11 +79,11 @@ namespace WCO_Api.Controllers
                 newTournament.EndDate = tournament.EndDate;
                 newTournament.Description = tournament.Description;
                 newTournament.Type = tournament.Type;
-                newTournament.teams = (List<TeamWEB>)await managementRepository.getTeamByTournamentId(tournament.ToId);
+                newTournament.teams = (List<TeamWEB>)await tournamentRepository.getTeamByTournamentId(tournament.ToId);
 
                 List<BracketWEB> brackets = new List<BracketWEB>();
 
-                brackets = (List<BracketWEB>)await managementRepository.getBracketsByTournamentId(tournament.ToId);
+                brackets = (List<BracketWEB>)await tournamentRepository.getBracketsByTournamentId(tournament.ToId);
 
                 newTournament.brackets = brackets;
 
@@ -107,7 +101,7 @@ namespace WCO_Api.Controllers
         [HttpGet("GetTeamsByType/{type}")]
         public async Task<IEnumerable<TeamWEB>> getTeamsByType(string type)
         {
-            return await managementRepository.getTeamsByType(type);
+            return await tournamentRepository.getTeamsByType(type);
         }
 
 
@@ -120,7 +114,7 @@ namespace WCO_Api.Controllers
         [HttpGet("GetTeamsByTournamentId/{id}")]
         public async Task<IEnumerable<TeamWEB>> GetTeamsByTournamentId(string id)
         {
-            return await managementRepository.getTeamByTournamentId(id);
+            return await tournamentRepository.getTeamByTournamentId(id);
         }
 
 
@@ -140,18 +134,12 @@ namespace WCO_Api.Controllers
                 return BadRequest(ModelState);
 
             //Crear una llave y asignarla
-            MyIdGenerator idGenerator = new MyIdGenerator();
-            var newuuid = idGenerator.GetUUID();
-            
-            while (!idGenerator.isUUIDUnique(newuuid).Result)
-            {
-                
-                newuuid = idGenerator.GetUUID();
-            }
+            MyIdGenerator generator = new MyIdGenerator();
+
+            string newuuid = generator.GetUUID();
 
             tournament.ToId = newuuid;
 
-            
             Tournament to = new Tournament();
             to.ToId = newuuid;
             to.Name = tournament.Name;
@@ -160,7 +148,7 @@ namespace WCO_Api.Controllers
             to.Description = tournament.Description;
             to.Type = tournament.Type;
 
-            var created = await managementRepository.createNewTournament(to);
+            var created = await tournamentRepository.createNewTournament(to);
             
             //Agregar Brackets webmodel
 
@@ -168,13 +156,13 @@ namespace WCO_Api.Controllers
             {
                 Bracket newBracket = new Bracket();
 
-                var total = await managementRepository.getTotalBrackets();
+                var total = await tournamentRepository.getTotalBrackets();
 
                 newBracket.BId = total + 1;
                 newBracket.Name = bracket;
                 newBracket.TournamentId = newuuid;
 
-                var create2 = await managementRepository.createNewBracket(newBracket);
+                var create2 = await tournamentRepository.createNewBracket(newBracket);
 
             }
             //Put a equipo
@@ -186,7 +174,7 @@ namespace WCO_Api.Controllers
                 dbTeam.TeId = team;
                 dbTeam.TournamentId = newuuid;
 
-                var created3 = await managementRepository.updateTeamId(dbTeam);
+                var created3 = await tournamentRepository.updateTeamId(dbTeam);
 
             }
 
