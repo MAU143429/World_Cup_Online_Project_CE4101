@@ -24,10 +24,11 @@ export class WcoService {
  * @param route for relative endpoint
  * @returns Observable with server response
  */
-    public getData (route: string):Observable<any> {
-    return this.http.get(this.createCompleteRoute(route, this.envUrl.urlAddress), { observe: 'response' });
+  public getData(route: string): Observable<any> {
+    return this.http.get(
+      this.createCompleteRoute(route, this.envUrl.urlAddress)
+    );
   }
-
 
   /**
    * POST request
@@ -36,20 +37,26 @@ export class WcoService {
    * @returns Observable with server response
    */
 
-   public create(route: string, body: any):Observable<any> {
-    return this.http.post(this.createCompleteRoute(route, this.envUrl.urlAddress), body, this.generateHeaders());
+  public create(route: string, body: any): Observable<any> {
+    return this.http.post(
+      this.createCompleteRoute(route, this.envUrl.urlAddress),
+      body,
+      this.generateHeaders()
+    );
   }
-  
+
   /**
    * DELETE request
    * @param route for relative endpoint
    * @returns Observable with server response
    */
 
-    public delete(route: string): Observable<any>{
-      return this.http.delete(this.createCompleteRoute(route, this.envUrl.urlAddress), this.generateHeaders());
-    } 
-
+  public delete(route: string): Observable<any> {
+    return this.http.delete(
+      this.createCompleteRoute(route, this.envUrl.urlAddress),
+      this.generateHeaders()
+    );
+  }
 
   /**
    * PUT request
@@ -58,9 +65,13 @@ export class WcoService {
    * @returns Observable with server response
    */
 
-   public edit (route: string, body: any):Observable<any> {
-    return this.http.put(this.createCompleteRoute(route, this.envUrl.urlAddress), body, this.generateHeaders());
-   }
+  public edit(route: string, body: any): Observable<any> {
+    return this.http.put(
+      this.createCompleteRoute(route, this.envUrl.urlAddress),
+      body,
+      this.generateHeaders()
+    );
+  }
 
   /**
    * Allows all the needed CORS for requests

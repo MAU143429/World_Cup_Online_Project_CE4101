@@ -97,7 +97,7 @@ export class CreateTournamentComponent implements OnInit {
     this.radioSel = ITEMS.find((Item) => Item.type === this.radioSelected);
     this.newTournament.type = this.radioSelected;
     if (this.radioSelected == 'Selecciones') {
-      this.service.getTeams().subscribe((data) => {
+      this.service.getTeamsbyType('Selection').subscribe((data) => {
         this.allAvailableTeams = data;
 
         var teams: Dropdown[] = [];
@@ -111,7 +111,7 @@ export class CreateTournamentComponent implements OnInit {
         this.dropdownData = teams;
       });
     } else {
-      this.service.getCFTeams().subscribe((data) => {
+      this.service.getTeamsbyType('Local').subscribe((data) => {
         this.allAvailableTeams = data;
 
         var teams: Dropdown[] = [];

@@ -1,47 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateTournament } from '../model/create-tournament';
+import { WcoService } from './wco.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TournamentService {
-  url = 'https://localhost:7163/api';
+  url = 'api/Tournament';
 
-  constructor(private httpclient: HttpClient) {}
+  constructor(private wco: WcoService) {}
 
-  getTeams(): Observable<any> {
-    return this.httpclient.get(
-      this.url + '/Tournament/GetTeamsByType/Selection'
-    );
-  }
-
-  getCFTeams(): Observable<any> {
-    return this.httpclient.get(this.url + '/Tournament/GetTeamsByType/Local');
+  getTeamsbyType(type: any): Observable<any> {
+    return this.wco.getData(this.url + '/GetTeamsByType/' + type);
   }
 
   setTournament(newTournament: CreateTournament): Observable<any> {
     console.table(newTournament);
-    return this.httpclient.post(
-      this.url + '/Tournament/AddTournament',
-      newTournament
-    );
+    return this.wco.create(this.url + '/AddTournament', newTournament);
   }
 
   getTournaments(): Observable<any> {
-    return this.httpclient.get(this.url + '/Tournament');
+    return this.wco.getData(this.url);
   }
 
   getTournamentbyID(id: any): Observable<any> {
-    return this.httpclient.get(
-      this.url + '/Tournament/getTournamentById/' + id
-    );
+    return this.wco.getData(this.url + '/getTournamentById/' + id);
   }
 
   getTournamentTeams(id: any): Observable<any> {
-    return this.httpclient.get(
-      this.url + '/Tournament/GetTeamsByTournamentId/' + id
-    );
+    return this.wco.getData(this.url + '/GetTeamsByTournamentId/' + id);
   }
 }
