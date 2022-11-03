@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Tournaments } from 'src/app/interface/tournaments';
 import { DbTeam } from 'src/app/model/db-team';
 import { Dropdown } from 'src/app/model/dropdown';
@@ -23,8 +24,15 @@ export class CreateMatchComponent implements OnInit {
   constructor(
     private game: MatchesService,
     private service: TournamentService,
-    private connection: InternalService
+    private connection: InternalService,
+    private router: Router
   ) {}
+
+  async delay(ms: number) {
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
+      () => console.log('fired')
+    );
+  }
 
   ngOnInit(): void {
     this.service
@@ -69,5 +77,9 @@ export class CreateMatchComponent implements OnInit {
     this.game
       .addNewMatch(this.newMatch)
       .subscribe((match) => console.log(this.newMatch));
+
+    this.delay(100).then(() => {
+      this.router.navigate(['/tournament-details']);
+    });
   }
 }
