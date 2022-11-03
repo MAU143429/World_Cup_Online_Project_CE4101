@@ -141,6 +141,7 @@ export class CreateTournamentComponent implements OnInit {
   }
 
   addTournament() {
+    this.setBracketList();
     this.service
       .setTournament(this.newTournament)
       .subscribe((tournament) => console.log(this.newTournament));
@@ -150,7 +151,7 @@ export class CreateTournamentComponent implements OnInit {
     });
     /**
     const now = new Date();
-    this.setBracketList();
+
     if (
       this.newTournament.endDate == '' ||
       this.newTournament.name == '' ||
