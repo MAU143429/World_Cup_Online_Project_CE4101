@@ -19,6 +19,9 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
 import { TournamentDetailsComponent } from './components/tournament-details/tournament-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreateMatchComponent } from './components/create-match/create-match.component';
+import { MatchDetailsComponent } from './components/match-details/match-details.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import { CreateMatchComponent } from './components/create-match/create-match.com
     DialogBoxComponent,
     TournamentDetailsComponent,
     CreateMatchComponent,
+    MatchDetailsComponent,
+    RegisterComponent,
+    LoginComponent,
   ],
   imports: [
     MbscModule,
