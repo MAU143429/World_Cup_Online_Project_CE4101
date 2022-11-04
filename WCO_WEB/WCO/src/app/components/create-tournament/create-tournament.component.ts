@@ -12,7 +12,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DbTeam } from '../../model/db-team';
 import { InternalService } from '..//../services/internal.service';
 import { Dropdown } from '../../model/dropdown';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 export const ITEMS: Type[] = [
@@ -143,43 +143,50 @@ export class CreateTournamentComponent implements OnInit {
     });
   }
 
-  openSnackBar() {
-    this._snackBar.open('Faltan los espacios requeridos', 'Intente de nuevo',{
+  openSnackBar(message: string, message2: string) {
+    this._snackBar.open(message, message2, {
       duration: 2000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: 'red-snackbar',      
-    })
-  };
+      panelClass: 'red-snackbar',
+    });
+  }
 
   addTournament() {
     this.setBracketList();
-    this.service
-      .setTournament(this.newTournament)
-      .subscribe((tournament) => console.log(this.newTournament));
 
-    this.delay(100).then(() => {
-      this.router.navigate(['']);
-    });
-    /**
-    const now = new Date();
+    const startD = new Date(this.newTournament.startDate);
+    const endD = new Date(this.newTournament.endDate);
+    const today = new Date();
 
     if (
       this.newTournament.endDate == '' ||
       this.newTournament.name == '' ||
       this.newTournament.startDate == '' ||
-      this.newTournament.type.length == 0
+      this.newTournament.teams.length == 0 ||
+      this.newTournament.brackets.length == 0
     ) {
-      this.open('Falta al menos uno de los espacios requeridos!');
-    } else if (
-      this.newTournament.startDate > this.newTournament.endDate ||
-      this.newTournament.startDate < now.toISOString()
-    ) {
-      this.open('Error en fechas ingresadas!');
+      this.openSnackBar(
+        'Falta al menos uno de los espacios requeridos!',
+        'Intente de nuevo'
+      );
+    } else if (startD > endD) {
+      this.openSnackBar(
+        'Error en fechas ingresadas!',
+        'Fecha final incorrecta!'
+      );
+    } else if (today > startD || today > endD) {
+      this.openSnackBar(
+        'Error no se pueden generar torneos en el pasado!',
+        'Ingrese una fecha correcta para continuar!'
+      );
     } else if (this.newTournament.teams.length < 2) {
-      this.open('Se requiere al menos dos equipos en torneo!');
+      this.openSnackBar(
+        'Se requiere al menos dos equipos para crear un torneo!',
+        'Ingrese algún otro antes de continuar!'
+      );
     } else if (this.newTournament.brackets.length == 0) {
-      this.open('Se requiere al menos una fase!');
+      this.openSnackBar('Se requiere al menos una fase!', 'Intente de nuevo');
     } else {
       this.service
         .setTournament(this.newTournament)
@@ -189,7 +196,6 @@ export class CreateTournamentComponent implements OnInit {
         this.router.navigate(['']);
       });
     }
-    */
   }
 
   ngOnInit(): void {}
