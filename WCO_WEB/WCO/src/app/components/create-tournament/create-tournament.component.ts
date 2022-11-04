@@ -12,6 +12,8 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DbTeam } from '../../model/db-team';
 import { InternalService } from '..//../services/internal.service';
 import { Dropdown } from '../../model/dropdown';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 export const ITEMS: Type[] = [
   { type: 'Selecciones' },
@@ -54,7 +56,8 @@ export class CreateTournamentComponent implements OnInit {
     public dialog: MatDialog,
     private service: TournamentService,
     private internal: InternalService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {}
 
   /**
@@ -139,6 +142,15 @@ export class CreateTournamentComponent implements OnInit {
       this.newTournament.brackets.push(value.name);
     });
   }
+
+  openSnackBar() {
+    this._snackBar.open('Faltan los espacios requeridos', 'Intente de nuevo',{
+      duration: 2000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: 'red-snackbar',      
+    })
+  };
 
   addTournament() {
     this.setBracketList();

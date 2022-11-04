@@ -22,6 +22,9 @@ import { CreateMatchComponent } from './components/create-match/create-match.com
 import { MatchDetailsComponent } from './components/match-details/match-details.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar'
+
 
 @NgModule({
   declarations: [
@@ -35,6 +38,7 @@ import { LoginComponent } from './components/login/login.component';
     MatchDetailsComponent,
     RegisterComponent,
     LoginComponent,
+    AlertDialogComponent,
   ],
   imports: [
     MbscModule,
@@ -53,6 +57,7 @@ import { LoginComponent } from './components/login/login.component';
     ReactiveFormsModule,
     AppRoutingModule,
     NgbModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
