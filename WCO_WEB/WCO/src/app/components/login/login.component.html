@@ -17,23 +17,32 @@
           <div class="account-details">
             <div class="input-box">
               <span class="details">Correo Electrónico<span style="color: rgb(245, 59, 59);">*</span> </span>
-              <input type="email" minlength="5" maxlength="30" placeholder="Ingrese un correo electrónico.." required>
+              <input type="email" [(ngModel)]= "newLogin.email" [ngModelOptions]="{standalone: true}"  maxlength="30" placeholder="Ingrese un correo electrónico.." required>
             </div>
 
             <div class="input-box">
               <span class="details">Contraseña<span style="color: rgb(245, 59, 59);">*</span> </span>
-              <input type="password" minlength="6" maxlength="8" placeholder="Ingrese una contraseña aquí..." required>
+              <input type="password" [(ngModel)]= "newLogin.password" [ngModelOptions]="{standalone: true}" minlength="6" maxlength="8" placeholder="Ingrese una contraseña aquí..." required>
             </div>
             <div class="input-box">
               <span >No tienes una cuenta aún? Regístrate <a routerLink="/register" style="color: rgb(4, 0, 255);">aquí</a></span>
             </div>
           </div>
           <div class="button">
-            <input type="submit" value="Iniciar Sesión"routerLink="/home">
+            <input type="submit" value="Iniciar Sesión"routerLink="/home" (click)="addLogin()">
           </div>
 
         </form>
       </div>
     </div>
+
+
+    <ul class="social">
+    <li><a href="https://www.facebook.com/fifaworldcup/"><img src="https://i.ibb.co/x7P24fL/facebook.png"></a></li>
+    <li><a href="https://twitter.com/fifaworldcup_es"><img src="https://i.ibb.co/Wnxq2Nq/twitter.png"></a></li>
+    <li><a href="https://www.instagram.com/fifaworldcup/?hl=es"><img src="https://i.ibb.co/ySwtH4B/instagram.png"></a></li>
+    </ul>
+
+
   </body>
   </html>
