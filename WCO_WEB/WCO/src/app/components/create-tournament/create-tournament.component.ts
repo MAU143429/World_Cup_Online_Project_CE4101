@@ -13,7 +13,6 @@ import { DbTeam } from '../../model/db-team';
 import { InternalService } from '..//../services/internal.service';
 import { Dropdown } from '../../model/dropdown';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 export const ITEMS: Type[] = [
   { type: 'Selecciones' },
@@ -185,8 +184,6 @@ export class CreateTournamentComponent implements OnInit {
         'Se requiere al menos dos equipos para crear un torneo!',
         'Ingrese algún otro antes de continuar!'
       );
-    } else if (this.newTournament.brackets.length == 0) {
-      this.openSnackBar('Se requiere al menos una fase!', 'Intente de nuevo');
     } else {
       this.service
         .setTournament(this.newTournament)
