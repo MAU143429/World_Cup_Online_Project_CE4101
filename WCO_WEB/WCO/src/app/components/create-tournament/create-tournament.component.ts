@@ -147,7 +147,7 @@ export class CreateTournamentComponent implements OnInit {
       .subscribe((tournament) => console.log(this.newTournament));
 
     this.delay(100).then(() => {
-      this.router.navigate(['']);
+      this.router.navigate(['home']);
     });
     /**
     const now = new Date();

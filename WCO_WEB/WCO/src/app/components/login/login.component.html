@@ -1,1 +1,39 @@
-<p>login works!</p>
+<p><!DOCTYPE html>
+  <html lang="en" dir="ltr">
+    <head>
+      <meta charset="UTF-8">
+      <!---Referencia al archivo css que contiene el estilo--->
+      <link rel="stylesheet" href="login.component.css">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     </head>
+  <body>
+    <div class="container">
+      <div class="title">Bienvenido a World Cup Online</div>
+      <div class="content">
+        <div class="subtitle">Iniciar Sesión</div>
+        <br>
+        <br>
+        <form>
+          <div class="account-details">
+            <div class="input-box">
+              <span class="details">Correo Electrónico<span style="color: rgb(245, 59, 59);">*</span> </span>
+              <input type="email" minlength="5" maxlength="30" placeholder="Ingrese un correo electrónico.." required>
+            </div>
+
+            <div class="input-box">
+              <span class="details">Contraseña<span style="color: rgb(245, 59, 59);">*</span> </span>
+              <input type="password" minlength="6" maxlength="8" placeholder="Ingrese una contraseña aquí..." required>
+            </div>
+            <div class="input-box">
+              <span >No tienes una cuenta aún? Regístrate <a routerLink="/register" style="color: rgb(4, 0, 255);">aquí</a></span>
+            </div>
+          </div>
+          <div class="button">
+            <input type="submit" value="Iniciar Sesión"routerLink="/home">
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </body>
+  </html>
