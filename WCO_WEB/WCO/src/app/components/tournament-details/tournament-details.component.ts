@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TournamentService } from '../../services/tournament.service';
 import { Tournaments } from '../../interface/tournaments';
 import { InternalService } from '../../services/internal.service';
@@ -19,6 +19,7 @@ import { AllInfo } from 'src/app/interface/all-info';
   styleUrls: ['./tournament-details.component.css'],
 })
 export class TournamentDetailsComponent implements OnInit {
+  tournamentID: string = '';
   tournamentsData: Tournaments[] = [];
   bracketsData: DbBracket[] = [];
   matchData: any[] = [];
@@ -38,15 +39,18 @@ export class TournamentDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.service
-      .getTournamentbyID(this.connection.getTournamentKey())
-      .subscribe((data) => (this.tournamentsData = data));
+    this.connection.tournamentId.subscribe(
+      (data) => (this.tournamentID = data)
+    );
 
-    this.delay(100).then(() => {
-      this.bracketsData = this.tournamentsData[0].brackets;
+    this.delay(50).then(() => {
+      this.service
+        .getTournamentbyID(this.tournamentID)
+        .subscribe((data) => (this.tournamentsData = data));
     });
 
     this.delay(100).then(() => {
+      this.bracketsData = this.tournamentsData[0].brackets;
       this.matchService
         .getMatchesByBracketId(this.tournamentsData[0].toId)
         .subscribe((data) => (this.matchData = data));
@@ -58,10 +62,10 @@ export class TournamentDetailsComponent implements OnInit {
   }
 
   redirectMatch(bracket: any) {
-    this.connection.setSelectedBracket(bracket);
+    console.log('SOY BRACKET', bracket);
+    this.connection.setCurrentBracket(bracket);
     this.delay(100).then(() => {
       this.router.navigate(['/create-match']);
     });
   }
-  public openBracket(event: NgbPanelChangeEvent, bracket: any): void {}
 }

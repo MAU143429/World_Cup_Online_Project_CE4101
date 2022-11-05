@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Tournaments } from 'src/app/interface/tournaments';
@@ -15,6 +15,7 @@ import { TournamentService } from 'src/app/services/tournament.service';
   styleUrls: ['./create-match.component.css'],
 })
 export class CreateMatchComponent implements OnInit {
+  tournamentID = '';
   tournamentsData: Tournaments[] = [];
   bracket: any;
   datetime: string = '';
@@ -37,26 +38,27 @@ export class CreateMatchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.connection.tournamentId.subscribe(
+      (data) => (this.tournamentID = data)
+    );
     this.service
-      .getTournamentbyID(this.connection.getTournamentKey())
+      .getTournamentbyID(this.tournamentID)
       .subscribe((data) => (this.tournamentsData = data));
 
-    this.bracket = this.connection.getSelectedBracket();
-    this.service
-      .getTournamentTeams(this.connection.getTournamentKey())
-      .subscribe((data) => {
-        this.allTournamentsTeams = data;
+    this.connection.currentBracket.subscribe((data) => (this.bracket = data));
+    this.service.getTournamentTeams(this.tournamentID).subscribe((data) => {
+      this.allTournamentsTeams = data;
 
-        var teams: Dropdown[] = [];
-        this.allTournamentsTeams.forEach((value) => {
-          var dropdownObject: Dropdown = { text: '', value: 0 };
-          dropdownObject.text = value.name;
-          dropdownObject.value = value.teId;
-          teams.push(dropdownObject);
-        });
-
-        this.myTeams = teams;
+      var teams: Dropdown[] = [];
+      this.allTournamentsTeams.forEach((value) => {
+        var dropdownObject: Dropdown = { text: '', value: 0 };
+        dropdownObject.text = value.name;
+        dropdownObject.value = value.teId;
+        teams.push(dropdownObject);
       });
+
+      this.myTeams = teams;
+    });
   }
 
   getDate(datetime: String) {
