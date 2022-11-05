@@ -108,11 +108,7 @@ form .button{
 }
 }
 
-
-.popup{
-  width: 500px;
-  height: 252px;
-  background-image: url("https://cnnespanol.cnn.com/wp-content/uploads/2019/09/190903171331-qatar-world-cup-emblem-exlarge-169.jpg?quality=100&strip=info");
-  background-size:cover;
-  background-position: center;
+::ng-deep snack-bar-container.red-snackbar {
+  background: #F44336;
+  color: white;
 }
