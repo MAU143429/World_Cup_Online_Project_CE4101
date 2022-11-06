@@ -1,1 +1,62 @@
-<p>register works!</p>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="register.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="container">
+    <div class="title">Crear una cuenta</div>
+    <div class="content">
+      <form>
+        <div class="account-details">
+
+          <div class="input-box">
+            <span class="details" >Nombre<span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="text" [(ngModel)]= "newAccount.name" [ngModelOptions]="{standalone: true}"  maxlength="30" placeholder="Ingrese un nombre aquí..." required>
+          </div>
+          <div class="input-box">
+            <span class="details">Apellidos<span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="text" [(ngModel)]= "newAccount.lastname" [ngModelOptions]="{standalone: true}"  maxlength="30" placeholder="Ingrese los apellidos aquí..." required>
+          </div>
+
+          <div class="input-box">
+            <span class="details">Nickname<span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="text" [(ngModel)]= "newAccount.nickname" [ngModelOptions]="{standalone: true}"  maxlength="30" placeholder="Ingrese un nickname..." required>
+          </div>
+          <div class="input-box">
+            <span class="details">Correo Electrónico<span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="email" [(ngModel)]= "newAccount.email" [ngModelOptions]="{standalone: true}"  maxlength="30" placeholder="Ingrese un correo electrónico.." required>
+          </div>
+          <div class="input-box">
+            <span class="details">Contraseña<span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="password" [(ngModel)]= "newAccount.password" [ngModelOptions]="{standalone: true}"  minlength="6" maxlength="8" placeholder="Ingrese una contraseña aquí..." required>
+          </div>
+          <div class="input-box">
+            <span class="details" >Fecha de nacimiento<span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="date" [(ngModel)]= "newAccount.birthdate" [ngModelOptions]="{standalone: true}"  required>
+          </div>
+          <div class="input-box1">
+            <span class="details" >País de Procedencia<span style="color: rgb(245, 59, 59);">*</span></span>
+            <mbsc-select [data]="CData" [(ngModel)]= "newAccount.country" [ngModelOptions]="{standalone: true}"  [touchUi]="false"  placeholder="Seleccione su país de procedencia" ></mbsc-select>
+          </div>
+
+          <div class="input-box2">
+            <span style="color: rgb(4, 0, 255);" ><a href="https://www.fifa.com/es/terms-of-service">Mostrar Términos y Condiciones</a></span><br>
+            <span><input type="checkbox"> Aceptar Términos y Condiciones</span>
+          </div>
+          <div class="input-box2">
+            <span>Ya tienes una cuenta? Ingresa <a routerLink="/login" style="color: rgb(4, 0, 255);">aquí</a></span>
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Crear cuenta" routerLink="/login" (click)="addUser()">
+        </div>
+
+      </form>
+    </div>
+  </div>
+</body>
+</html>
