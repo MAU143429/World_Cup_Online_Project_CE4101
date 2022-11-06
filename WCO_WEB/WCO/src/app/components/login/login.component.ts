@@ -17,19 +17,15 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * Este metodo permite hacer todas las verificaciones del inicio de sesion
+   * asi como la comprobacion de contraseñas y posteriormente el paso a WCO
+   */
   addLogin() {
     //Verificar que esten todos los espacios requeridos
-
     // Verificar el formato del correo
-
     // Verificar extension de contraseña
-
     // Verificar es que el correo tenga una cuenta en WCO
-
-    this.service
-      .getAccountByEmail(this.newLogin.email)
-      .subscribe((data) => (this.Users = data));
-
     //Verificar las credenciales
   }
 }

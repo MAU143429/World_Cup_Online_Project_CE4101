@@ -11,7 +11,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { MatchesService } from 'src/app/services/matches.service';
 import { DbMatch } from 'src/app/interface/db-match';
-import { AllInfo } from 'src/app/interface/all-info';
 
 @Component({
   selector: 'app-tournament-details',
@@ -25,6 +24,10 @@ export class TournamentDetailsComponent implements OnInit {
   matchData: any[] = [];
   bracketMatches: DbMatch[] = [];
 
+  /**
+   * Este metodo permite realizar un pequeño delay
+   * @param ms el tiempo del delay en ms
+   */
   async delay(ms: number) {
     await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
       () => console.log('fired')
@@ -57,10 +60,11 @@ export class TournamentDetailsComponent implements OnInit {
     });
   }
 
-  toArray(answers: any) {
-    return Object.keys(answers).map((key) => answers[key]);
-  }
-
+  /**
+   * Este metodo permite enviar la informacion sobre el bracket en donde se encuentra
+   * el partido almacenado que se desea abrir.
+   * @param bracket bracket donde esta el partido
+   */
   redirectMatch(bracket: any) {
     console.log('SOY BRACKET', bracket);
     this.connection.setCurrentBracket(bracket);

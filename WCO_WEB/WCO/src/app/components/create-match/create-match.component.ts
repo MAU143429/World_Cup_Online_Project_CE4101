@@ -31,6 +31,10 @@ export class CreateMatchComponent implements OnInit {
     private _snackBar: MatSnackBar
   ) {}
 
+  /**
+   * Este metodo permite realizar un pequeño delay
+   * @param ms el tiempo del delay en ms
+   */
   async delay(ms: number) {
     await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
       () => console.log('fired')
@@ -61,10 +65,19 @@ export class CreateMatchComponent implements OnInit {
     });
   }
 
+  /**
+   * Permite transformar un datetime en solo la fecha
+   * @param datetime la fecha en formato datetime
+   * @returns un string con la fecha
+   */
   getDate(datetime: String) {
     return datetime.split('T', 1)[0];
   }
-
+  /**
+   * Permite transformar un datetime en solo la hora
+   * @param datetime la hora en formato datetime
+   * @returns un string con la hora
+   */
   getTime(datetime: String) {
     return datetime.split('T', 2)[1];
   }
@@ -79,8 +92,8 @@ export class CreateMatchComponent implements OnInit {
   }
 
   /**
-   * Calls Matches Service and post a new match to the DB
-   * @param newMatch model based on attributes identified for a match
+   * Este metodo realiza todas las verificaciones para poder insertar un partido
+   * y posteriormente realizar el envio de estos datos al API
    */
   insertMatch() {
     console.log(this.newMatch.idTeam1);

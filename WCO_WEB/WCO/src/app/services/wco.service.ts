@@ -9,10 +9,10 @@ export class WcoService {
   constructor(private http: HttpClient, private envUrl: EnvUrlService) {}
 
   /**
-   * Creates full path for a relative object address in api
-   * @param route
-   * @param envAddress
-   * @returns
+   * Permite crear el la ruta completa para el envio de datos
+   * @param route seccion 1 de ruta
+   * @param envAddress seccion 2 de ruta
+   * @returns la ruta completa
    */
   private createCompleteRoute = (route: string, envAddress: string) => {
     return `${envAddress}/${route}`;
@@ -20,9 +20,9 @@ export class WcoService {
 
   /**
 
- * GET request
- * @param route for relative endpoint
- * @returns Observable with server response
+ * Este metodo permite realizar todas las consultas GET de WCO
+ * @param route Ruta a la que realiza la consulta
+ * @returns Objeto observable con la respuesta del API
  */
   public getData(route: string): Observable<any> {
     return this.http.get(
@@ -31,10 +31,10 @@ export class WcoService {
   }
 
   /**
-   * POST request
-   * @param route for relative endpoint
-   * @param body JSON content for all data needed to POST an object
-   * @returns Observable with server response
+   * Este metodo permite realizar todas las consultas POST de WCO
+   * @param route Ruta a la que realiza la consulta
+   * @param body Objeto que contiene la información a enviar
+   * @returns Objeto observable con la respuesta del API
    */
 
   public create(route: string, body: any): Observable<any> {
@@ -46,9 +46,9 @@ export class WcoService {
   }
 
   /**
-   * DELETE request
-   * @param route for relative endpoint
-   * @returns Observable with server response
+   * Este metodo permite realizar todas las consultas DELETE de WCO
+   * @param route Ruta a la que realiza la consulta
+   * @returns Objeto observable con la respuesta del API
    */
 
   public delete(route: string): Observable<any> {
@@ -59,10 +59,10 @@ export class WcoService {
   }
 
   /**
-   * PUT request
-   * @param route for relative endpoint
+   * Este metodo permite realizar todas las consultas PUT de WCO
+   * @param route Ruta a la que realiza la consulta
    * @param body JSON content for all data needed to POST an object
-   * @returns Observable with server response
+   * @returns Objeto observable con la respuesta del API
    */
 
   public edit(route: string, body: any): Observable<any> {
@@ -74,7 +74,7 @@ export class WcoService {
   }
 
   /**
-   * Allows all the needed CORS for requests
+   * Permite añadir los headers necesario para la consulta
    * @returns Headers
    */
   private generateHeaders = () => {

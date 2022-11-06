@@ -21,8 +21,11 @@ export class TournamentsComponent implements OnInit {
     });
   }
 
+  /**
+   * Este metodo permite guardar la llave de torneo para que luego este
+   * se puede abrir desde la vista detallada.
+   */
   openTournament(id: string) {
     this.connection.setTournamentId(id);
-    //this.connection.sendTournamentKey(id);
   }
 }

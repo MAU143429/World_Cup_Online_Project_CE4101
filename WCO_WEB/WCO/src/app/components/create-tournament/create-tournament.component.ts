@@ -31,7 +31,6 @@ setOptions({
 })
 export class CreateTournamentComponent implements OnInit {
   /**Instanciando variables del sistema */
-
   newTournament: CreateTournament = new CreateTournament();
   radioSel: any;
   radioSelected: string = '';
@@ -43,6 +42,10 @@ export class CreateTournamentComponent implements OnInit {
   selectedTeams: string[] = [];
   closeResult = '';
 
+  /**
+   * Este metodo permite realizar un pequeño delay
+   * @param ms el tiempo del delay en ms
+   */
   async delay(ms: number) {
     await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
       () => console.log('fired')
@@ -136,6 +139,10 @@ export class CreateTournamentComponent implements OnInit {
     this.getSelecteditem();
   }
 
+  /**
+   * Este metodo permite cambiar el formato de la lista de brackets
+   * para que pueda ser enviado en un formato aceptado en el API
+   */
   setBracketList() {
     this.bracketSource.forEach((value) => {
       this.newTournament.brackets.push(value.name);
@@ -151,6 +158,10 @@ export class CreateTournamentComponent implements OnInit {
     });
   }
 
+  /**
+   * Este metodo permite realizar todas las verificaciones de formulario para crear torneo
+   * asi como posteriormente enviar la informacion para almacenar en la DB
+   */
   addTournament() {
     this.setBracketList();
 
@@ -197,6 +208,12 @@ export class CreateTournamentComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * Este metodo permite controlar las ventanas emergentes(pop up)
+   * para la tabla de insertar fases del torneo
+   * @param action string de la accion a realizar
+   * @param obj objeto al que se le realiza la accion
+   */
   openDialog(action: String, obj: any) {
     obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
@@ -214,6 +231,11 @@ export class CreateTournamentComponent implements OnInit {
     });
   }
 
+  /**
+   * Este metodo recibe un objeto el cual posteriormente ingresa en la tabla
+   * de fases.
+   * @param row_obj el objeto a ingresar
+   */
   addRowData(row_obj: any) {
     this.bracketSource.push({
       name: row_obj.name,
@@ -221,6 +243,10 @@ export class CreateTournamentComponent implements OnInit {
     this.table.renderRows();
   }
 
+  /**
+   * Este metodo recibe un objeto el cual posteriormente elimina de la tabla
+   * @param row_obj el objeto a eliminar
+   */
   deleteRowData(row_obj: any) {
     this.bracketSource = this.bracketSource.filter((value, key) => {
       return value.name != row_obj.name;

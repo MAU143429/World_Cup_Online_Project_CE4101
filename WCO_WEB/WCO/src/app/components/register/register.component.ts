@@ -15,6 +15,10 @@ export class RegisterComponent implements OnInit {
 
   CData: any[] = countriesData;
 
+  /**
+   * Este metodo permite realizar las verificaciones del formulario de crear
+   * cuenta asi como posteriormente realizar el envio de los datos.
+   */
   addUser() {
     console.table(this.newAccount);
 
