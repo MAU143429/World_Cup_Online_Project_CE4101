@@ -19,14 +19,17 @@
     <br>
   </div>
   <div class="container">
-    <div class="content">
-      <ngb-accordion *ngFor="let bracket of bracketsData" #acc="ngbAccordion" [closeOthers]="true">
+    <div class="content" >
+      <ngb-accordion  #acc="ngbAccordion" [closeOthers]="true" *ngFor="let bracket of matchData; index as i">
         <ngb-panel>
-          <ng-template ngbPanelTitle class="bracket-title" >
-            <span>{{bracket.name}}</span>
+          <ng-template ngbPanelTitle class="bracket-title">
+            <span>{{bracketsData[i].name}}</span>
           </ng-template>
           <ng-template  ngbPanelContent>
-             <input class="create-match-btn" type="button"  value="+ Agregar Partido" (click)="redirectMatch(bracket)">
+            <div *ngFor="let match of bracket">
+              <span>{{match.teams[0].name}} &nbsp;&nbsp;&nbsp;&nbsp; VS&nbsp;&nbsp;&nbsp;&nbsp; {{match.teams[1].name}}&nbsp;&nbsp;&nbsp;&nbsp;  Sede: {{match.venue}} &nbsp;&nbsp;&nbsp;&nbsp;Horario: {{match.date}} {{match.startTime}}</span>
+            </div>
+            <input class="create-match-btn" type="button"  value="+ Agregar Partido" (click)="redirectMatch(bracketsData[i])">
           </ng-template>
         </ngb-panel>
       </ngb-accordion>

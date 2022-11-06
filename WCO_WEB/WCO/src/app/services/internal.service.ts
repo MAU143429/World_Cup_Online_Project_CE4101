@@ -1,24 +1,32 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { EventEmitter, Injectable, Output } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { DbBracket } from '../model/db-bracket';
+
+const initialBracket = {
+  bId: 0,
+  name: '',
+  tounamentId: '',
+};
 @Injectable({
   providedIn: 'root',
 })
 export class InternalService {
-  private selectedTournament: any;
-  private selectedBracket: any;
+  private selectedTournament = new BehaviorSubject<string>('');
+  private selectedBracket = new BehaviorSubject<DbBracket>(initialBracket);
 
-  sendTournamentKey(tournamentKey: any) {
-    this.selectedTournament = tournamentKey;
+  get tournamentId(): Observable<string> {
+    return this.selectedTournament.asObservable();
   }
 
-  getTournamentKey(): Observable<any> {
-    return this.selectedTournament;
+  setTournamentId(newId: string): void {
+    this.selectedTournament.next(newId);
   }
 
-  setSelectedBracket(bracket: any) {
-    this.selectedBracket = bracket;
+  get currentBracket(): Observable<DbBracket> {
+    return this.selectedBracket.asObservable();
   }
-  getSelectedBracket(): Observable<any> {
-    return this.selectedBracket;
+
+  setCurrentBracket(newBracket: DbBracket): void {
+    this.selectedBracket.next(newBracket);
   }
 }

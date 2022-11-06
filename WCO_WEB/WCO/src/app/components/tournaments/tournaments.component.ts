@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TournamentService } from '../../services/tournament.service';
 import { InternalService } from '../../services/internal.service';
 import { Tournaments } from '../../interface/tournaments';
@@ -19,11 +19,10 @@ export class TournamentsComponent implements OnInit {
     this.service.getTournaments().subscribe((data: Tournaments[]) => {
       this.tournamentsData = data;
     });
-
-    this.service.getTournaments().subscribe((data) => console.log(data));
   }
 
-  openTournament(id: String) {
-    this.connection.sendTournamentKey(id);
+  openTournament(id: string) {
+    this.connection.setTournamentId(id);
+    //this.connection.sendTournamentKey(id);
   }
 }
