@@ -1,1 +1,69 @@
-<p>match-details works!</p>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="match-details.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<app-navbar></app-navbar>
+<body>
+  <div class="container">
+    <div class="content">
+      <form>
+        <div class="match-details" *ngFor="let data of matchData">
+
+          <div class="input-box1">
+            <span class="subtitle" >{{data.teams[0].name}} VS {{data.teams[1].name}}</span>
+          </div>
+          <div class="input-box">
+            <span class="details" >{{data.date}} a las {{data.startTime}}</span>
+          </div>
+          <div class="input-box">
+            <span class="details">Puntaje Obtenido : 0</span>
+            <span class="details">Ingresar predicción del marcador</span>
+            <span class="details">{{data.teams[0].name}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{data.teams[1].name}}</span>
+          </div>
+          <div class="input-box">
+            <span class="details" >Equipo 2<span style="color: rgb(245, 59, 59);">*</span></span>
+
+          </div>
+          <div class="input-box">
+            <span class="details" >Elija el jugador MVP<span style="color: rgb(245, 59, 59);">*</span></span>
+            <mbsc-select [data]="players" [touchUi]="false"  placeholder="Seleccione el MVP" ></mbsc-select>
+          </div>
+
+          <div class="input-box1">
+            <span class="details" >Elija los anotadores y las asistencias<span style="color: rgb(245, 59, 59);">*</span></span>
+            <div class="content">
+
+              <table id="tournaments" class="table table-bordered mt-4 mytable">
+                <tr class="table-primary mytable">
+                  <th>Jugadores</th>
+                  <th>Goles</th>
+                  <th>Asistencias</th>
+                  <th>Asistencias</th>
+                  <th>Goles</th>
+                  <th>Jugadores</th>
+                </tr>
+              <tr *ngFor="let player of playersteam1; index as i">
+                  <td>{{player.name}}</td>
+                  <td><input type="number" min="0" max="99"></td>
+                  <td><input type="number" min="0" max="99"></td>
+                  <td><input type="number" min="0" max="99"></td>
+                  <td><input type="number" min="0" max="99"></td>
+                  <td>{{playersteam2[i].name}}</td>
+              </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Enviar Predicción"  >
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+
