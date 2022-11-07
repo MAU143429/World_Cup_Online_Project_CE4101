@@ -23,10 +23,5 @@ namespace WCO_Api.Repository
             return await sQLDB.getTeamsByMatchId(id);
         }
 
-        public async Task<int> getTotalMatches()
-        {
-            return await sQLDB.getTotalMatches();
-        }
-
     }
 }

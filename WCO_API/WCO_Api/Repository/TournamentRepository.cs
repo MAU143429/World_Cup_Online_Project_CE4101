@@ -54,10 +54,5 @@ namespace WCO_Api.Repository
             return await sQLDB.getTeamsByType(type);
         }
 
-        public async Task<int> getTotalBrackets()
-        {
-            return await sQLDB.getTotalBrackets();
-        }
-
     }
 }

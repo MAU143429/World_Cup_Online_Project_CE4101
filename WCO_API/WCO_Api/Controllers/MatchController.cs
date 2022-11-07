@@ -30,9 +30,6 @@ namespace WCO_Api.Models
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var total = await matchRepository.getTotalMatches();
-
-            match.MId = total + 1;
             match.startTime = match.startTime;
             match.date = match.date;
             match.venue = match.venue;

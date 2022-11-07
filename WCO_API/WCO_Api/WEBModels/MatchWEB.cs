@@ -2,8 +2,7 @@
 {
     public class MatchWEB
     {
-        public int MId { get; set; }
-
+        
         public string startTime { get; set; }
 
         public string date { get; set; }
