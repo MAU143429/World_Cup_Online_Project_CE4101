@@ -156,9 +156,6 @@ namespace WCO_Api.Controllers
             {
                 Bracket newBracket = new Bracket();
 
-                var total = await tournamentRepository.getTotalBrackets();
-
-                newBracket.BId = total + 1;
                 newBracket.Name = bracket;
                 newBracket.TournamentId = newuuid;
 

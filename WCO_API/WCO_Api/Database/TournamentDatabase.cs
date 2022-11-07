@@ -42,8 +42,8 @@ namespace WCO_Api.Database
             myConnection.ConnectionString = CONNECTION_STRING;
 
             string query =
-                          $"INSERT INTO [dbo].[Bracket] ([b_id], [name], [tournamentId])" +
-                          $"VALUES ('{newBracket.BId}', '{newBracket.Name}', '{newBracket.TournamentId}');";
+                          $"INSERT INTO [dbo].[Bracket] ([name], [tournamentId])" +
+                          $"VALUES ('{newBracket.Name}', '{newBracket.TournamentId}');";
 
             SqlCommand sqlCmd = new SqlCommand(query, myConnection);
 
@@ -66,9 +66,6 @@ namespace WCO_Api.Database
                           $"UPDATE [dbo].[Team]" +
                           $"SET [tournamentId] = '{newTeam.TournamentId}'" +
                           $"WHERE [te_id] = {newTeam.TeId}";
-
-            Console.WriteLine("ASI SE VE EL QUERY");
-            Console.WriteLine(query);
 
             SqlCommand sqlCmd = new SqlCommand(query, myConnection);
 
