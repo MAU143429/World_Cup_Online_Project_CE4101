@@ -25,8 +25,8 @@ namespace WCO_Api.Database
             //Hace el insert a la tabla de partidos
 
             string query =
-                          $"INSERT INTO [dbo].[Match] ([startTime], [date], [venue], [bracket_id])" +
-                          $"VALUES ('{match.startTime}', '{match.date}', '{match.venue}', '{match.bracketId}');";
+                          $"INSERT INTO [dbo].[Match] ([startTime], [date], [venue], [scoreT1], [scoreT2] , [bracket_id])" +
+                          $"VALUES ('{match.startTime}', '{match.date}', '{match.venue}', '{match.scoreT1}', '{match.scoreT2}' , '{match.bracketId}');";
 
             SqlCommand sqlCmd = new SqlCommand(query, myConnection);
 

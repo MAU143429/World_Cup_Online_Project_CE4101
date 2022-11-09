@@ -9,6 +9,10 @@
 
         public string venue { get; set; }
 
+        public int? scoreT1 { get; set; } = 0;
+
+        public int? scoreT2 { get; set; } = 0;
+
         public int bracketId { get; set; }
 
         public int idTeam1 { get; set; }
