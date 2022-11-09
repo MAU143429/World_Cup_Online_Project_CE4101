@@ -19,5 +19,10 @@ namespace WCO_Api.Repository
         {
             return await sQLDB.insertAccount(account);
         }
+
+        public async Task<AccountWEB> getLoginAccountWEB (string login)
+        {
+            return await sQLDB.getAccountByEmail(login);
+        }
     }
 }

@@ -40,5 +40,40 @@ namespace WCO_Api.Database
             return created;
         }
 
+        public async Task<AccountWEB?> getAccountByEmail (string inputEmail)
+        {
+            SqlConnection myConnection = new();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Account]" +
+                $"WHERE email = '{inputEmail}';";
+
+            SqlCommand sqlCmd = new (query, myConnection);
+
+            myConnection.Open();
+
+            //SqlDataReader reader = sqlCmd.ExecuteReader();
+            AccountWEB? fromResponse = new();
+
+            using (SqlDataReader reader = sqlCmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    fromResponse.password = reader.GetValue(6).ToString();
+                    fromResponse.email = reader.GetValue(0).ToString();
+                }
+                else
+                {
+                    fromResponse = null;
+                }
+            }
+            myConnection.Close();
+
+            return fromResponse;
+
+        }
+
     }
 }
