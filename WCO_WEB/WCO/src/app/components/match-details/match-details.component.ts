@@ -17,7 +17,7 @@ export class MatchDetailsComponent implements OnInit {
       teams: [
         {
           teId: '1',
-          name: 'Brasil',
+          name: 'Argentina',
         },
         {
           teId: '2',
@@ -51,6 +51,30 @@ export class MatchDetailsComponent implements OnInit {
     {
       name: 'Jugador 1.3',
     },
+    {
+      name: 'Jugador 1.4',
+    },
+    {
+      name: 'Jugador 1.5',
+    },
+    {
+      name: 'Jugador 1.6',
+    },
+    {
+      name: 'Jugador 1.7',
+    },
+    {
+      name: 'Jugador 1.8',
+    },
+    {
+      name: 'Jugador 1.9',
+    },
+    {
+      name: 'Jugador 1.10',
+    },
+    {
+      name: 'Jugador 1.11',
+    },
   ];
   playersteam2 = [
     {
@@ -61,6 +85,30 @@ export class MatchDetailsComponent implements OnInit {
     },
     {
       name: 'Jugador 2.3',
+    },
+    {
+      name: 'Jugador 2.4',
+    },
+    {
+      name: 'Jugador 2.5',
+    },
+    {
+      name: 'Jugador 2.6',
+    },
+    {
+      name: 'Jugador 2.7',
+    },
+    {
+      name: 'Jugador 2.8',
+    },
+    {
+      name: 'Jugador 2.9',
+    },
+    {
+      name: 'Jugador 2.10',
+    },
+    {
+      name: 'Jugador 2.11',
     },
   ];
 
