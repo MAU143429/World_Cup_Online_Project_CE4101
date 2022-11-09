@@ -45,8 +45,8 @@
           <div class="input-box2">
             <div class="row">
               <div class="col-sm">
-                <span class="details" ><input type="number" min="0" max="99" value="0"></span>
-                <span class="details"><input type="number" min="0" max="99" value="0"></span>
+                <span class="details" ><input type="number" min="0" max="99" value="0" [(ngModel)]= "newPrediction.goalsT1" [ngModelOptions]="{standalone: true}"></span>
+                <span class="details"><input type="number" min="0" max="99" value="0" [(ngModel)]= "newPrediction.goalsT2" [ngModelOptions]="{standalone: true}"></span>
               </div>
             </div>
           </div>
@@ -70,17 +70,17 @@
               </tr>
               <tr *ngFor="let player of playersteam1; index as i">
                   <td>{{player.name}}</td>
-                  <td><input type="number" min="0" max="99" value="0"></td>
-                  <td><input type="number" min="0" max="99" value="0"></td>
-                  <td><input type="number" min="0" max="99" value="0"></td>
-                  <td><input type="number" min="0" max="99" value="0"></td>
+                  <td><input type="number" min="0" max="99" [(ngModel)]= "goalsT1[i]" [ngModelOptions]="{standalone: true}" ></td>
+                  <td><input type="number" min="0" max="99" [(ngModel)]= "assistsT1[i]" [ngModelOptions]="{standalone: true}" ></td>
+                  <td><input type="number" min="0" max="99" [(ngModel)]= "assistsT2[i]" [ngModelOptions]="{standalone: true}" ></td>
+                  <td><input type="number" min="0" max="99" [(ngModel)]= "goalsT2[i]" [ngModelOptions]="{standalone: true}"></td>
                   <td>{{playersteam2[i].name}}</td>
               </tr>
             </table>
           </div>
 
           <div class="button">
-            <input type="submit" value="Enviar Predicción"  >
+            <input type="submit" value="Enviar Predicción" (click)="addPrediction()"  >
           </div>
 
 
