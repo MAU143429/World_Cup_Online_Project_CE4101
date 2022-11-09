@@ -1,5 +1,4 @@
 ﻿using WCO_Api.Database;
-using WCO_Api.Models;
 using WCO_Api.WEBModels;
 
 /*
@@ -13,27 +12,27 @@ namespace WCO_Api.Repository
 
         TournamentDatabase sQLDB = new TournamentDatabase();
 
-        public async Task<int> createNewTournament(Tournament tournament)
+        public async Task<int> createNewTournament(TournamentOut tournament)
         {
             return await sQLDB.insertTournament(tournament);
         }
 
-        public async Task<int> createNewBracket(Bracket bracket)
+        public async Task<int> createNewBracket(BracketWEB bracket)
         {
             return await sQLDB.insertBracket(bracket);
         }
 
-        public async Task<int> updateTeamId(Team team)
+        public async Task<int> updateTeamId(TeamOut team)
         {
             return await sQLDB.updateTeam(team);
         }
 
-        public async Task<IEnumerable<Tournament>> getTournaments()
+        public async Task<IEnumerable<TournamentOut>> getTournaments()
         {
             return await sQLDB.getTournaments();
         }
 
-        public async Task<IEnumerable<Tournament>> getTournamentsById(string id)
+        public async Task<IEnumerable<TournamentOut>> getTournamentsById(string id)
         {
             return await sQLDB.getTournamentsById(id);
         }
