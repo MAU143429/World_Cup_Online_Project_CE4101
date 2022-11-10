@@ -13,6 +13,7 @@ var sha256 = require('js-sha256');
 })
 export class RegisterComponent implements OnInit {
   Users: CreateAccount[] = [];
+  UsersNickname: CreateAccount[] = [];
   newAccount: CreateAccount = new CreateAccount();
   age: number = 0;
   checkboxStatus: Boolean = false;
@@ -92,6 +93,19 @@ export class RegisterComponent implements OnInit {
   }
 
   /**
+   * Método para verificar fomrato de contraseña que debe ser alfanumerica con
+   * al menos un caracter alfabético y un número.
+   * @param email
+   * @returns Booleano de validez de contraseña
+   */
+   checkPasswordFormat(password: string) {
+    let sampleRegExMail = new RegExp(
+      "^[A-Za-z0-9]*(([A-Za-z][0-9])|([0-9][A-Za-z]))[A-Za-z0-9]*$"
+    );
+    return sampleRegExMail.test(password);
+  }
+
+  /**
    * Método para obtener estado de checkbox para TyC
    */
   changeStatus() {
@@ -106,6 +120,11 @@ export class RegisterComponent implements OnInit {
     this.service
       .getAccountByEmail(this.newAccount.email)
       .subscribe((data) => (this.Users = data));
+
+    this.service
+    .getAccountByNickname(this.newAccount.nickname)
+    .subscribe((data) => (this.UsersNickname = data));
+
 
     this.delay(50).then(() => {
       //Verificar que esten todos los espacios requeridos
@@ -132,6 +151,15 @@ export class RegisterComponent implements OnInit {
             'Hay una cuenta existente con este correo',
             'Ingrese otra para continuar'
           );
+        } else if(this.UsersNickname.length>0){
+          this.openError(
+            'Hay una cuenta existente con este nickname',
+            'Ingrese otro para continuar'
+          );
+        } else if (
+          !this.checkPasswordFormat(this.newAccount.password)
+          ) {
+          this.openError('Formato de contraseña inválido, debe ser alfanumérica', 'Intente de nuevo');
         } else if (
           !(
             this.newAccount.password.length >= 6 &&
