@@ -14,7 +14,7 @@ namespace WCO_Api.Database
             CONNECTION_STRING = "Data Source=localhost;Initial Catalog=WCODB;Integrated Security=True";
         }
 
-        public async Task<int> insertTournament(Tournament newTournament)
+        public async Task<int> insertTournament(TournamentOut newTournament)
         {
 
             SqlConnection myConnection = new SqlConnection();
@@ -34,7 +34,7 @@ namespace WCO_Api.Database
 
         }
 
-        public async Task<int> insertBracket(Bracket newBracket)
+        public async Task<int> insertBracket(BracketWEB newBracket)
         {
 
             SqlConnection myConnection = new SqlConnection();
@@ -55,7 +55,7 @@ namespace WCO_Api.Database
 
         }
 
-        public async Task<int> updateTeam(Team newTeam)
+        public async Task<int> updateTeam(TeamOut newTeam)
         {
 
             SqlConnection myConnection = new SqlConnection();
@@ -77,7 +77,7 @@ namespace WCO_Api.Database
 
         }
 
-        public async Task<List<Tournament>> getTournaments()
+        public async Task<List<TournamentOut>> getTournaments()
         {
             SqlDataReader reader = null;
             SqlConnection myConnection = new SqlConnection();
@@ -92,11 +92,11 @@ namespace WCO_Api.Database
 
             reader = sqlCmd.ExecuteReader();
 
-            List<Tournament> tournaments = new List<Tournament>();
+            List<TournamentOut> tournaments = new List<TournamentOut>();
 
             while (reader.Read())
             {
-                Tournament tournament = new Tournament();
+                TournamentOut tournament = new TournamentOut();
 
                 tournament.ToId = reader.GetValue(0).ToString();
                 tournament.Name = reader.GetValue(1).ToString();
@@ -113,7 +113,7 @@ namespace WCO_Api.Database
             return tournaments;
         }
 
-        public async Task<List<Tournament>> getTournamentsById(string id)
+        public async Task<List<TournamentOut>> getTournamentsById(string id)
         {
             SqlDataReader reader = null;
             SqlConnection myConnection = new SqlConnection();
@@ -130,11 +130,11 @@ namespace WCO_Api.Database
 
             reader = sqlCmd.ExecuteReader();
 
-            List<Tournament> tournaments = new List<Tournament>();
+            List<TournamentOut> tournaments = new List<TournamentOut>();
 
             while (reader.Read())
             {
-                Tournament tournament = new Tournament();
+                TournamentOut tournament = new TournamentOut();
 
                 tournament.ToId = reader.GetValue(0).ToString();
                 tournament.Name = reader.GetValue(1).ToString();
@@ -254,43 +254,6 @@ namespace WCO_Api.Database
             }
 
             return teams;
-        }
-
-        public async Task<int> getTotalBrackets()
-        {
-            SqlDataReader reader = null;
-            SqlConnection myConnection = new SqlConnection();
-
-            myConnection.ConnectionString = CONNECTION_STRING;
-
-            string query = "SELECT * FROM [dbo].[Bracket]";
-
-            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
-
-            myConnection.Open();
-
-            reader = sqlCmd.ExecuteReader();
-
-            List<Bracket> brackets = new List<Bracket>();
-
-            while (reader.Read())
-            {
-                Bracket bracket = new Bracket();
-
-                bracket.BId = (int)reader.GetValue(0);
-                bracket.Name = reader.GetValue(1).ToString();
-                bracket.TournamentId = reader.GetValue(2).ToString();
-
-
-                brackets.Add(bracket);
-
-            }
-
-            int x = brackets.Count();
-
-            myConnection.Close();
-
-            return x;
         }
 
     }

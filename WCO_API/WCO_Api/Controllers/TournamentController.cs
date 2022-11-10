@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WCO_Api.Logic;
-using WCO_Api.Models;
 using WCO_Api.Repository;
 using WCO_Api.WEBModels;
 
@@ -26,7 +25,7 @@ namespace WCO_Api.Controllers
         {
 
             List<TournamentOut> allTournaments = new List<TournamentOut>();
-            IEnumerable<Tournament> dbTournaments;
+            IEnumerable<TournamentOut> dbTournaments;
 
             dbTournaments = await tournamentRepository.getTournaments();
 
@@ -65,7 +64,7 @@ namespace WCO_Api.Controllers
         {
 
             List<TournamentOut> allTournaments = new List<TournamentOut>();
-            IEnumerable<Tournament> dbTournaments;
+            IEnumerable<TournamentOut> dbTournaments;
 
             dbTournaments = await tournamentRepository.getTournamentsById(id);
 
@@ -140,7 +139,7 @@ namespace WCO_Api.Controllers
 
             tournament.ToId = newuuid;
 
-            Tournament to = new Tournament();
+            TournamentOut to = new TournamentOut();
             to.ToId = newuuid;
             to.Name = tournament.Name;
             to.StartDate = tournament.StartDate;
@@ -154,7 +153,7 @@ namespace WCO_Api.Controllers
 
             foreach (var bracket in tournament.brackets)
             {
-                Bracket newBracket = new Bracket();
+                BracketWEB newBracket = new BracketWEB();
 
                 newBracket.Name = bracket;
                 newBracket.TournamentId = newuuid;
@@ -166,7 +165,7 @@ namespace WCO_Api.Controllers
 
             foreach (var team in tournament.teams)
             {
-                Team dbTeam= new Team();
+                TeamOut dbTeam= new TeamOut();
 
                 dbTeam.TeId = team;
                 dbTeam.TournamentId = newuuid;

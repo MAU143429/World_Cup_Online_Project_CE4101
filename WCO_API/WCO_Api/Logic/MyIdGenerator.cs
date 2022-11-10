@@ -1,5 +1,6 @@
 ﻿using WCO_Api.Models;
 using WCO_Api.Repository;
+using WCO_Api.WEBModels;
 
 /*
  * Clase que servirá para poder generar y validar el identificador alfanumérico de los torneos 
@@ -50,7 +51,7 @@ namespace WCO_Api.Logic
             //Se revisa si existe el UUID en la base de datos, en este caso se revisa tournaments
             //de manera local
 
-            IEnumerable<Tournament> tournaments;
+            IEnumerable<TournamentOut> tournaments;
             tournaments = await tournamentRepository.getTournaments();
 
             foreach (var dbTournament in tournaments)
