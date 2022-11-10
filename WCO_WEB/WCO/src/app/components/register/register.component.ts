@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from '../../services/account.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -19,8 +20,11 @@ export class RegisterComponent implements OnInit {
   constructor(
     private service: AccountService,
     private _snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
   ) {}
+
+  
+  
 
   /**
    * Este metodo permite realizar un pequeño delay
@@ -36,6 +40,11 @@ export class RegisterComponent implements OnInit {
 
   CData: any[] = countriesData;
 
+  /**
+   * Metodo para mostrar alerta de error por 2 segundos
+   * @param message1 Mensaje de error
+   * @param message2 Mensaje para cerrar alerta
+   */
   openError(message: string, message2: string) {
     this._snackBar.open(message, message2, {
       duration: 2000,
@@ -45,6 +54,11 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  /**
+   * Metodo para mostrar alerta de exito por 2 segundos
+   * @param message1 Mensaje de exito
+   * @param message2 Mensaje para cerrar alerta
+   */
   openSuccess(message1: string, message2: string) {
     this._snackBar.open(message1, message2, {
       duration: 2000,
@@ -54,6 +68,10 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  /**
+   * Metodo para calcular la edad a partir de la fecha de nacimiento
+   * digitado por el usuario
+   */
   CalculateAge() {
     if (this.newAccount.birthdate) {
       var timeDiff = Math.abs(
@@ -65,6 +83,20 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para verificar fomrato de correo utilizando estándar RFC 2822
+   * @param email 
+   * @returns Booleano de validez de correo
+   */
+  checkEmailFormat(email: string){
+    let sampleRegExMail = new RegExp('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?');
+    return sampleRegExMail.test(email)
+  }
+
+
+  /**
+   * Método para obtener estado de checkbox para TyC
+   */
   changeStatus() {
     this.checkboxStatus = !this.checkboxStatus;
   }
@@ -99,7 +131,15 @@ export class RegisterComponent implements OnInit {
       );
     } else {
       this.CalculateAge();
-      if (this.Users.length > 0) {
+
+      if (!this.checkEmailFormat(this.newAccount.email)){
+        this.openError(
+          'Formato de correo inválido',
+          'Intente de nuevo'
+        );
+      }
+   
+      else if (this.Users.length > 0) {
         this.openError(
           'Hay una cuenta existente con este correo',
           'Ingrese otra para continuar'

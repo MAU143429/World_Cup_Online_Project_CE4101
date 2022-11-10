@@ -67,6 +67,10 @@ form .input-box span.details{
   color: white;
 }
 
+::ng-deep snack-bar-container.green-snackbar {
+  background: rgb(15, 206, 15);
+  color: white;
+}
 
 .account-details .input-box input{
   height: 45px;
