@@ -276,6 +276,11 @@ export class MatchDetailsComponent implements OnInit {
     this.associatePredictionsT1();
     this.delay(100).then(() => {
       this.associatePredictionsT2();
+
+      //Verificar goles y asistencias T1
+
+      //Verificar goles y asistencias T1
+
       this.newPrediction.predictionPlayer = this.allPreditions;
       console.log(this.newPrediction);
     });
