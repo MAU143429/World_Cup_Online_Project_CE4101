@@ -109,10 +109,7 @@ namespace WCO_Api.Database
 
                     accountL.Add(account);
                 }
-                else
-                {
-                    accountL = null;
-                }
+                
             }
             myConnection.Close();
 
@@ -153,10 +150,7 @@ namespace WCO_Api.Database
 
                     accountL.Add(account);
                 }
-                else
-                {
-                    accountL = null;
-                }
+                
             }
             myConnection.Close();
 
