@@ -98,10 +98,14 @@ export class LoginComponent implements OnInit {
             this.service.getRole().subscribe((role) => {
               if (role) {
                 localStorage.setItem('scope', 'admin');
+              } else {
+                localStorage.setItem('scope', 'user');
               }
             });
             this.openSuccess('Inicio de sesión exitoso', 'Ok');
-            this.router.navigate(['/home']);
+            this.delay(50).then(() => {
+              this.router.navigate(['/home']);
+            });
           } else {
             this.openError('Credenciales incorrectas', 'Intente de nuevo');
           }

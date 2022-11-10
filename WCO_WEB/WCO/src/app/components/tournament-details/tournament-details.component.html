@@ -29,7 +29,7 @@
             <div *ngFor="let match of bracket">
               <span>{{match.teams[0].name}} &nbsp;&nbsp;&nbsp;&nbsp; VS&nbsp;&nbsp;&nbsp;&nbsp; {{match.teams[1].name}}&nbsp;&nbsp;&nbsp;&nbsp;  Sede: {{match.venue}} &nbsp;&nbsp;&nbsp;&nbsp;Horario: {{match.date}} {{match.startTime}}</span>
             </div>
-            <input class="create-match-btn" type="button"  value="+ Agregar Partido" (click)="redirectMatch(bracketsData[i])">
+            <input *ngIf="scope === 'admin'" class="create-match-btn" type="button"  value="+ Agregar Partido" (click)="redirectMatch(bracketsData[i])">
           </ng-template>
         </ngb-panel>
       </ngb-accordion>

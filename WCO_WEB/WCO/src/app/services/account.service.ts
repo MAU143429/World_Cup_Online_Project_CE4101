@@ -56,6 +56,8 @@ export class AccountService {
    * @returns el rol que tiene el usuario logeado
    */
   getRole(): Observable<any> {
-    return this.wco.getData(this.url + '/Role' + localStorage.getItem('email'));
+    return this.wco.getData(
+      this.url + '/Role/' + localStorage.getItem('email')
+    );
   }
 }
