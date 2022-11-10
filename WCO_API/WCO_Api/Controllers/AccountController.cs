@@ -67,5 +67,13 @@ namespace WCO_Api.Controllers
 
         }
 
+        [HttpGet("GetRoleAccountByEmail/{email}")]
+        public async Task<bool> getRoleAccountByEmail(string email)
+        {
+
+            return await accountRepository.getRoleAccountByEmail(email);
+
+        }
+
     }
 }

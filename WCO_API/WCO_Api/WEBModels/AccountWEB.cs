@@ -9,6 +9,6 @@
         public string nickname { get; set; }
         public string birthdate { get; set; }
         public string country { get; set; }
-
+        public bool isAdmin { get; set; } = false
     }
 }

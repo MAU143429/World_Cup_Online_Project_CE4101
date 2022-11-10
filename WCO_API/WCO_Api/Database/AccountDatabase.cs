@@ -27,9 +27,9 @@ namespace WCO_Api.Database
             myConnection.ConnectionString = CONNECTION_STRING;
 
             string query =
-                          $"INSERT INTO [dbo].[Account] ([nickname], [email], [name], [lastName], [birthdate], [country], [password])" +
+                          $"INSERT INTO [dbo].[Account] ([nickname], [email], [name], [lastName], [birthdate], [country], [password], [isAdmin])" +
                           $"VALUES ('{account.nickname}', '{account.email}', '{account.name}', '{account.lastname}', '{account.birthdate}', " +
-                          $"'{account.country}', '{account.password}');";
+                          $"'{account.country}', '{account.password}', '{account.isAdmin}');";
 
             SqlCommand sqlCmd = new(query, myConnection);
 
@@ -40,7 +40,7 @@ namespace WCO_Api.Database
             return created;
         }
 
-        public async Task<AccountWEB?> getAccountByEmail (string inputEmail)
+        public async Task<AccountWEB?> getAccountByEmail(string inputEmail)
         {
             SqlConnection myConnection = new();
 
@@ -50,7 +50,7 @@ namespace WCO_Api.Database
                 $"FROM [dbo].[Account]" +
                 $"WHERE email = '{inputEmail}';";
 
-            SqlCommand sqlCmd = new (query, myConnection);
+            SqlCommand sqlCmd = new(query, myConnection);
 
             myConnection.Open();
 
@@ -90,8 +90,8 @@ namespace WCO_Api.Database
             myConnection.Open();
 
             //SqlDataReader reader = sqlCmd.ExecuteReader();
-            
-            List<AccountWEB> accountL = new();  
+
+            List<AccountWEB> accountL = new();
 
             using (SqlDataReader reader = sqlCmd.ExecuteReader())
             {
@@ -109,7 +109,7 @@ namespace WCO_Api.Database
 
                     accountL.Add(account);
                 }
-                
+
             }
             myConnection.Close();
 
@@ -150,12 +150,45 @@ namespace WCO_Api.Database
 
                     accountL.Add(account);
                 }
-                
+
             }
             myConnection.Close();
 
             return accountL;
         }
 
+        public async Task<bool> getRoleAccountByEmail(string email)
+        {
+            SqlConnection myConnection = new();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT [isAdmin] " +
+                $"FROM [dbo].[Account]" +
+                $"WHERE email = '{email}';";
+
+            SqlCommand sqlCmd = new(query, myConnection);
+
+            myConnection.Open();
+
+            //SqlDataReader reader = sqlCmd.ExecuteReader();
+
+            bool accIsAdmin = false;
+
+            using (SqlDataReader reader = sqlCmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    accIsAdmin = (bool)reader.GetValue(0);
+
+                }
+                
+            }
+
+            myConnection.Close();
+
+            return accIsAdmin;
+
+        }
     }
 }

@@ -35,5 +35,11 @@ namespace WCO_Api.Repository
             return await sQLDB.getInformationAccountByEmail(email);
         }
 
+        public async Task<bool> getRoleAccountByEmail(string email)
+        {
+            return await sQLDB.getRoleAccountByEmail(email);
+        }
+
+        
     }
 }
