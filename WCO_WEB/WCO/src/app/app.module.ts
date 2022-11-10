@@ -23,7 +23,6 @@ import { MatchDetailsComponent } from './components/match-details/match-details.
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { RoleDirective } from './directives/role.directive';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,6 @@ import { RoleDirective } from './directives/role.directive';
     MatchDetailsComponent,
     RegisterComponent,
     LoginComponent,
-    RoleDirective,
   ],
   imports: [
     MbscModule,

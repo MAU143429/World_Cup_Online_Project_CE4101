@@ -10,6 +10,7 @@ import { Tournaments } from '../../interface/tournaments';
 })
 export class TournamentsComponent implements OnInit {
   tournamentsData: Tournaments[] = [];
+  scope: any;
   constructor(
     private service: TournamentService,
     private connection: InternalService
@@ -19,8 +20,7 @@ export class TournamentsComponent implements OnInit {
     this.service.getTournaments().subscribe((data: Tournaments[]) => {
       this.tournamentsData = data;
     });
-    console.log(localStorage.getItem('email'));
-    console.log(localStorage.getItem('nickname'));
+    this.scope = localStorage.getItem('scope');
   }
 
   /**
