@@ -191,5 +191,41 @@ namespace WCO_Api.Database
             return teams;
         }
 
+        public async Task<List<PlayerWEB>> getPlayersbyTeamId(int id)
+        {
+
+            SqlDataReader reader = null;
+            SqlConnection myConnection = new SqlConnection();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Player]" +
+                $"WHERE team_id = '{id}'";
+                
+
+            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+
+            myConnection.Open();
+
+            reader = sqlCmd.ExecuteReader();
+
+            List<PlayerWEB> players = new List<PlayerWEB>();
+
+            while (reader.Read())
+            {
+                PlayerWEB player = new PlayerWEB();
+
+                player.PId = (int)reader.GetValue(0);
+                player.name = reader.GetValue(1).ToString();
+                player.TId = (int)reader.GetValue(2);
+
+                players.Add(player);
+
+            }
+
+            return players;
+        }
+
     }
 }
