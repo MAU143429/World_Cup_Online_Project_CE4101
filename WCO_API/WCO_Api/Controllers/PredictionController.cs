@@ -37,5 +37,11 @@ namespace WCO_Api.Controllers
 
         }
 
+        [HttpGet("getPredictionByNEM/{nickname}/{email}/{idMatch}")]
+        public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch )
+        {
+            return await predRepository.getPredictionByNEM(nickname, email, idMatch);
+        }
+
     }
 }
