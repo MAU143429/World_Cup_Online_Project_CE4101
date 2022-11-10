@@ -28,7 +28,9 @@ export class AccountService {
    * @returns cuenta de usuario en caso de existir, lista vacia si no existe cuenta.
    */
   getAccountByEmail(email: any): Observable<any> {
-    return this.wco.getData(this.url + '/GetAccountByEmail/' + email);
+    return this.wco.getData(
+      this.url + '/GetInformationAccountByEmail/' + email
+    );
   }
 
   /**
@@ -38,5 +40,14 @@ export class AccountService {
    */
   getAccountByNickname(nickname: any): Observable<any> {
     return this.wco.getData(this.url + '/GetAccountByNickname/' + nickname);
+  }
+
+  /**
+   * Este metodo nos permite verificar las credenciales del usuario.
+   * @param login datos de inicio de sesion
+   * @returns boolean que nos indica si el login puede proceder
+   */
+  newLogin(login: any): Observable<any> {
+    return this.wco.create(this.url + '/Login', login);
   }
 }

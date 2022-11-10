@@ -15,6 +15,7 @@ var sha256 = require('js-sha256');
 export class LoginComponent implements OnInit {
   Users: CreateAccount[] = [];
   newLogin: Login = new Login();
+  credentials: Login = new Login();
 
   /**
    * Este metodo permite realizar un pequeño delay
@@ -39,8 +40,8 @@ export class LoginComponent implements OnInit {
    * @param message1 Mensaje de error
    * @param message2 Mensaje para cerrar alerta
    */
-  openError(message: string) {
-    this._snackBar.open(message, 'Intente de nuevo', {
+  openError(message: string, message2: string) {
+    this._snackBar.open(message, message2, {
       duration: 2000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
@@ -74,18 +75,32 @@ export class LoginComponent implements OnInit {
     this.delay(50).then(() => {
       //Verificar que esten todos los espacios requeridos
       if (this.newLogin.email == '' || this.newLogin.password == '') {
-        this.openError('Faltan espacios requeridos para iniciar sesión');
+        this.openError(
+          'Faltan espacios requeridos para iniciar sesión',
+          'Intente de nuevo'
+        );
       }
       // Verificar es que el correo tenga una cuenta en WCO (Si verifico esto, y despues digo que credenciales estan mal, entonces es obvio que la contraseña es la que está mal)
       else if (!(this.Users.length > 0)) {
-        this.openError('Cuenta con correo no registrado');
-      }
-      // Verificar las credenciales
-      else if (!(this.Users[0].password == this.newLogin.password)) {
-        this.openError('Credenciales incorrectos');
+        this.openError('Cuenta con correo no registrado', 'Intente de nuevo');
       } else {
-        this.openSuccess('Inicio de sesión exitoso', 'Ok');
-        this.router.navigate(['/home']);
+        this.credentials.email = this.newLogin.email;
+        this.credentials.password = sha256(this.newLogin.password);
+        var login = false;
+        this.service
+          .newLogin(this.credentials)
+          .subscribe((data) => (login = data));
+        console.log(login);
+        this.delay(50).then(() => {
+          if (login) {
+            localStorage.setItem('email', this.newLogin.email);
+            localStorage.setItem('nickname', this.Users[0].nickname);
+            this.openSuccess('Inicio de sesión exitoso', 'Ok');
+            this.router.navigate(['/home']);
+          } else {
+            this.openError('Credenciales incorrectas', 'Intente de nuevo');
+          }
+        });
       }
     });
   }

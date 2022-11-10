@@ -19,6 +19,8 @@ export class TournamentsComponent implements OnInit {
     this.service.getTournaments().subscribe((data: Tournaments[]) => {
       this.tournamentsData = data;
     });
+    console.log(localStorage.getItem('email'));
+    console.log(localStorage.getItem('nickname'));
   }
 
   /**

@@ -103,58 +103,58 @@ export class RegisterComponent implements OnInit {
    * cuenta asi como posteriormente realizar el envio de los datos.
    */
   addUser() {
+    this.service
+      .getAccountByEmail(this.newAccount.email)
+      .subscribe((data) => (this.Users = data));
+
     this.delay(50).then(() => {
-      this.service
-        .getAccountByEmail(this.newAccount.email)
-        .subscribe((data) => (this.Users = data));
-    });
-
-    //Verificar que esten todos los espacios requeridos
-    if (
-      this.newAccount.email == '' ||
-      this.newAccount.password == '' ||
-      this.newAccount.name == '' ||
-      this.newAccount.lastname == '' ||
-      this.newAccount.nickname == '' ||
-      this.newAccount.birthdate == '' ||
-      this.newAccount.country == ''
-    ) {
-      this.openError(
-        'Faltan espacios requeridos para registrarse',
-        'Intente de nuevo'
-      );
-    } else {
-      this.CalculateAge();
-
-      if (!this.checkEmailFormat(this.newAccount.email)) {
-        this.openError('Formato de correo inválido', 'Intente de nuevo');
-      } else if (this.Users.length > 0) {
-        this.openError(
-          'Hay una cuenta existente con este correo',
-          'Ingrese otra para continuar'
-        );
-      } else if (
-        !(
-          this.newAccount.password.length >= 6 &&
-          this.newAccount.password.length <= 8
-        )
+      //Verificar que esten todos los espacios requeridos
+      if (
+        this.newAccount.email == '' ||
+        this.newAccount.password == '' ||
+        this.newAccount.name == '' ||
+        this.newAccount.lastname == '' ||
+        this.newAccount.nickname == '' ||
+        this.newAccount.birthdate == '' ||
+        this.newAccount.country == ''
       ) {
         this.openError(
-          'La contraseña debe tener una extensión entre 6 y 8 caractéres',
+          'Faltan espacios requeridos para registrarse',
           'Intente de nuevo'
         );
-      } else if (!(this.age >= 18)) {
-        this.openError('Debe ser mayor de 18 años', 'Intente de nuevo');
-      } else if (!this.checkboxStatus) {
-        this.openError('Debe aceptar términos y condiciones', 'Volver');
       } else {
-        this.newAccount.password = sha256(this.newAccount.password);
-        this.service
-          .createAccount(this.newAccount)
-          .subscribe((data) => console.log(data));
-        this.openSuccess('Cuenta creada con éxito', 'Ok');
-        this.router.navigate(['/login']);
+        this.CalculateAge();
+
+        if (!this.checkEmailFormat(this.newAccount.email)) {
+          this.openError('Formato de correo inválido', 'Intente de nuevo');
+        } else if (this.Users.length > 0) {
+          this.openError(
+            'Hay una cuenta existente con este correo',
+            'Ingrese otra para continuar'
+          );
+        } else if (
+          !(
+            this.newAccount.password.length >= 6 &&
+            this.newAccount.password.length <= 8
+          )
+        ) {
+          this.openError(
+            'La contraseña debe tener una extensión entre 6 y 8 caractéres',
+            'Intente de nuevo'
+          );
+        } else if (!(this.age >= 18)) {
+          this.openError('Debe ser mayor de 18 años', 'Intente de nuevo');
+        } else if (!this.checkboxStatus) {
+          this.openError('Debe aceptar términos y condiciones', 'Volver');
+        } else {
+          this.newAccount.password = sha256(this.newAccount.password);
+          this.service
+            .createAccount(this.newAccount)
+            .subscribe((data) => console.log(data));
+          this.openSuccess('Cuenta creada con éxito', 'Ok');
+          this.router.navigate(['/login']);
+        }
       }
-    }
+    });
   }
 }
