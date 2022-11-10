@@ -14,7 +14,7 @@ export class AccountService {
   /**
    * Este metodo nos permite comunicarnos con API para enviar
    * toda la información necesaria para crear una cuenta
-   * @param newTournament objeto con la información de la cuenta a crear
+   * @param newAccount objeto con la información de la cuenta a crear
    * @returns status de la creación de la cuenta.
    */
   createAccount(newAccount: CreateAccount): Observable<any> {
