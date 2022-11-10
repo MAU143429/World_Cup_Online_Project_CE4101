@@ -95,6 +95,11 @@ export class LoginComponent implements OnInit {
           if (login) {
             localStorage.setItem('email', this.newLogin.email);
             localStorage.setItem('nickname', this.Users[0].nickname);
+            this.service.getRole().subscribe((role) => {
+              if (role) {
+                localStorage.setItem('scope', 'admin');
+              }
+            });
             this.openSuccess('Inicio de sesión exitoso', 'Ok');
             this.router.navigate(['/home']);
           } else {
