@@ -113,6 +113,11 @@ form .button{
   color: white;
 }
 
+::ng-deep snack-bar-container.green-snackbar {
+  background: rgb(15, 206, 15);
+  color: white;
+}
+
  /* Aspecto del boton de crear partido */
 
  form .button input{
