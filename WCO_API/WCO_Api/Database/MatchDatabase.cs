@@ -115,6 +115,47 @@ namespace WCO_Api.Database
             return matches;
         }
 
+        public async Task<List<MatchOut>> getMatchById(int id)
+        {
+
+            SqlDataReader reader = null;
+            SqlConnection myConnection = new SqlConnection();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Match]" +
+                $"WHERE m_id = '{id}'";
+
+            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+
+            myConnection.Open();
+
+            reader = sqlCmd.ExecuteReader();
+
+            List<MatchOut> matchL = new List<MatchOut>();
+            List<TeamWEB> teams = getTeamsByMatchId(id).Result;
+
+            while (reader.Read())
+            {
+                MatchOut match = new MatchOut();
+
+                match.MId = (int)reader.GetValue(0);
+                match.startTime = reader.GetValue(1).ToString();
+                match.date = reader.GetValue(2).ToString();
+                match.venue = reader.GetValue(3).ToString();
+                match.scoreT1 = (int)reader.GetValue(4);
+                match.scoreT2 = (int)reader.GetValue(5);
+                match.bracketId = (int)reader.GetValue(6);
+                match.teams = teams;
+
+                matchL.Add(match);
+
+            }
+
+            return matchL;
+        }
+
         public async Task<List<TeamWEB>> getTeamsByMatchId(int id)
         {
 

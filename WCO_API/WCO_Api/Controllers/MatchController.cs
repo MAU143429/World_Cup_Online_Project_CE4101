@@ -73,5 +73,15 @@ namespace WCO_Api.Models
             
             return allMatches;
         }
+
+        [HttpGet("getMatchbyId/{id}")]
+        public async Task<List<MatchOut>> GetMatchById(int id)
+        {
+
+            return (List<MatchOut>)await matchRepository.getMatchById(id);
+
+        }
+
+
     }
 }
