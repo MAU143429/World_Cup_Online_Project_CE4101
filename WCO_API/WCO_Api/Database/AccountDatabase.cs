@@ -75,5 +75,83 @@ namespace WCO_Api.Database
 
         }
 
+        public async Task<AccountWEB> getAccountByNickname(string nick)
+        {
+            SqlConnection myConnection = new();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Account]" +
+                $"WHERE nickname = '{nick}';";
+
+            SqlCommand sqlCmd = new(query, myConnection);
+
+            myConnection.Open();
+
+            //SqlDataReader reader = sqlCmd.ExecuteReader();
+            AccountWEB account = new();
+
+            using (SqlDataReader reader = sqlCmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    account.nickname = reader.GetValue(0).ToString();
+                    account.email = reader.GetValue(1).ToString();
+                    account.name = reader.GetValue(2).ToString();
+                    account.lastname = reader.GetValue(3).ToString();
+                    account.birthdate = reader.GetValue(4).ToString();
+                    account.country = reader.GetValue(5).ToString();
+                    account.password = reader.GetValue(6).ToString();
+                }
+                else
+                {
+                    account = null;
+                }
+            }
+            myConnection.Close();
+
+            return account;
+        }
+
+        public async Task<AccountWEB> getInformationAccountByEmail(string email)
+        {
+            SqlConnection myConnection = new();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Account]" +
+                $"WHERE email = '{email}';";
+
+            SqlCommand sqlCmd = new(query, myConnection);
+
+            myConnection.Open();
+
+            //SqlDataReader reader = sqlCmd.ExecuteReader();
+            AccountWEB account = new();
+
+            using (SqlDataReader reader = sqlCmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    account.nickname = reader.GetValue(0).ToString();
+                    account.email = reader.GetValue(1).ToString();
+                    account.name = reader.GetValue(2).ToString();
+                    account.lastname = reader.GetValue(3).ToString();
+                    account.birthdate = reader.GetValue(4).ToString();
+                    account.country = reader.GetValue(5).ToString();
+                    account.password = reader.GetValue(6).ToString();
+                }
+                else
+                {
+                    account = null;
+                }
+            }
+            myConnection.Close();
+
+            return account;
+        }
+
     }
 }

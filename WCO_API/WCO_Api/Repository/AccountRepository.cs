@@ -24,5 +24,16 @@ namespace WCO_Api.Repository
         {
             return await sQLDB.getAccountByEmail(login);
         }
+
+        public async Task<AccountWEB> getAccountByNickname(string nick) 
+        {
+            return await sQLDB.getAccountByNickname(nick);
+        }
+
+        public async Task<AccountWEB> getInformationAccountByEmail(string email)
+        {
+            return await sQLDB.getInformationAccountByEmail(email);
+        }
+
     }
 }

@@ -22,46 +22,50 @@ namespace WCO_Api.Controllers
         public async Task<IActionResult> createAccount([FromBody] AccountWEB account)
         {
 
-        if (account == null)
-            return BadRequest("null input");
-        Task<AccountWEB>? accountInDB = accountRepository.getLoginAccountWEB(account.email);
-        if (accountInDB.Result != null)
-            return BadRequest("Account already exists");
+            if (account == null)
+                return BadRequest("null input");
+            Task<AccountWEB>? accountInDB = accountRepository.getLoginAccountWEB(account.email);
+            if (accountInDB.Result != null)
+                return BadRequest("Account already exists");
 
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        var created = await accountRepository.createNewAccount(account);
+            var created = await accountRepository.createNewAccount(account);
 
-        return Created("created", created);
+            return Created("created", created);
 
         }
+
         [HttpPost("Login")]
-        public async Task<IActionResult> loginAccount([FromBody] LoginAccountWEB loginAccount) 
+        public async Task<bool> loginAccount([FromBody] LoginAccountWEB loginAccount)
         {
-            try
-            {
-                Task<AccountWEB>? accountInDB = accountRepository.getLoginAccountWEB(loginAccount.email);
+            
+            Task<AccountWEB>? accountInDB = accountRepository.getLoginAccountWEB(loginAccount.email);
 
-                if (accountInDB == null)
-                    return BadRequest("Account doesn't exists");
+                
+            if (accountInDB.Result.password != loginAccount.password)
+                return false;
 
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
-                if (accountInDB.Result.password != loginAccount.password)
-                    return BadRequest("Incorrect password");
-
-                return Ok("Account succesfully logged");
-   
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
+            return true;
 
         }
+
+        [HttpGet("GetAccountByNickname/{nick}")]
+        public async Task<AccountWEB> getAccountByNickname(string nick)
+        {
+
+            return await accountRepository.getAccountByNickname(nick);
+
+        }
+
+        [HttpGet("GetInformationAccountByEmail/{email}")]
+        public async Task<AccountWEB> getInformationAccountByEmail(string email)
+        {
+
+            return await accountRepository.getInformationAccountByEmail(email);
+
+        }
+
     }
 }
