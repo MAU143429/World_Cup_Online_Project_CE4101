@@ -67,7 +67,7 @@ namespace WCO_Api.Controllers
 
         }
 
-        [HttpGet("GetRoleAccountByEmail/{email}")]
+        [HttpGet("Role/{email}")]
         public async Task<bool> getRoleAccountByEmail(string email)
         {
 
