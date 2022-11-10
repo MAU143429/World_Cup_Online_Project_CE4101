@@ -98,9 +98,9 @@ export class RegisterComponent implements OnInit {
    * @param email
    * @returns Booleano de validez de contraseña
    */
-   checkPasswordFormat(password: string) {
+  checkPasswordFormat(password: string) {
     let sampleRegExMail = new RegExp(
-      "^[A-Za-z0-9]*(([A-Za-z][0-9])|([0-9][A-Za-z]))[A-Za-z0-9]*$"
+      '^[A-Za-z0-9]*(([A-Za-z][0-9])|([0-9][A-Za-z]))[A-Za-z0-9]*$'
     );
     return sampleRegExMail.test(password);
   }
@@ -122,9 +122,8 @@ export class RegisterComponent implements OnInit {
       .subscribe((data) => (this.Users = data));
 
     this.service
-    .getAccountByNickname(this.newAccount.nickname)
-    .subscribe((data) => (this.UsersNickname = data));
-
+      .getAccountByNickname(this.newAccount.nickname)
+      .subscribe((data) => (this.UsersNickname = data));
 
     this.delay(50).then(() => {
       //Verificar que esten todos los espacios requeridos
@@ -144,22 +143,25 @@ export class RegisterComponent implements OnInit {
       } else {
         this.CalculateAge();
 
-        if (!this.checkEmailFormat(this.newAccount.email)) {
+        if (!this.checkboxStatus) {
+          this.openError('Debe aceptar términos y condiciones', 'Volver');
+        } else if (!this.checkEmailFormat(this.newAccount.email)) {
           this.openError('Formato de correo inválido', 'Intente de nuevo');
         } else if (this.Users.length > 0) {
           this.openError(
             'Hay una cuenta existente con este correo',
             'Ingrese otra para continuar'
           );
-        } else if(this.UsersNickname.length>0){
+        } else if (this.UsersNickname.length > 0) {
           this.openError(
             'Hay una cuenta existente con este nickname',
             'Ingrese otro para continuar'
           );
-        } else if (
-          !this.checkPasswordFormat(this.newAccount.password)
-          ) {
-          this.openError('Formato de contraseña inválido, debe ser alfanumérica', 'Intente de nuevo');
+        } else if (!this.checkPasswordFormat(this.newAccount.password)) {
+          this.openError(
+            'Formato de contraseña inválido, debe ser alfanumérica',
+            'Intente de nuevo'
+          );
         } else if (
           !(
             this.newAccount.password.length >= 6 &&
@@ -172,8 +174,6 @@ export class RegisterComponent implements OnInit {
           );
         } else if (!(this.age >= 18)) {
           this.openError('Debe ser mayor de 18 años', 'Intente de nuevo');
-        } else if (!this.checkboxStatus) {
-          this.openError('Debe aceptar términos y condiciones', 'Volver');
         } else {
           this.newAccount.password = sha256(this.newAccount.password);
           this.service

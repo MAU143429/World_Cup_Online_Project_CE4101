@@ -50,4 +50,12 @@ export class AccountService {
   newLogin(login: any): Observable<any> {
     return this.wco.create(this.url + '/Login', login);
   }
+
+  /**
+   * Este metodo nos permite conocer el rol que tiene el usuario logeado
+   * @returns el rol que tiene el usuario logeado
+   */
+  getRole(): Observable<any> {
+    return this.wco.getData(this.url + '/Role' + localStorage.getItem('email'));
+  }
 }
