@@ -122,8 +122,7 @@ export class RegisterComponent implements OnInit {
       this.newAccount.lastname == '' ||
       this.newAccount.nickname == '' ||
       this.newAccount.birthdate == '' ||
-      this.newAccount.country == '' ||
-      this.checkboxStatus == false
+      this.newAccount.country == '' 
     ) {
       this.openError(
         'Faltan espacios requeridos para registrarse',
@@ -156,6 +155,11 @@ export class RegisterComponent implements OnInit {
         );
       } else if (!(this.age >= 18)) {
         this.openError('Debe ser mayor de 18 años', 'Intente de nuevo');
+      } else if(!this.checkboxStatus){
+        this.openError(
+          'Debe aceptar términos y condiciones',
+          'Volver'
+        );
       } else {
         this.service.createAccount(this.newAccount);
         this.openSuccess('Cuenta creada con éxito', 'Ok');
