@@ -75,7 +75,7 @@ namespace WCO_Api.Database
 
         }
 
-        public async Task<AccountWEB> getAccountByNickname(string nick)
+        public async Task<List<AccountWEB?>> getAccountByNickname(string nick)
         {
             SqlConnection myConnection = new();
 
@@ -90,12 +90,15 @@ namespace WCO_Api.Database
             myConnection.Open();
 
             //SqlDataReader reader = sqlCmd.ExecuteReader();
-            AccountWEB account = new();
+            
+            List<AccountWEB> accountL = new();  
 
             using (SqlDataReader reader = sqlCmd.ExecuteReader())
             {
                 if (reader.Read())
                 {
+                    AccountWEB account = new();
+
                     account.nickname = reader.GetValue(0).ToString();
                     account.email = reader.GetValue(1).ToString();
                     account.name = reader.GetValue(2).ToString();
@@ -103,18 +106,20 @@ namespace WCO_Api.Database
                     account.birthdate = reader.GetValue(4).ToString();
                     account.country = reader.GetValue(5).ToString();
                     account.password = reader.GetValue(6).ToString();
+
+                    accountL.Add(account);
                 }
                 else
                 {
-                    account = null;
+                    accountL = null;
                 }
             }
             myConnection.Close();
 
-            return account;
+            return accountL;
         }
 
-        public async Task<AccountWEB> getInformationAccountByEmail(string email)
+        public async Task<List<AccountWEB>> getInformationAccountByEmail(string email)
         {
             SqlConnection myConnection = new();
 
@@ -129,12 +134,15 @@ namespace WCO_Api.Database
             myConnection.Open();
 
             //SqlDataReader reader = sqlCmd.ExecuteReader();
-            AccountWEB account = new();
+
+            List<AccountWEB> accountL = new();
 
             using (SqlDataReader reader = sqlCmd.ExecuteReader())
             {
                 if (reader.Read())
                 {
+                    AccountWEB account = new();
+
                     account.nickname = reader.GetValue(0).ToString();
                     account.email = reader.GetValue(1).ToString();
                     account.name = reader.GetValue(2).ToString();
@@ -142,15 +150,17 @@ namespace WCO_Api.Database
                     account.birthdate = reader.GetValue(4).ToString();
                     account.country = reader.GetValue(5).ToString();
                     account.password = reader.GetValue(6).ToString();
+
+                    accountL.Add(account);
                 }
                 else
                 {
-                    account = null;
+                    accountL = null;
                 }
             }
             myConnection.Close();
 
-            return account;
+            return accountL;
         }
 
     }

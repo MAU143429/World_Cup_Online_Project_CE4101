@@ -52,7 +52,7 @@ namespace WCO_Api.Controllers
         }
 
         [HttpGet("GetAccountByNickname/{nick}")]
-        public async Task<AccountWEB> getAccountByNickname(string nick)
+        public async Task<List<AccountWEB>> getAccountByNickname(string nick)
         {
 
             return await accountRepository.getAccountByNickname(nick);
@@ -60,7 +60,7 @@ namespace WCO_Api.Controllers
         }
 
         [HttpGet("GetInformationAccountByEmail/{email}")]
-        public async Task<AccountWEB> getInformationAccountByEmail(string email)
+        public async Task<List<AccountWEB>> getInformationAccountByEmail(string email)
         {
 
             return await accountRepository.getInformationAccountByEmail(email);
