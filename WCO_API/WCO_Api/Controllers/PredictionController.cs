@@ -25,15 +25,26 @@ namespace WCO_Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var predId = await predRepository.createNewPrediction(prediction);
+            //Revisar si la predicción ya existe
+            var dbPrediction = predRepository.getPredictionByNEM(prediction.acc_nick, prediction.acc_email, prediction.match_id);
 
-            foreach (var predPlayer in prediction.predictionPlayers)
+            //Si no existe, la crea
+            if (dbPrediction.Result.PrId == null)
             {
-                predPlayer.PId = predId;        //Se le pone el id de la predicción que se acaba de hacer
-                var created = await predRepository.createPredictionPlayer(predPlayer);
-            }
+                var predId = await predRepository.createNewPrediction(prediction);
 
-            return Created("created", predId);
+                foreach (var predPlayer in prediction.predictionPlayers)
+                {
+                    predPlayer.PId = predId;        //Se le pone el id de la predicción que se acaba de hacer
+                    var created = await predRepository.createPredictionPlayer(predPlayer);
+                }
+
+                return Created("created", predId);
+            }
+            // Si existe, hace más bien un cambio a esa predicción
+            else {
+                return BadRequest("prediction already made");
+            }
 
         }
 
