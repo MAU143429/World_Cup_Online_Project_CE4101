@@ -73,5 +73,22 @@ namespace WCO_Api.Models
             
             return allMatches;
         }
+
+        [HttpGet("GetMatchbyId/{id}")]
+        public async Task<List<MatchOut>> getMatchById(int id)
+        {
+
+            return (List<MatchOut>)await matchRepository.getMatchById(id);
+
+        }
+
+        [HttpGet("GetPlayersbyTeamId/{id}")]
+        public async Task<List<PlayerWEB>> GetPlayersbyTeamId(int id)
+        {
+
+            return (List<PlayerWEB>)await matchRepository.getPlayersbyTeamId(id);
+
+        }
+
     }
 }
