@@ -72,4 +72,11 @@ export class TournamentDetailsComponent implements OnInit {
       this.router.navigate(['/create-match']);
     });
   }
+
+  viewMatch(match: any) {
+    this.connection.setCurrentMatch(match);
+    this.delay(100).then(() => {
+      this.router.navigate(['/match-details']);
+    });
+  }
 }

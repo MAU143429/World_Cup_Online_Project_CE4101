@@ -1,1 +1,93 @@
-<p>match-details works!</p>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="match-details.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+
+<body>
+  <app-navbar></app-navbar>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="container">
+    <div class="content">
+      <form>
+        <div class="match-details" *ngFor="let data of matchData">
+
+          <div class="input-box">
+            <div class="row">
+                <div class="col-sm">
+                  <span class="rightcontent" >{{data.teams[0].name}}</span>
+                </div>
+                <div class="col-sm-2">
+                  <span class= "title">&nbsp; &nbsp; 0 &nbsp; &nbsp;-&nbsp; &nbsp; 0  &nbsp; &nbsp;</span>
+                </div>
+                <div class="col-sm">
+                  <span class="leftcontent" >{{data.teams[1].name}}</span>
+                </div>
+            </div>
+          </div>
+
+          <div class="input-box1">
+            <span class="info" >{{data.date}} a las {{data.startTime}}</span>
+          </div>
+
+          <div class="input-box1">
+            <span class="subtitle">Puntaje Obtenido : 0</span><br><br>
+            <span class="subtitle">Ingresar predicción del marcador</span><br><br>
+            <span class="subtitle">{{data.teams[0].name}} &nbsp; &nbsp; 0 &nbsp; &nbsp;-&nbsp; &nbsp; 0 &nbsp; &nbsp; {{data.teams[1].name}}</span>
+          </div>
+
+          <div class="input-box2">
+            <div class="row">
+              <div class="col-sm">
+                <span class="details" ><input type="number" min="0" max="99" value="0" [(ngModel)]= "newPrediction.goalsT1" [ngModelOptions]="{standalone: true}"></span>
+                <span class="details"><input type="number" min="0" max="99" value="0" [(ngModel)]= "newPrediction.goalsT2" [ngModelOptions]="{standalone: true}"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-box3">
+            <span class="subtitle" >Elija el jugador MVP<span style="color: rgb(245, 59, 59);">*</span></span>
+            <mbsc-select [data]="players" [touchUi]="false"  placeholder="Seleccione el MVP" ></mbsc-select>
+          </div>
+
+          <div class="input-box4">
+            <span class="subtitle">Elija los anotadores y las asistencias<span style="color: rgb(245, 59, 59);">*</span></span>
+
+            <table #table class="table table-bordered mt-4 mytable">
+              <tr class="table-primary mytable">
+                <th>Jugadores</th>
+                <th>Goles</th>
+                <th>Asistencias</th>
+                <th>Asistencias</th>
+                <th>Goles</th>
+                <th>Jugadores</th>
+              </tr>
+              <tr *ngFor="let player of playersteam1; index as i">
+                  <td>{{player.name}}</td>
+                  <td><input type="number" min="0" max="99" [(ngModel)]= "goalsT1[i]" [ngModelOptions]="{standalone: true}" ></td>
+                  <td><input type="number" min="0" max="99" [(ngModel)]= "assistsT1[i]" [ngModelOptions]="{standalone: true}" ></td>
+                  <td><input type="number" min="0" max="99" [(ngModel)]= "assistsT2[i]" [ngModelOptions]="{standalone: true}" ></td>
+                  <td><input type="number" min="0" max="99" [(ngModel)]= "goalsT2[i]" [ngModelOptions]="{standalone: true}"></td>
+                  <td>{{playersteam2[i].name}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="button">
+            <input type="submit" value="Enviar Predicción" (click)="addPrediction()"  >
+          </div>
+
+
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+
