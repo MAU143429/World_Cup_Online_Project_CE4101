@@ -18,7 +18,7 @@ namespace WCO_API_Tests
             _tournamentController = new TournamentController();
             _tournamentWEB = new TournamentWEB()
             {
-                Name = "Australia World Cup",
+                Name = "UEFA Champions League",
                 StartDate = "11-20-2022",
                 EndDate = "12-19-2022",
                 brackets = new List<string> { "Semis", "Final" },
@@ -51,8 +51,8 @@ namespace WCO_API_Tests
         public async Task getTournamentByIdTest()
         {
             //Arrange
-            //Act
             string onTestId = "4fc417";
+            //Act
             var result = await this._tournamentController.getTournamentById(onTestId);
             //Assert
             Assert.IsType<List<TournamentOut>>(result);
@@ -80,8 +80,9 @@ namespace WCO_API_Tests
         public async Task getTeamsByTypeTest()
         {
             //Arrange
+            string tournamentTyoe = "Local";
             //Act
-            var result = await this._tournamentController.getTeamsByType("Local");
+            var result = await this._tournamentController.getTeamsByType(tournamentTyoe);
             //Assert
             Assert.IsAssignableFrom<IEnumerable<TeamWEB>>(result);
         }
@@ -93,8 +94,9 @@ namespace WCO_API_Tests
         public async Task getTeamsByTournamentIdTest()
         {
             //Arrange
+            string onTestId = "df0134";
             //Act
-            var result = await this._tournamentController.GetTeamsByTournamentId("1d02d8");
+            var result = await this._tournamentController.GetTeamsByTournamentId(onTestId);
             //Assert
             Assert.IsAssignableFrom<IEnumerable<TeamWEB>>(result);
         }
