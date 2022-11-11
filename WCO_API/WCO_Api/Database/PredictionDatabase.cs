@@ -61,7 +61,7 @@ namespace WCO_Api.Database
 
             string query =
                           $"INSERT INTO [dbo].[Scores_Assists] ([player_id], [prediction_id], [assists], [goals])" +
-                          $"VALUES ('{predPlayer.PId}', '{predPlayer.PId}', '{predPlayer.assists}', '{predPlayer.goals}');";
+                          $"VALUES ('{predPlayer.PId}', '{predPlayer.PrId}', '{predPlayer.assists}', '{predPlayer.goals}');";
 
             SqlCommand sqlCmd = new SqlCommand(query, myConnection);
 
