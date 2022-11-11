@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InternalService } from '../../services/internal.service';
 import { CreatePrediction } from '../../model/create-prediction';
 import { Prediction } from 'src/app/model/prediction';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 var initialPrediction = {
   PId: 0,
@@ -224,7 +225,9 @@ export class MatchDetailsComponent implements OnInit {
 
   players = ['Neymar Jr', 'Cristiano Ronaldo', 'Lionel Messi'];
 
-  constructor(private connection: InternalService) {}
+  constructor(
+    private connection: InternalService,
+    private _snackBar: MatSnackBar) {}
 
   /**
    * Este metodo permite realizar un pequeño delay
@@ -272,17 +275,92 @@ export class MatchDetailsComponent implements OnInit {
     }
   }
 
+  /**
+   * Metodo para mostrar alerta de error por 2 segundos
+   * @param message1 Mensaje de error
+   * @param message2 Mensaje para cerrar alerta
+   */
+    openError(message: string, message2: string) {
+    this._snackBar.open(message, message2, {
+      duration: 2000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: 'red-snackbar',
+    });
+  }
+
+  /**
+   * Metodo para mostrar alerta de exito por 2 segundos
+   * @param message1 Mensaje de exito
+   * @param message2 Mensaje para cerrar alerta
+   */
+  openSuccess(message1: string, message2: string) {
+    this._snackBar.open(message1, message2, {
+      duration: 2000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: 'green-snackbar',
+    });
+  }
+
+  /**
+   * Metodo que cuenta goles de equipo en prediccion
+   * sumando los goles de cada
+   * uno de sus jugadores.
+   * @param teamGoals 
+   * @returns Team goals from scorers prediction.
+   */
+  goalCount(teamGoals: number[]) {
+    let goals = 0;
+    teamGoals.forEach( (element) => {
+      goals = goals + element
+    })
+    console.log(goals)
+    return goals;
+  }
+
+    /**
+   * Metodo que cuenta goles de equipo en prediccion
+   * sumando los goles de cada
+   * uno de sus jugadores.
+   * @param teamGoals 
+   * @returns Team goals from scorers prediction.
+   */
+     assistCount(teamAssists: number[]) {
+      let assists = 0;
+      teamAssists.forEach( (element) => {
+        assists = assists + element
+      })
+  
+      return assists;
+    }
+
   addPrediction() {
+    
     this.associatePredictionsT1();
     this.delay(100).then(() => {
       this.associatePredictionsT2();
 
-      //Verificar goles y asistencias T1
+      // Verificar que campo de MVP se haya llenado
 
-      //Verificar goles y asistencias T1
+      //Verificar goles 
+      if (!(this.goalCount(this.goalsT1) == this.newPrediction.goalsT1 && this.goalCount(this.goalsT2) == this.newPrediction.goalsT2)){
+        this.openError(
+          'No hay coherencia entre goles de jugadores y marcador',
+          'Ingrese una predicción coherente'
+        );
+      }
 
-      this.newPrediction.predictionPlayer = this.allPreditions;
-      console.log(this.newPrediction);
+      // Verificar asistencias
+      else if (!(this.assistCount(this.assistsT1) <= this.newPrediction.goalsT1 && this.assistCount(this.assistsT2) <= this.newPrediction.goalsT2)) {
+        this.openError(
+          'No hay coherencia entre asistencia de jugadores y marcador',
+          'Ingrese una predicción coherente'
+        );
+      } else {
+        this.newPrediction.predictionPlayer = this.allPreditions;
+        console.log(this.newPrediction);
+      }
     });
   }
 }
