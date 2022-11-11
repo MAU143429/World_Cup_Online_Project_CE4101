@@ -90,5 +90,13 @@ namespace WCO_Api.Models
 
         }
 
+        [HttpGet("GetPlayersbyBothTeamId/{id1}/{id2}")]
+        public async Task<List<PlayerWEB>> GetPlayersbyBothTeamId(int id1, int id2)
+        {
+
+            return (List<PlayerWEB>)await matchRepository.getPlayersbyBothTeamId(id1, id2);
+
+        }
+
     }
 }
