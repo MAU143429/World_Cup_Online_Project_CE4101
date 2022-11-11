@@ -27,7 +27,7 @@
           </ng-template>
           <ng-template  ngbPanelContent>
             <div *ngFor="let match of bracket">
-              <span (click)="viewMatch(match.mId)">{{match.teams[0].name}} &nbsp;&nbsp;&nbsp;&nbsp; VS&nbsp;&nbsp;&nbsp;&nbsp; {{match.teams[1].name}}&nbsp;&nbsp;&nbsp;&nbsp;  Sede: {{match.venue}} &nbsp;&nbsp;&nbsp;&nbsp;Horario: {{match.date}} {{match.startTime}}</span>
+              <span (click)="viewMatch(match.mId)">{{match.teams[0].name}} &nbsp;&nbsp;&nbsp;&nbsp; VS&nbsp;&nbsp;&nbsp;&nbsp; {{match.teams[1].name}}&nbsp;&nbsp;&nbsp;&nbsp;  Sede: {{match.venue}} &nbsp;&nbsp;&nbsp;&nbsp;Horario: {{match.date}} a las {{match.startTime}}</span>
             </div>
             <input *ngIf="scope === 'admin'" class="create-match-btn" type="button"  value="+ Agregar Partido" (click)="redirectMatch(bracketsData[i])">
           </ng-template>

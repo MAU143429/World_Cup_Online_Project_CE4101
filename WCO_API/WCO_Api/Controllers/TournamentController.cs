@@ -150,7 +150,6 @@ namespace WCO_Api.Controllers
             var created = await tournamentRepository.createNewTournament(to);
             
             //Agregar Brackets webmodel
-
             foreach (var bracket in tournament.brackets)
             {
                 BracketWEB newBracket = new BracketWEB();

@@ -1,12 +1,14 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { DbBracket } from '../model/db-bracket';
+import { Dropdown } from '../model/dropdown';
 
 const initialBracket = {
   bId: 0,
   name: '',
   tounamentId: '',
 };
+
 @Injectable({
   providedIn: 'root',
 })
@@ -57,7 +59,7 @@ export class InternalService {
 
   /**
    * Este metodo permite modificar el behavior subject cambiando su valor.
-   * @param newBracket el partido actual
+   * @param newMatch el partido actual
    */
   setCurrentMatch(newMatch: any): void {
     this.selectedMatch.next(newMatch);

@@ -3,6 +3,15 @@ import { InternalService } from '../../services/internal.service';
 import { CreatePrediction } from '../../model/create-prediction';
 import { Prediction } from 'src/app/model/prediction';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DbMatch } from 'src/app/model/db-match';
+import { MatchesService } from 'src/app/services/matches.service';
+import { DbPlayer } from 'src/app/model/db-player';
+import { Dropdown } from 'src/app/model/dropdown';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import da from '@mobiscroll/angular/dist/js/i18n/da';
+import { Router } from '@angular/router';
+import { PredictionsService } from 'src/app/services/predictions.service';
+import { loadTranslations } from '@angular/localize';
 
 var initialPrediction = {
   PId: 0,
@@ -17,217 +26,25 @@ var initialPrediction = {
 })
 export class MatchDetailsComponent implements OnInit {
   newPrediction: CreatePrediction = new CreatePrediction();
-  allPreditions: Prediction[] = [];
-  goalsT1: number[] = new Array(22).fill(0);
-  goalsT2: number[] = new Array(22).fill(0);
-  assistsT1: number[] = new Array(22).fill(0);
-  assistsT2: number[] = new Array(22).fill(0);
-  matchData = [
-    {
-      mId: '1',
-      startTime: '14:00',
-      date: '12-12-2022',
-      venue: 'Estadio Nacional de Costa Rica',
-      bracketId: '1',
-      teams: [
-        {
-          teId: '1',
-          name: 'Argentina',
-        },
-        {
-          teId: '2',
-          name: 'Costa Rica',
-        },
-      ],
-    },
-  ];
-
-  playersteam1 = [
-    {
-      id: 1,
-      name: 'Jugador 1.1',
-    },
-    {
-      id: 2,
-      name: 'Jugador 1.2',
-    },
-    {
-      id: 3,
-      name: 'Jugador 1.3',
-    },
-    {
-      id: 4,
-      name: 'Jugador 1.4',
-    },
-    {
-      id: 5,
-      name: 'Jugador 1.5',
-    },
-    {
-      id: 6,
-      name: 'Jugador 1.6',
-    },
-    {
-      id: 7,
-      name: 'Jugador 1.7',
-    },
-    {
-      id: 8,
-      name: 'Jugador 1.8',
-    },
-    {
-      id: 9,
-      name: 'Jugador 1.9',
-    },
-    {
-      id: 10,
-      name: 'Jugador 1.10',
-    },
-    {
-      id: 11,
-      name: 'Jugador 1.11',
-    },
-    {
-      id: 12,
-      name: 'Jugador 1.12',
-    },
-    {
-      id: 13,
-      name: 'Jugador 1.13',
-    },
-    {
-      id: 14,
-      name: 'Jugador 1.14',
-    },
-    {
-      id: 15,
-      name: 'Jugador 1.15',
-    },
-    {
-      id: 16,
-      name: 'Jugador 1.16',
-    },
-    {
-      id: 17,
-      name: 'Jugador 1.17',
-    },
-    {
-      id: 18,
-      name: 'Jugador 1.18',
-    },
-    {
-      id: 19,
-      name: 'Jugador 1.19',
-    },
-    {
-      id: 20,
-      name: 'Jugador 1.20',
-    },
-    {
-      id: 21,
-      name: 'Jugador 1.21',
-    },
-    {
-      id: 22,
-      name: 'Jugador 1.22',
-    },
-  ];
-  playersteam2 = [
-    {
-      id: 23,
-      name: 'Jugador 2.1',
-    },
-    {
-      id: 24,
-      name: 'Jugador 2.2',
-    },
-    {
-      id: 25,
-      name: 'Jugador 2.3',
-    },
-    {
-      id: 26,
-      name: 'Jugador 2.4',
-    },
-    {
-      id: 27,
-      name: 'Jugador 2.5',
-    },
-    {
-      id: 28,
-      name: 'Jugador 2.6',
-    },
-    {
-      id: 29,
-      name: 'Jugador 2.7',
-    },
-    {
-      id: 30,
-      name: 'Jugador 2.8',
-    },
-    {
-      id: 31,
-      name: 'Jugador 2.9',
-    },
-    {
-      id: 32,
-      name: 'Jugador 2.10',
-    },
-    {
-      id: 33,
-      name: 'Jugador 2.11',
-    },
-    {
-      id: 34,
-      name: 'Jugador 2.12',
-    },
-    {
-      id: 35,
-      name: 'Jugador 2.13',
-    },
-    {
-      id: 36,
-      name: 'Jugador 2.14',
-    },
-    {
-      id: 37,
-      name: 'Jugador 2.15',
-    },
-    {
-      id: 38,
-      name: 'Jugador 2.16',
-    },
-    {
-      id: 39,
-      name: 'Jugador 2.17',
-    },
-    {
-      id: 40,
-      name: 'Jugador 2.18',
-    },
-    {
-      id: 41,
-      name: 'Jugador 2.19',
-    },
-    {
-      id: 42,
-      name: 'Jugador 2.20',
-    },
-    {
-      id: 43,
-      name: 'Jugador 2.21',
-    },
-    {
-      id: 44,
-      name: 'Jugador 2.22',
-    },
-  ];
-
-  players = ['Neymar Jr', 'Cristiano Ronaldo', 'Lionel Messi'];
+  myPrediction: CreatePrediction = new CreatePrediction();
+  matchData: DbMatch[] = [];
+  allPredictions: Prediction[] = [];
+  goalsT1: number[] = new Array(20).fill(0);
+  goalsT2: number[] = new Array(20).fill(0);
+  assistsT1: number[] = new Array(20).fill(0);
+  assistsT2: number[] = new Array(20).fill(0);
+  currentMatch: number = 0;
+  playersteam1: DbPlayer[] = [];
+  playersteam2: DbPlayer[] = [];
+  players: Dropdown[] = [];
 
   constructor(
     private connection: InternalService,
-    private _snackBar: MatSnackBar) {}
+    private matchService: MatchesService,
+    private predictionService: PredictionsService,
+    private _snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
   /**
    * Este metodo permite realizar un pequeño delay
@@ -240,37 +57,84 @@ export class MatchDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.connection.currentMatch.subscribe((data) => console.log(data));
+    this.connection.currentMatch.subscribe(
+      (data) => (this.currentMatch = data)
+    );
+    this.delay(50).then(() => {
+      this.matchService
+        .getMatchesById(this.currentMatch)
+        .subscribe((data) => (this.matchData = data));
+
+      this.delay(50).then(() => {
+        this.matchService
+          .getPlayersByTeamId(this.matchData[0].teams[0].teId)
+          .subscribe((data) => (this.playersteam1 = data));
+
+        this.matchService
+          .getPlayersByTeamId(this.matchData[0].teams[1].teId)
+          .subscribe((data) => (this.playersteam2 = data));
+
+        this.matchService
+          .getAllPlayersByTeamsId(
+            this.matchData[0].teams[0].teId,
+            this.matchData[0].teams[1].teId
+          )
+          .subscribe((data) => {
+            var teams: Dropdown[] = [];
+            data.forEach((value: any) => {
+              var dropdownObject: Dropdown = { text: '', value: 0 };
+              dropdownObject.text = value.name;
+              dropdownObject.value = value.pId;
+              teams.push(dropdownObject);
+            });
+            console.log(teams);
+            this.players = teams;
+          });
+
+        this.predictionService
+          .getPredictionbyIds(
+            localStorage.getItem('email'),
+            localStorage.getItem('nickname'),
+            this.matchData[0].mId
+          )
+          .subscribe((data) => {
+            this.myPrediction = data;
+            console.log(this.myPrediction);
+          });
+      });
+    });
   }
 
   associatePredictionsT1() {
-    for (var i = 0; i < 22; i++) {
+    for (var i = 0; i < 20; i++) {
       if (this.goalsT1[i] != 0 || this.assistsT1[i] != 0) {
         var initialPrediction = {
           PId: 0,
           goals: 0,
           assists: 0,
         };
-        initialPrediction.PId = this.playersteam1[i].id;
+
+        initialPrediction.PId = this.playersteam1[i].pId;
         initialPrediction.goals = this.goalsT1[i];
         initialPrediction.assists = this.assistsT1[i];
-        this.allPreditions.push(initialPrediction);
+        this.allPredictions.push(initialPrediction);
       }
     }
   }
 
   associatePredictionsT2() {
-    for (var i = 0; i < 22; i++) {
+    for (var i = 0; i < 20; i++) {
       if (this.goalsT2[i] != 0 || this.assistsT2[i] != 0) {
         var initialPrediction2 = {
           PId: 0,
           goals: 0,
           assists: 0,
         };
-        initialPrediction2.PId = this.playersteam2[i].id;
+        console.log(this.playersteam2);
+        initialPrediction2.PId = this.playersteam2[i].pId;
         initialPrediction2.goals = this.goalsT2[i];
         initialPrediction2.assists = this.assistsT2[i];
-        this.allPreditions.push(initialPrediction2);
+        this.allPredictions.push(initialPrediction2);
       }
     }
   }
@@ -280,7 +144,7 @@ export class MatchDetailsComponent implements OnInit {
    * @param message1 Mensaje de error
    * @param message2 Mensaje para cerrar alerta
    */
-    openError(message: string, message2: string) {
+  openError(message: string, message2: string) {
     this._snackBar.open(message, message2, {
       duration: 2000,
       horizontalPosition: 'center',
@@ -307,44 +171,49 @@ export class MatchDetailsComponent implements OnInit {
    * Metodo que cuenta goles de equipo en prediccion
    * sumando los goles de cada
    * uno de sus jugadores.
-   * @param teamGoals 
+   * @param teamGoals
    * @returns Team goals from scorers prediction.
    */
   goalCount(teamGoals: number[]) {
     let goals = 0;
-    teamGoals.forEach( (element) => {
-      goals = goals + element
-    })
-    console.log(goals)
+    teamGoals.forEach((element) => {
+      goals = goals + element;
+    });
+    console.log(goals);
     return goals;
   }
 
-    /**
+  /**
    * Metodo que cuenta goles de equipo en prediccion
    * sumando los goles de cada
    * uno de sus jugadores.
-   * @param teamGoals 
+   * @param teamGoals
    * @returns Team goals from scorers prediction.
    */
-     assistCount(teamAssists: number[]) {
-      let assists = 0;
-      teamAssists.forEach( (element) => {
-        assists = assists + element
-      })
-  
-      return assists;
-    }
+  assistCount(teamAssists: number[]) {
+    let assists = 0;
+    teamAssists.forEach((element) => {
+      assists = assists + element;
+    });
+
+    return assists;
+  }
 
   addPrediction() {
-    
+    this.newPrediction.acc_email = localStorage.getItem('email');
+    this.newPrediction.acc_nick = localStorage.getItem('nickname');
+    this.newPrediction.match_id = this.matchData[0].mId;
     this.associatePredictionsT1();
     this.delay(100).then(() => {
       this.associatePredictionsT2();
 
       // Verificar que campo de MVP se haya llenado
-
-      //Verificar goles 
-      if (!(this.goalCount(this.goalsT1) == this.newPrediction.goalsT1 && this.goalCount(this.goalsT2) == this.newPrediction.goalsT2)){
+      if (
+        !(
+          this.goalCount(this.goalsT1) == this.newPrediction.goalsT1 &&
+          this.goalCount(this.goalsT2) == this.newPrediction.goalsT2
+        )
+      ) {
         this.openError(
           'No hay coherencia entre goles de jugadores y marcador',
           'Ingrese una predicción coherente'
@@ -352,13 +221,22 @@ export class MatchDetailsComponent implements OnInit {
       }
 
       // Verificar asistencias
-      else if (!(this.assistCount(this.assistsT1) <= this.newPrediction.goalsT1 && this.assistCount(this.assistsT2) <= this.newPrediction.goalsT2)) {
+      else if (
+        !(
+          this.assistCount(this.assistsT1) <= this.newPrediction.goalsT1 &&
+          this.assistCount(this.assistsT2) <= this.newPrediction.goalsT2
+        )
+      ) {
         this.openError(
           'No hay coherencia entre asistencia de jugadores y marcador',
           'Ingrese una predicción coherente'
         );
       } else {
-        this.newPrediction.predictionPlayer = this.allPreditions;
+        this.newPrediction.predictionPlayers = this.allPredictions;
+        this.predictionService
+          .addNewPrediction(this.newPrediction)
+          .subscribe((data) => console.log(data));
+        this.router.navigate(['/tournament-details']);
         console.log(this.newPrediction);
       }
     });

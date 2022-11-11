@@ -60,7 +60,7 @@ export class CreateMatchComponent implements OnInit {
         dropdownObject.value = value.teId;
         teams.push(dropdownObject);
       });
-
+      console.log(teams);
       this.myTeams = teams;
     });
   }

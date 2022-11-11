@@ -68,7 +68,6 @@ export class TournamentDetailsComponent implements OnInit {
    * @param bracket bracket donde esta el partido
    */
   redirectMatch(bracket: any) {
-    console.log('SOY BRACKET', bracket);
     this.connection.setCurrentBracket(bracket);
     this.delay(100).then(() => {
       this.router.navigate(['/create-match']);
