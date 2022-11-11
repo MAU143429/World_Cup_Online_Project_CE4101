@@ -35,7 +35,7 @@ namespace WCO_Api.Controllers
 
                 foreach (var predPlayer in prediction.predictionPlayers)
                 {
-                    predPlayer.PId = predId;        //Se le pone el id de la predicción que se acaba de hacer
+                    predPlayer.PrId = predId;        //Se le pone el id de la predicción que se acaba de hacer
                     var created = await predRepository.createPredictionPlayer(predPlayer);
                 }
 

@@ -27,4 +27,34 @@ export class MatchesService {
   public getMatchesByBracketId(id: any): Observable<any> {
     return this.wco.getData(this.url + '/getMatchesByTournamentId/' + id);
   }
+
+  /**
+   * El metodo permite traer un partido usando su id
+   * @param id el id del partido
+   * @returns Observable con la informacion de partido
+   */
+  public getMatchesById(id: any): Observable<any> {
+    return this.wco.getData(this.url + '/GetMatchById/' + id);
+  }
+
+  /**
+   * El metodo permite traer a todos los jugadores de un equipo
+   * @param id del equipo
+   * @returns Observable con la lista de jugadores
+   */
+  public getPlayersByTeamId(id: any): Observable<any> {
+    return this.wco.getData(this.url + '/GetPlayersbyTeamId/' + id);
+  }
+
+  /**
+   * El metodo permite traer a todos los jugadores de dos equipo
+   * @param id1 del equipo 1
+   * @param id2 del equipo 2
+   * @returns Observable con la lista de jugadores
+   */
+  public getAllPlayersByTeamsId(id1: any, id2: any): Observable<any> {
+    return this.wco.getData(
+      this.url + '/GetPlayersbyBothTeamId/' + id1 + '/' + id2
+    );
+  }
 }

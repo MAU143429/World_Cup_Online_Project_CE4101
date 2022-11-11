@@ -33,5 +33,12 @@ namespace WCO_Api.Repository
             return await sQLDB.getPlayersbyTeamId(id);
         }
 
+        public async Task<IEnumerable<PlayerWEB>> getPlayersbyBothTeamId(int id1, int id2)
+        {
+            return await sQLDB.getPlayersbyBothTeamId(id1, id2);
+        }
+
+        
+
     }
 }

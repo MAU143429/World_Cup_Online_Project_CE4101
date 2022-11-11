@@ -39,7 +39,7 @@
           <div class="input-box1">
             <span class="subtitle">Puntaje Obtenido : 0</span><br><br>
             <span class="subtitle">Ingresar predicción del marcador</span><br><br>
-            <span class="subtitle">{{data.teams[0].name}} &nbsp; &nbsp; 0 &nbsp; &nbsp;-&nbsp; &nbsp; 0 &nbsp; &nbsp; {{data.teams[1].name}}</span>
+            <span class="subtitle">{{data.teams[0].name}} &nbsp; &nbsp; {{myPrediction.goalsT1}} &nbsp; &nbsp;-&nbsp; &nbsp; {{myPrediction.goalsT2}} &nbsp; &nbsp; {{data.teams[1].name}}</span>
           </div>
 
           <div class="input-box2">
@@ -53,7 +53,7 @@
 
           <div class="input-box3">
             <span class="subtitle" >Elija el jugador MVP<span style="color: rgb(245, 59, 59);">*</span></span>
-            <mbsc-select [data]="players" [touchUi]="false"  placeholder="Seleccione el MVP" ></mbsc-select>
+            <mbsc-select [data]="players" [touchUi]="false"  [(ngModel)]= "newPrediction.PId" [ngModelOptions]="{standalone: true}" placeholder="Seleccione el MVP" ></mbsc-select>
           </div>
 
           <div class="input-box4">

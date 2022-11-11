@@ -68,7 +68,7 @@ namespace WCO_Api.Models
             
             return allMatches;
         }
-
+         
         [HttpGet("GetMatchbyId/{id}")]
         public async Task<List<MatchOut>> getMatchById(int id)
         {
@@ -82,6 +82,14 @@ namespace WCO_Api.Models
         {
 
             return (List<PlayerWEB>)await matchRepository.getPlayersbyTeamId(id);
+
+        }
+
+        [HttpGet("GetPlayersbyBothTeamId/{id1}/{id2}")]
+        public async Task<List<PlayerWEB>> GetPlayersbyBothTeamId(int id1, int id2)
+        {
+
+            return (List<PlayerWEB>)await matchRepository.getPlayersbyBothTeamId(id1, id2);
 
         }
 
