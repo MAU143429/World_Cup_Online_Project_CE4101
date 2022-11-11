@@ -24,8 +24,12 @@ namespace WCO_API_Tests.ControllersTest
             };
         }
 
+        /// <summary>
+        /// Method <c>AddAccountTest</c> método que hace inserción a la  base de datos de todos los datos de un 
+        /// usuario de acuerdo con AccountWEB.
+        /// </summary>
         [Fact]
-        public async Task AddAccountTest () 
+        public async Task AddAccountTest() 
         {
             //Arrange
             //Act
@@ -34,6 +38,10 @@ namespace WCO_API_Tests.ControllersTest
             Assert.IsType<CreatedResult>(result);
         }
 
+        /// <summary>
+        /// Method <c>getAccountByNicknameTest</c> método que extrae todos los datos de un 
+        /// usuario de acuerdo con el nickname consultado a la base de datos.
+        /// </summary>
         [Fact]
         public async Task getAccountByNicknameTest()
         {
@@ -45,6 +53,10 @@ namespace WCO_API_Tests.ControllersTest
             Assert.IsType<List<AccountWEB>>(result);
         }
 
+        /// <summary>
+        /// Method <c>getInformationAccountByEmailTest</c> método que extrae todos los datos de un 
+        /// usuario de acuerdo con el email consultado a la base de datos.
+        /// </summary>
         [Fact]
         public async Task getInformationAccountByEmailTest()
         {
@@ -57,6 +69,10 @@ namespace WCO_API_Tests.ControllersTest
         }
 
 
+        /// <summary>
+        /// Method <c>getRoleAccountByEmailTest</c> método que extrae un booleano para indicar si el usuario consultado
+        /// por email tiene rol de admin.
+        /// </summary>
         [Fact]
         public async Task getRoleAccountByEmailTest()
         {
@@ -66,6 +82,21 @@ namespace WCO_API_Tests.ControllersTest
             var result = await this.accountController.getRoleAccountByEmail(email);
             //Assert
             Assert.False(result);
+        }
+
+        /// <summary>
+        /// Method <c>loginAccountTest</c> método que consulta las credenciales del usuario a la
+        /// base de datos para saber si está registrado en el sistema. 
+        /// </summary>
+        [Fact]
+        public async Task loginAccountTest()
+        {
+            //Arrange
+            LoginAccountWEB login = new LoginAccountWEB() { email = "jj@gmail.com", password = "12345678" };
+            //Act
+            var result = await this.accountController.loginAccount(login);
+            //Assert
+            Assert.True(result);
         }
     }
 }
