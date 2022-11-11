@@ -62,7 +62,15 @@ form .input-box span.details{
   text-align: center;
 }
 
+::ng-deep snack-bar-container.red-snackbar {
+  background: #F44336;
+  color: white;
+}
 
+::ng-deep snack-bar-container.green-snackbar {
+  background: rgb(15, 206, 15);
+  color: white;
+}
 
 .account-details .input-box input{
   height: 45px;

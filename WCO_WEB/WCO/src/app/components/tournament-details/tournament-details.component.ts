@@ -18,6 +18,7 @@ import { DbMatch } from 'src/app/interface/db-match';
   styleUrls: ['./tournament-details.component.css'],
 })
 export class TournamentDetailsComponent implements OnInit {
+  scope: any;
   tournamentID: string = '';
   tournamentsData: Tournaments[] = [];
   bracketsData: DbBracket[] = [];
@@ -42,6 +43,7 @@ export class TournamentDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.scope = localStorage.getItem('scope');
     this.connection.tournamentId.subscribe(
       (data) => (this.tournamentID = data)
     );

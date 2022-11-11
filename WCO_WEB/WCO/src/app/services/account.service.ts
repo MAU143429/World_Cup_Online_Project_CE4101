@@ -14,7 +14,7 @@ export class AccountService {
   /**
    * Este metodo nos permite comunicarnos con API para enviar
    * toda la información necesaria para crear una cuenta
-   * @param newTournament objeto con la información de la cuenta a crear
+   * @param newAccount objeto con la información de la cuenta a crear
    * @returns status de la creación de la cuenta.
    */
   createAccount(newAccount: CreateAccount): Observable<any> {
@@ -28,7 +28,9 @@ export class AccountService {
    * @returns cuenta de usuario en caso de existir, lista vacia si no existe cuenta.
    */
   getAccountByEmail(email: any): Observable<any> {
-    return this.wco.getData(this.url + '/GetAccountByEmail/' + email);
+    return this.wco.getData(
+      this.url + '/GetInformationAccountByEmail/' + email
+    );
   }
 
   /**
@@ -38,5 +40,24 @@ export class AccountService {
    */
   getAccountByNickname(nickname: any): Observable<any> {
     return this.wco.getData(this.url + '/GetAccountByNickname/' + nickname);
+  }
+
+  /**
+   * Este metodo nos permite verificar las credenciales del usuario.
+   * @param login datos de inicio de sesion
+   * @returns boolean que nos indica si el login puede proceder
+   */
+  newLogin(login: any): Observable<any> {
+    return this.wco.create(this.url + '/Login', login);
+  }
+
+  /**
+   * Este metodo nos permite conocer el rol que tiene el usuario logeado
+   * @returns el rol que tiene el usuario logeado
+   */
+  getRole(): Observable<any> {
+    return this.wco.getData(
+      this.url + '/Role/' + localStorage.getItem('email')
+    );
   }
 }

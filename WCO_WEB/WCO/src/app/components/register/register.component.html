@@ -45,14 +45,14 @@
 
           <div class="input-box2">
             <span style="color: rgb(4, 0, 255);" ><a href="https://www.fifa.com/es/terms-of-service">Mostrar Términos y Condiciones</a></span><br>
-            <span><input type="checkbox"> Aceptar Términos y Condiciones</span>
+            <span><input type="checkbox" (click)="changeStatus()" > Aceptar Términos y Condiciones</span>
           </div>
           <div class="input-box2">
             <span>Ya tienes una cuenta? Ingresa <a routerLink="/login" style="color: rgb(4, 0, 255);">aquí</a></span>
           </div>
         </div>
         <div class="button">
-          <input type="submit" value="Crear cuenta" routerLink="/login" (click)="addUser()">
+          <input type="submit" value="Crear cuenta" (click)="addUser()">
         </div>
 
       </form>
