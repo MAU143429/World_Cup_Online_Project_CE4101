@@ -13,25 +13,6 @@ namespace WCO_API_Tests.ControllersTest
         MatchController matchController;
         MatchWEB matchWEB;
 
-        /*
-         * 
-         *         
-        public string startTime { get; set; }
-
-        public string date { get; set; }
-
-        public string venue { get; set; }
-
-        public int? scoreT1 { get; set; } = 0;
-
-        public int? scoreT2 { get; set; } = 0;
-
-        public int bracketId { get; set; }
-
-        public int idTeam1 { get; set; }
-
-        public int idTeam2 { get; set; }
-         * **/
 
         public MatchControllerTest()
         {
@@ -106,6 +87,21 @@ namespace WCO_API_Tests.ControllersTest
             Assert.IsType<List<PlayerWEB>>(result);
         }
 
+        /// <summary>
+        /// Method <c>GetPlayersbyBothTeamIdTest</c> método que prueba la extracción de los jugadores
+        /// de los dos equipos desde la base de datos según la llave primaria, de forma existosa
+        /// </summary>
+        [Fact]
+        public async Task GetPlayersbyBothTeamIdTest()
+        {
+            //Arrange
+            int id_team1 = 0;
+            int id_team2 = 1;
+            //Act
+            var result = await this.matchController.GetPlayersbyBothTeamId(id_team1, id_team2);
+            //Assert
+            Assert.IsType<List<PlayerWEB>>(result);
+        }
     }
 
 
