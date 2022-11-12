@@ -10,13 +10,13 @@ namespace WCO_API_Tests
 {
     public class TournamentControllerTest
     {
-        TournamentController _tournamentController;
-        readonly TournamentWEB _tournamentWEB;
+        TournamentController tournamentControllerMock;
+        readonly TournamentWEB tournamentWEBMock;
 
         public TournamentControllerTest()
         {
-            _tournamentController = new TournamentController();
-            _tournamentWEB = new TournamentWEB()
+            tournamentControllerMock = new TournamentController();
+            tournamentWEBMock = new TournamentWEB()
             {
                 Name = "UEFA Champions League",
                 StartDate = "11-20-2022",
@@ -39,7 +39,7 @@ namespace WCO_API_Tests
 
             //Arrange
             //Act
-            var result = await this._tournamentController.createTournament(this._tournamentWEB);
+            var result = await this.tournamentControllerMock.createTournament(this.tournamentWEBMock);
             //Assert
             Assert.IsType<CreatedResult>(result);
         }
@@ -53,7 +53,7 @@ namespace WCO_API_Tests
             //Arrange
             string onTestId = "4fc417";
             //Act
-            var result = await this._tournamentController.getTournamentById(onTestId);
+            var result = await this.tournamentControllerMock.getTournamentById(onTestId);
             //Assert
             Assert.IsType<List<TournamentOut>>(result);
         }
@@ -67,7 +67,7 @@ namespace WCO_API_Tests
         {
             //Arrange
             //Act
-            var result = await this._tournamentController.getTournaments();
+            var result = await this.tournamentControllerMock.getTournaments();
             //Assert
             Assert.IsType<List<TournamentOut>>(result);
         }
@@ -82,7 +82,7 @@ namespace WCO_API_Tests
             //Arrange
             string tournamentTyoe = "Local";
             //Act
-            var result = await this._tournamentController.getTeamsByType(tournamentTyoe);
+            var result = await this.tournamentControllerMock.getTeamsByType(tournamentTyoe);
             //Assert
             Assert.IsAssignableFrom<IEnumerable<TeamWEB>>(result);
         }
@@ -96,7 +96,7 @@ namespace WCO_API_Tests
             //Arrange
             string onTestId = "df0134";
             //Act
-            var result = await this._tournamentController.GetTeamsByTournamentId(onTestId);
+            var result = await this.tournamentControllerMock.GetTeamsByTournamentId(onTestId);
             //Assert
             Assert.IsAssignableFrom<IEnumerable<TeamWEB>>(result);
         }

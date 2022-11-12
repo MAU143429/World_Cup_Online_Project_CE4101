@@ -10,12 +10,12 @@ namespace WCO_API_Tests.ControllersTest
 {
     public class AccountControllerTest
     {
-        AccountController accountController;
-        AccountWEB account;
+        AccountController accountControllerMock;
+        AccountWEB accountMock;
         public AccountControllerTest()
         {
-            accountController = new AccountController();
-            account = new AccountWEB()
+            accountControllerMock = new AccountController();
+            accountMock = new AccountWEB()
             {
                 birthdate = "12-12-2000", country = "CRC",
                 email = "jj@gmail.com", isAdmin = false, lastname = "Mora", name = "Manu",
@@ -33,7 +33,7 @@ namespace WCO_API_Tests.ControllersTest
         {
             //Arrange
             //Act
-            var result = await this.accountController.createAccount(this.account);
+            var result = await this.accountControllerMock.createAccount(this.accountMock);
             //Assert
             Assert.IsType<CreatedResult>(result);
         }
@@ -48,7 +48,7 @@ namespace WCO_API_Tests.ControllersTest
             //Arrange
             string nickname = "manumora";
             //Act
-            var result = await this.accountController.getAccountByNickname(nickname);
+            var result = await this.accountControllerMock.getAccountByNickname(nickname);
             //Assert
             Assert.IsType<List<AccountWEB>>(result);
         }
@@ -63,7 +63,7 @@ namespace WCO_API_Tests.ControllersTest
             //Arrange
             string email = "jj@gmail.com";
             //Act
-            var result = await this.accountController.getInformationAccountByEmail(email);
+            var result = await this.accountControllerMock.getInformationAccountByEmail(email);
             //Assert
             Assert.IsType<List<AccountWEB>>(result);
         }
@@ -79,7 +79,7 @@ namespace WCO_API_Tests.ControllersTest
             //Arrange
             string email = "jj@gmail.com";
             //Act
-            var result = await this.accountController.getRoleAccountByEmail(email);
+            var result = await this.accountControllerMock.getRoleAccountByEmail(email);
             //Assert
             Assert.False(result);
         }
@@ -94,7 +94,7 @@ namespace WCO_API_Tests.ControllersTest
             //Arrange
             LoginAccountWEB login = new LoginAccountWEB() { email = "jj@gmail.com", password = "12345678" };
             //Act
-            var result = await this.accountController.loginAccount(login);
+            var result = await this.accountControllerMock.loginAccount(login);
             //Assert
             Assert.True(result);
         }

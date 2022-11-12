@@ -10,14 +10,14 @@ namespace WCO_API_Tests.ControllersTest
 {
     public class MatchControllerTest
     {
-        MatchController matchController;
-        MatchWEB matchWEB;
+        MatchController matchControllerMock;
+        MatchWEB matchWEBMock;
 
 
         public MatchControllerTest()
         {
-            matchController = new MatchController();
-            matchWEB = new MatchWEB() 
+            matchControllerMock = new MatchController();
+            matchWEBMock = new MatchWEB() 
             {   
                 startTime = "12:00", date = "11-12-2022", 
                 idTeam1 = 0, idTeam2 = 1, scoreT1 = 0 , scoreT2 = 0,
@@ -36,7 +36,7 @@ namespace WCO_API_Tests.ControllersTest
         {
             //Arrange
             //Act
-            var result = await this.matchController.createMatch(this.matchWEB);
+            var result = await this.matchControllerMock.createMatch(this.matchWEBMock);
             //Assert
             Assert.IsType<CreatedResult>(result);
         }
@@ -51,7 +51,7 @@ namespace WCO_API_Tests.ControllersTest
             //Arrange
             int firstMatchCreated = 0;
             //Act
-            var result = await this.matchController.getMatchById(firstMatchCreated);
+            var result = await this.matchControllerMock.getMatchById(firstMatchCreated);
             //Assert
             Assert.IsType<List<MatchOut>>(result);
         }
@@ -66,7 +66,7 @@ namespace WCO_API_Tests.ControllersTest
             //Arrange
             string currentTournamentId = "df0134";
             //Act
-            var result = await this.matchController.getMatchesByTournamentId(currentTournamentId);
+            var result = await this.matchControllerMock.getMatchesByTournamentId(currentTournamentId);
             //Assert
             Assert.IsType<List<List<MatchOut>>>(result);
         }
@@ -82,7 +82,7 @@ namespace WCO_API_Tests.ControllersTest
             //Arrange
             int id_team1 = 0;
             //Act
-            var result = await this.matchController.GetPlayersbyTeamId(id_team1);
+            var result = await this.matchControllerMock.GetPlayersbyTeamId(id_team1);
             //Assert
             Assert.IsType<List<PlayerWEB>>(result);
         }
@@ -98,7 +98,7 @@ namespace WCO_API_Tests.ControllersTest
             int id_team1 = 0;
             int id_team2 = 1;
             //Act
-            var result = await this.matchController.GetPlayersbyBothTeamId(id_team1, id_team2);
+            var result = await this.matchControllerMock.GetPlayersbyBothTeamId(id_team1, id_team2);
             //Assert
             Assert.IsType<List<PlayerWEB>>(result);
         }
