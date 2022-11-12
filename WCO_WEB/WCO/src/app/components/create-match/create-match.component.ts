@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { Tournaments } from 'src/app/interface/tournaments';
 import { DbTeam } from 'src/app/model/db-team';
 import { Dropdown } from 'src/app/model/dropdown';
-import { Match } from 'src/app/model/match';
-import { InternalService } from 'src/app/services/internal.service';
-import { MatchesService } from 'src/app/services/matches.service';
-import { TournamentService } from 'src/app/services/tournament.service';
+import { Match } from '../../model/match';
+import { InternalService } from '../../services/internal.service';
+import { MatchesService } from '../../services/matches.service';
+import { TournamentService } from '../../services/tournament.service';
 
 @Component({
   selector: 'app-create-match',
