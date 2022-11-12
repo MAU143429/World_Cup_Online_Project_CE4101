@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
-
-import { AccountService } from '../../services/account.service';
 import { RegisterComponent } from './register.component';
+
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
+import { AccountService } from '../../services/account.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('RegisterComponent', () => {
