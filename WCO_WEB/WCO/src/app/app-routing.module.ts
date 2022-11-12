@@ -9,6 +9,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
+  { path: '', component: LoginComponent },
   { path: 'home', component: TournamentsComponent },
   { path: 'create-tournaments', component: CreateTournamentComponent },
   { path: 'tournament-details', component: TournamentDetailsComponent },

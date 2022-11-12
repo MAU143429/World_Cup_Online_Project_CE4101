@@ -236,7 +236,7 @@ export class MatchDetailsComponent implements OnInit {
         this.predictionService
           .addNewPrediction(this.newPrediction)
           .subscribe((data) => console.log(data));
-        this.router.navigate(['/tournament-details']);
+        this.router.navigate(['/home']);
         console.log(this.newPrediction);
       }
     });
