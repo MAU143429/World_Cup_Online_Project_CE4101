@@ -16,8 +16,9 @@ namespace WCO_Api.Models
         MatchRepository matchRepository = new MatchRepository();
         TournamentRepository tournamentRepository = new TournamentRepository();
 
-        /**
-         * Petición que se encarga de agregar un partido a la tabla Matches
+        /*
+         * Recibe un objeto MarchWEB, se hacen las operaciones necesarias para poder crear un partido
+         * Retorna un Task<IActionResult> indicando si se pudo crear el partido o no
          */
 
         [HttpPost("AddMatch")]
@@ -43,7 +44,7 @@ namespace WCO_Api.Models
 
         /**
          * Obtiene los partidos por bracket id
-         * Revibe un entero que representa el id del bracket en la base de datos
+         * Recibe un entero que representa el id del bracket en la base de datos
          */
 
         [HttpGet("getMatchesByTournamentId/{id}")]
@@ -73,7 +74,12 @@ namespace WCO_Api.Models
             
             return allMatches;
         }
-         
+
+        /*
+         * Recibe un int id, se hacen las operaciones necesarias para devolver una lista que contiene un objeto MatchOut 
+         * Retorna un Task<List<MatchOut>> con la información necesaria para la web
+         */
+
         [HttpGet("GetMatchbyId/{id}")]
         public async Task<List<MatchOut>> getMatchById(int id)
         {
@@ -82,6 +88,11 @@ namespace WCO_Api.Models
 
         }
 
+        /*
+         * Recibe un int id, se hacen las operaciones necesarias para devolver una lista que contiene un objeto PlayerWEB
+         * Retorna un Task<List<PlayerWEB>> con la información necesaria para la web
+         */
+
         [HttpGet("GetPlayersbyTeamId/{id}")]
         public async Task<List<PlayerWEB>> GetPlayersbyTeamId(int id)
         {
@@ -89,6 +100,11 @@ namespace WCO_Api.Models
             return (List<PlayerWEB>)await matchRepository.getPlayersbyTeamId(id);
 
         }
+
+        /*
+         * Recibe un int id1 y int id2, se hacen las operaciones necesarias para devolver una lista que contiene un objetos PlayerWEB que son los jugadores del equipo con te_id=id1 y te_id=id2
+         * Retorna un Task<List<PlayerWEB>> con la información necesaria para la web
+         */
 
         [HttpGet("GetPlayersbyBothTeamId/{id1}/{id2}")]
         public async Task<List<PlayerWEB>> GetPlayersbyBothTeamId(int id1, int id2)

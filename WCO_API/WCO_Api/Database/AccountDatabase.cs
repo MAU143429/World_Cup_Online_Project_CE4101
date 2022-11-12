@@ -3,10 +3,11 @@ using WCO_Api.WEBModels;
 
 namespace WCO_Api.Database
 {
-    /// <summary>
+    /* <summary>
     /// Class <c>AccountDatabase</c> propiedad AccountDatabase que realiza las operaciones
     /// asociadas a Account con WCO DB.
     /// </summary>
+    /// */
     public class AccountDatabase
     {
         string CONNECTION_STRING;
@@ -16,10 +17,11 @@ namespace WCO_Api.Database
             CONNECTION_STRING = "Data Source=localhost;Initial Catalog=WCODB;Integrated Security=True";
         }
 
-        /// <summary>
+        /* <summary>
         /// Method <c>insertAccount</c> método que se comunica con WCO DB para realizar la inserción 
         /// de una nueva cuenta.
         /// </summary>
+        */
         public async Task<int> insertAccount(AccountWEB account)
         {
             SqlConnection myConnection = new();
@@ -39,6 +41,10 @@ namespace WCO_Api.Database
 
             return created;
         }
+
+        /*
+         * Query para obtener una cuenta respecto a su email
+         */
 
         public async Task<AccountWEB?> getAccountByEmail(string inputEmail)
         {
@@ -74,6 +80,10 @@ namespace WCO_Api.Database
             return fromResponse;
 
         }
+
+        /*
+         * Query para obtener una cuenta respecto a su nickname
+         */
 
         public async Task<List<AccountWEB?>> getAccountByNickname(string nick)
         {
@@ -116,6 +126,10 @@ namespace WCO_Api.Database
             return accountL;
         }
 
+        /*
+         * Query para obtener la información de una cuenta respecto a su email
+         */
+
         public async Task<List<AccountWEB>> getInformationAccountByEmail(string email)
         {
             SqlConnection myConnection = new();
@@ -156,6 +170,10 @@ namespace WCO_Api.Database
 
             return accountL;
         }
+
+        /*
+         * Query para obtener el rol de una cuenta respecto a su email
+         */
 
         public async Task<bool> getRoleAccountByEmail(string email)
         {
