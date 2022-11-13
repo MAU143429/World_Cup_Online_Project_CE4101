@@ -139,40 +139,8 @@ namespace WCO_Api.Controllers
 
             tournament.ToId = newuuid;
 
-            TournamentOut to = new TournamentOut();
-            to.ToId = newuuid;
-            to.Name = tournament.Name;
-            to.StartDate = tournament.StartDate;
-            to.EndDate = tournament.EndDate;
-            to.Description = tournament.Description;
-            to.Type = tournament.Type;
-
-            var created = await tournamentRepository.createNewTournament(to);
+            var created = await tournamentRepository.createNewTournament(tournament);
             
-            //Agregar Brackets webmodel
-            foreach (var bracket in tournament.brackets)
-            {
-                BracketWEB newBracket = new BracketWEB();
-
-                newBracket.Name = bracket;
-                newBracket.TournamentId = newuuid;
-
-                var create2 = await tournamentRepository.createNewBracket(newBracket);
-
-            }
-            //Put a equipo
-
-            foreach (var team in tournament.teams)
-            {
-                TeamOut dbTeam= new TeamOut();
-
-                dbTeam.TeId = team;
-                dbTeam.TournamentId = newuuid;
-
-                var created3 = await tournamentRepository.updateTeamId(dbTeam);
-
-            }
-
             return Created("created", created);
         }
     }
