@@ -4,13 +4,13 @@ import { CreatePrediction } from '../../model/create-prediction';
 import { Prediction } from 'src/app/model/prediction';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DbMatch } from 'src/app/model/db-match';
-import { MatchesService } from '../../services/matches.service';
+import { MatchesService } from 'src/app/services/matches.service';
 import { DbPlayer } from 'src/app/model/db-player';
 import { Dropdown } from 'src/app/model/dropdown';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import da from '@mobiscroll/angular/dist/js/i18n/da';
 import { Router } from '@angular/router';
-import { PredictionsService } from '../../services/predictions.service';
+import { PredictionsService } from 'src/app/services/predictions.service';
 import { loadTranslations } from '@angular/localize';
 
 var initialPrediction = {

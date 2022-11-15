@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="create-groups.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<app-navbar></app-navbar>
+<body>
+  <div class="container">
+    <div class="title">Crear un grupo</div>
+    <div class="content">
+      <form>
+        <div class="group-details">
+
+          <div class="input-box">
+            <span class="details" >Nombre del grupo <span style="color: rgb(245, 59, 59);">*</span> </span>
+            <input type="text"  minlength="5" maxlength="30"   placeholder="Ingrese un nombre de grupo..." required>
+          </div>
+          <div class="input-box">
+            <span class="details" >Torneo<span style="color: rgb(245, 59, 59);">*</span></span>
+            <mbsc-select [data]="allTournaments" [touchUi]="false"   placeholder="Seleccione el torneo" ></mbsc-select>
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Crear Grupo" >
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+

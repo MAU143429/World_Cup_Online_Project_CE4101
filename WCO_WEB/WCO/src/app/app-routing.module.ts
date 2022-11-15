@@ -7,10 +7,18 @@ import { CreateMatchComponent } from './components/create-match/create-match.com
 import { MatchDetailsComponent } from './components/match-details/match-details.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { ScoresComponent } from './components/scores/scores.component';
+import { GroupsComponent } from './components/groups/groups.component';
+import { GroupDetailsComponent } from './components/group-details/group-details.component';
+import { CreateGroupsComponent } from './components/create-groups/create-groups.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'home', component: TournamentsComponent },
+  { path: 'scores', component: ScoresComponent },
+  { path: 'groups', component: GroupsComponent },
+  { path: 'create-groups', component: CreateGroupsComponent },
+  { path: 'group-details', component: GroupDetailsComponent },
   { path: 'create-tournaments', component: CreateTournamentComponent },
   { path: 'tournament-details', component: TournamentDetailsComponent },
   { path: 'create-match', component: CreateMatchComponent },
