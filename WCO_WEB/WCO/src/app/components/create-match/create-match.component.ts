@@ -1,13 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { Tournaments } from 'src/app/interface/tournaments';
-import { DbTeam } from 'src/app/model/db-team';
-import { Dropdown } from 'src/app/model/dropdown';
-import { Match } from '../../model/match';
-import { InternalService } from '../../services/internal.service';
-import { MatchesService } from '../../services/matches.service';
 import { TournamentService } from '../../services/tournament.service';
+import { MatchesService } from '../../services/matches.service';
+import { Tournaments } from 'src/app/interface/tournaments';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, Input, OnInit } from '@angular/core';
+import { Dropdown } from 'src/app/model/dropdown';
+import { DbTeam } from 'src/app/model/db-team';
+import { Match } from '../../model/match';
 
 @Component({
   selector: 'app-create-match',
@@ -15,7 +13,6 @@ import { TournamentService } from '../../services/tournament.service';
   styleUrls: ['./create-match.component.css'],
 })
 export class CreateMatchComponent implements OnInit {
-  tournamentID = '';
   tournamentsData: Tournaments[] = [];
   bracket: any;
   datetime: string = '';
@@ -24,45 +21,31 @@ export class CreateMatchComponent implements OnInit {
   myTeams: Dropdown[] = [];
 
   constructor(
-    private game: MatchesService,
+    private matchservice: MatchesService,
     private service: TournamentService,
-    private connection: InternalService,
-    private router: Router,
     private _snackBar: MatSnackBar
   ) {}
 
-  /**
-   * Este metodo permite realizar un pequeño delay
-   * @param ms el tiempo del delay en ms
-   */
-  async delay(ms: number) {
-    await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
-      () => console.log('fired')
-    );
-  }
-
   ngOnInit(): void {
-    this.connection.tournamentId.subscribe(
-      (data) => (this.tournamentID = data)
-    );
     this.service
-      .getTournamentbyID(this.tournamentID)
+      .getTournamentbyID(localStorage.getItem('toID'))
       .subscribe((data) => (this.tournamentsData = data));
 
-    this.connection.currentBracket.subscribe((data) => (this.bracket = data));
-    this.service.getTournamentTeams(this.tournamentID).subscribe((data) => {
-      this.allTournamentsTeams = data;
+    this.bracket = localStorage.getItem('currentBracket');
 
-      var teams: Dropdown[] = [];
-      this.allTournamentsTeams.forEach((value) => {
-        var dropdownObject: Dropdown = { text: '', value: 0 };
-        dropdownObject.text = value.name;
-        dropdownObject.value = value.teId;
-        teams.push(dropdownObject);
+    this.service
+      .getTournamentTeams(localStorage.getItem('toID'))
+      .subscribe((data) => {
+        this.allTournamentsTeams = data;
+        var teams: Dropdown[] = [];
+        this.allTournamentsTeams.forEach((value) => {
+          var dropdownObject: Dropdown = { text: '', value: 0 };
+          dropdownObject.text = value.name;
+          dropdownObject.value = value.teId;
+          teams.push(dropdownObject);
+        });
+        this.myTeams = teams;
       });
-      console.log(teams);
-      this.myTeams = teams;
-    });
   }
 
   /**
@@ -82,12 +65,31 @@ export class CreateMatchComponent implements OnInit {
     return datetime.split('T', 2)[1];
   }
 
-  openSnackBar(message: string, message2: string) {
+  /**
+   * Metodo para mostrar alerta de error por 2 segundos
+   * @param message1 Mensaje de error
+   * @param message2 Mensaje para cerrar alerta
+   */
+  openError(message: string, message2: string) {
     this._snackBar.open(message, message2, {
       duration: 2000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: 'red-snackbar',
+    });
+  }
+
+  /**
+   * Metodo para mostrar alerta de exito por 2 segundos
+   * @param message1 Mensaje de exito
+   * @param message2 Mensaje para cerrar alerta
+   */
+  openSuccess(message1: string, message2: string) {
+    this._snackBar.open(message1, message2, {
+      duration: 2000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: 'green-snackbar',
     });
   }
 
@@ -99,6 +101,7 @@ export class CreateMatchComponent implements OnInit {
     console.log(this.newMatch.idTeam1);
     console.log(this.newMatch.idTeam2);
     var startD = new Date();
+
     if (this.datetime != '') {
       this.newMatch.date = this.getDate(this.datetime);
       this.newMatch.startTime = this.getTime(this.datetime);
@@ -115,33 +118,31 @@ export class CreateMatchComponent implements OnInit {
       this.newMatch.idTeam1 == null ||
       this.newMatch.idTeam2 == null
     ) {
-      this.openSnackBar(
+      this.openError(
         'Falta al menos uno de los espacios requeridos!',
         'Intente de nuevo'
       );
     } else if (today > startD) {
-      this.openSnackBar(
+      this.openError(
         'La fecha ingresa es invalida!',
         'No se pueden crear partidos en el pasado'
       );
     } else if (startD < startTournamentDate || startD > endTournamentDate) {
-      this.openSnackBar(
+      this.openError(
         'La fecha ingresa es invalida!',
         'No es posible crear el partido en fechas fuera de torneo'
       );
     } else if (this.newMatch.idTeam1 == this.newMatch.idTeam2) {
-      this.openSnackBar(
+      this.openError(
         'Error al crear el partido!',
         'El equipo 1 y el equipo 2 son el mismo!'
       );
     } else {
-      this.game
+      this.matchservice
         .addNewMatch(this.newMatch)
         .subscribe((match) => console.log(match));
 
-      this.delay(100).then(() => {
-        this.router.navigate(['/tournament-details']);
-      });
+      this.openSuccess('Partido creado con éxito', 'Ok');
     }
   }
 }

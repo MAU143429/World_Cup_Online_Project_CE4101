@@ -18,7 +18,7 @@
             <span class="subtitle" >Torneo: {{data.name}} </span>
           </div>
           <div class="input-box1">
-            <span class="subtitle" >Fase: {{bracket.name}} </span>
+            <span class="subtitle" >Fase: {{bracket}} </span>
           </div>
           <div class="input-box">
             <span class="details" >Sede del partido<span style="color: rgb(245, 59, 59);">*</span> </span>
@@ -40,7 +40,7 @@
         </div>
         </div>
         <div class="button">
-          <input type="submit" value="Agregar Partido" (click)="insertMatch()" >
+          <input type="submit" value="Agregar Partido" (click)="insertMatch()" routerLink="/tournament-details" >
         </div>
       </form>
     </div>

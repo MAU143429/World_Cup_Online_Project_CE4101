@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
 import { TournamentService } from '../../services/tournament.service';
-import { InternalService } from '../../services/internal.service';
 import { Tournaments } from '../../interface/tournaments';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-tournaments',
@@ -11,10 +10,7 @@ import { Tournaments } from '../../interface/tournaments';
 export class TournamentsComponent implements OnInit {
   tournamentsData: Tournaments[] = [];
   scope: any;
-  constructor(
-    private service: TournamentService,
-    private connection: InternalService
-  ) {}
+  constructor(private service: TournamentService) {}
 
   ngOnInit(): void {
     this.service.getTournaments().subscribe((data: Tournaments[]) => {
@@ -28,6 +24,6 @@ export class TournamentsComponent implements OnInit {
    * se puede abrir desde la vista detallada.
    */
   openTournament(id: string) {
-    this.connection.setTournamentId(id);
+    localStorage.setItem('toID', id);
   }
 }
