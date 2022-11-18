@@ -22,22 +22,48 @@ namespace WCO_Api.Database
         /// </summary>
         public async Task<int> insertAccount(AccountWEB account)
         {
-            SqlConnection myConnection = new();
+           
+            SqlTransaction transaction = null;
+            SqlConnection myConnection = null;
+            SqlCommand command = null;
 
-            myConnection.ConnectionString = CONNECTION_STRING;
+            try
+            {
 
-            string query =
+                myConnection = new SqlConnection(CONNECTION_STRING);
+
+                myConnection.Open();
+
+                //Start the transaction
+                transaction = myConnection.BeginTransaction();
+
+                string query =
                           $"INSERT INTO [dbo].[Account] ([nickname], [email], [name], [lastName], [birthdate], [country], [password], [isAdmin])" +
                           $"VALUES ('{account.nickname}', '{account.email}', '{account.name}', '{account.lastname}', '{account.birthdate}', " +
                           $"'{account.country}', '{account.password}', '{account.isAdmin}');";
 
-            SqlCommand sqlCmd = new(query, myConnection);
+                command = new SqlCommand(query, myConnection);
 
-            myConnection.Open();
-            var created = sqlCmd.ExecuteNonQuery();
-            myConnection.Close();
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla torneos el torneo en sí
+                command.ExecuteNonQuery();
 
-            return created;
+                transaction.Commit();
+
+                return 1;
+            }
+            catch (Exception error)
+            {
+                transaction.Rollback();
+                Console.WriteLine(error);
+                return -1;
+            }
+            finally
+            {
+                myConnection.Close();
+            }
+
         }
 
         public async Task<AccountWEB?> getAccountByEmail(string inputEmail)

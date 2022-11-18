@@ -41,21 +41,6 @@ namespace WCO_Api.Database
                 //Se inserta a la tabla torneos el torneo en sí
                 command.ExecuteNonQuery();
 
-                /*
-                //Para que muera la vara
-
-                string queryE = $"INSERT INTO [dbo].[Tournament] ([to_id], [name], [startDate], [endDate], [description], [type])" +
-                          $"VALUES ('{newTournament.ToId}', '{newTournament.Name}', '{newTournament.StartDate}', '{newTournament.EndDate}', '{newTournament.Description}' , '{newTournament.Type}');";
-
-                command = new SqlCommand(queryE, myConnection);
-
-                //assosiate the command-variable with the transaction
-                command.Transaction = transaction;
-
-                //Se inserta a la tabla torneos el torneo en sí
-                command.ExecuteNonQuery();
-                */
-
                 //Crear los brackets asociados al torneo
 
                 foreach (var bracketName in newTournament.brackets)
@@ -99,7 +84,6 @@ namespace WCO_Api.Database
             finally {
                 myConnection.Close();
             }
-
 
         }
 
