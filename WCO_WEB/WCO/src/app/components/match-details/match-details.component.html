@@ -52,6 +52,8 @@
           </div>
 
           <div class="input-box3">
+            <span class="subtitle" >Elija el ganador<span style="color: rgb(245, 59, 59);">*</span></span>
+            <mbsc-select [data]="winOptions" [touchUi]="false"  [(ngModel)]= "newPrediction.winner" [ngModelOptions]="{standalone: true}" placeholder="Seleccione un ganador" ></mbsc-select>
             <span class="subtitle" >Elija el jugador MVP<span style="color: rgb(245, 59, 59);">*</span></span>
             <mbsc-select [data]="players" [touchUi]="false"  [(ngModel)]= "newPrediction.PId" [ngModelOptions]="{standalone: true}" placeholder="Seleccione el MVP" ></mbsc-select>
           </div>

@@ -26,14 +26,15 @@ export class MatchDetailsComponent implements OnInit {
   myPrediction: CreatePrediction = new CreatePrediction();
   matchData: DbMatch[] = [];
   allPredictions: Prediction[] = [];
-  goalsT1: number[] = new Array(20).fill(0);
-  goalsT2: number[] = new Array(20).fill(0);
+  goalsT1: number[] = new Array(21).fill(0);
+  goalsT2: number[] = new Array(21).fill(0);
   assistsT1: number[] = new Array(20).fill(0);
   assistsT2: number[] = new Array(20).fill(0);
   currentMatch: number = 0;
   playersteam1: DbPlayer[] = [];
   playersteam2: DbPlayer[] = [];
   players: Dropdown[] = [];
+  winOptions: any[] = [];
 
   constructor(
     private connection: InternalService,
@@ -57,19 +58,17 @@ export class MatchDetailsComponent implements OnInit {
     this.matchService
       .getMatchesById(localStorage.getItem('currentMatch'))
       .subscribe((data) => (this.matchData = data));
-
-    this.predictionService
-      .getPredictionbyIds(
-        localStorage.getItem('email'),
-        localStorage.getItem('nickname'),
-        this.matchData[0].mId
-      )
-      .subscribe((data) => {
-        this.myPrediction = data;
-        console.log(this.myPrediction);
-      });
-
     this.delay(50).then(() => {
+      var winT1: Dropdown = {
+        text: this.matchData[0].teams[0].name,
+        value: this.matchData[0].teams[0].teId,
+      };
+      var winT2: Dropdown = {
+        text: this.matchData[0].teams[1].name,
+        value: this.matchData[0].teams[1].teId,
+      };
+      var draw: Dropdown = { text: 'Empate', value: 0 };
+      this.winOptions = [winT1, winT2, draw];
       this.matchService
         .getAllPlayersByTeamsId(
           this.matchData[0].teams[0].teId,
@@ -84,9 +83,23 @@ export class MatchDetailsComponent implements OnInit {
             teams.push(dropdownObject);
           });
           this.players = teams;
-          console.log(data);
+          var ownGoalT1: DbPlayer = { pId: 1000, name: 'Autogol', tId: 1000 };
+          var ownGoalT2: DbPlayer = { pId: 1000, name: 'Autogol', tId: 1000 };
           this.playersteam1 = data.slice(0, 20);
+          this.playersteam1.push(ownGoalT1);
           this.playersteam2 = data.slice(20, 40);
+          this.playersteam2.push(ownGoalT2);
+        });
+
+      this.predictionService
+        .getPredictionbyIds(
+          localStorage.getItem('email'),
+          localStorage.getItem('nickname'),
+          this.matchData[0].mId
+        )
+        .subscribe((data) => {
+          this.myPrediction = data;
+          console.log(this.myPrediction);
         });
     });
   }
@@ -102,7 +115,6 @@ export class MatchDetailsComponent implements OnInit {
           goals: 0,
           assists: 0,
         };
-
         initialPrediction.PId = this.playersteam1[i].pId;
         initialPrediction.goals = this.goalsT1[i];
         initialPrediction.assists = this.assistsT1[i];
@@ -122,7 +134,6 @@ export class MatchDetailsComponent implements OnInit {
           goals: 0,
           assists: 0,
         };
-        console.log(this.playersteam2);
         initialPrediction2.PId = this.playersteam2[i].pId;
         initialPrediction2.goals = this.goalsT2[i];
         initialPrediction2.assists = this.assistsT2[i];
@@ -199,11 +210,23 @@ export class MatchDetailsComponent implements OnInit {
     this.newPrediction.acc_nick = localStorage.getItem('nickname');
     this.newPrediction.match_id = this.matchData[0].mId;
     this.associatePredictionsT1();
-    this.delay(100).then(() => {
+    this.delay(20).then(() => {
       this.associatePredictionsT2();
 
+      console.log('Pid', this.newPrediction.PId);
+      console.log('Winner', this.newPrediction.winner);
       // Verificar que campo de MVP se haya llenado
-      if (
+      if (this.newPrediction.winner == null) {
+        this.openError(
+          'Debe agregar un ganador para continuar',
+          'Intente de nuevo'
+        );
+      } else if (this.newPrediction.PId == null) {
+        this.openError(
+          'Debe agregar un MVP para continuar',
+          'Intente de nuevo'
+        );
+      } else if (
         !(
           this.goalCount(this.goalsT1) == this.newPrediction.goalsT1 &&
           this.goalCount(this.goalsT2) == this.newPrediction.goalsT2
