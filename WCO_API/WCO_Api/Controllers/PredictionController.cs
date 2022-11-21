@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using WCO_Api.Repository;
 using WCO_Api.WEBModels;
 
+/**
+ * Controlador encargado de realizar las acciones relacionadas con las Predicciones
+ * 
+*/
+
 namespace WCO_Api.Controllers
 {
     [Route("api/[controller]")]
@@ -11,6 +16,11 @@ namespace WCO_Api.Controllers
     {
 
         PredictionRepository predRepository = new PredictionRepository();
+
+        /*
+         * Recibe un objeto PredictionWEB, se hacen las operaciones necesarias para poder crear una prediccion
+         * Retorna un Task<IActionResult> indicando si se pudo crear la predicción o no
+         */
 
         [HttpPost("AddPrediction")]
         public async Task<IActionResult> createPrediction( PredictionWEB prediction)
@@ -49,6 +59,11 @@ namespace WCO_Api.Controllers
             }
 
         }
+
+        /*
+         * Recibe un objeto MarchWEB, se hacen las operaciones necesarias para poder crear un partido
+         * Retorna un Task<IActionResult> indicando si se pudo crear el partido o no
+         */
 
         [HttpGet("getPredictionByNEM/{nickname}/{email}/{idMatch}")]
         public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch )

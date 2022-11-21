@@ -9,7 +9,7 @@ import {
   NgbPanelChangeEvent,
   NgbPanelToggle,
 } from '@ng-bootstrap/ng-bootstrap';
-import { MatchesService } from 'src/app/services/matches.service';
+import { MatchesService } from '../../services/matches.service';
 import { DbMatch } from 'src/app/interface/db-match';
 
 @Component({

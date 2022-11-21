@@ -14,6 +14,10 @@ namespace WCO_Api.Database
             CONNECTION_STRING = "Data Source=localhost;Initial Catalog=WCODB;Integrated Security=True";
         }
 
+        /*
+         * Query para insertar un partido
+         */
+
         public async Task<int> insertMatch(MatchWEB match)
         {
 
@@ -153,6 +157,10 @@ namespace WCO_Api.Database
             */
         
 
+        /*
+         * Query para obtener una lista de MatchOut respecto a un id de bracket
+         */
+
         public async Task<List<MatchOut>> getMatchesByBracketId(int id)
         {
             SqlDataReader reader = null;
@@ -193,6 +201,10 @@ namespace WCO_Api.Database
 
             return matches;
         }
+
+        /*
+         * Query para obtener una lista de MatchOut respecto a su match_id
+         */
 
         public async Task<List<MatchOut>> getMatchById(int id)
         {

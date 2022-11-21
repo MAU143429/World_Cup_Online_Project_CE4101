@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Countries } from '../../interface/countries';
 import countriesData from '../../../assets/scripts/countries.json';
-import { CreateAccount } from 'src/app/model/create-account';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { CreateAccount } from '../../model/create-account';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccountService } from '../../services/account.service';
 import { Router } from '@angular/router';
 var sha256 = require('js-sha256');
@@ -69,7 +69,7 @@ export class RegisterComponent implements OnInit {
    * Metodo para calcular la edad a partir de la fecha de nacimiento
    * digitado por el usuario
    */
-  CalculateAge() {
+  public CalculateAge() {
     if (this.newAccount.birthdate) {
       var timeDiff = Math.abs(
         Date.now() - new Date(this.newAccount.birthdate).getTime()
@@ -85,7 +85,7 @@ export class RegisterComponent implements OnInit {
    * @param email
    * @returns Booleano de validez de correo
    */
-  checkEmailFormat(email: string) {
+  public checkEmailFormat(email: string) {
     let sampleRegExMail = new RegExp(
       "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
     );
