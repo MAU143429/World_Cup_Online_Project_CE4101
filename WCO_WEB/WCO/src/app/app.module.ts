@@ -23,6 +23,10 @@ import { MatchDetailsComponent } from './components/match-details/match-details.
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ScoresComponent } from './components/scores/scores.component';
+import { GroupsComponent } from './components/groups/groups.component';
+import { GroupDetailsComponent } from './components/group-details/group-details.component';
+import { CreateGroupsComponent } from './components/create-groups/create-groups.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +40,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatchDetailsComponent,
     RegisterComponent,
     LoginComponent,
+    ScoresComponent,
+    GroupsComponent,
+    GroupDetailsComponent,
+    CreateGroupsComponent,
   ],
   imports: [
     MbscModule,

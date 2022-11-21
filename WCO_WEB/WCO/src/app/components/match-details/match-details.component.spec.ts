@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MatchDetailsComponent } from './match-details.component';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { dateTimeLocale } from '@mobiscroll/angular/dist/js/core/util/datetime';
-
 
 describe('MatchDetailsComponent', () => {
   let component: MatchDetailsComponent;
@@ -14,20 +15,17 @@ describe('MatchDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MatchDetailsComponent ],
-      imports: [ HttpClientTestingModule, MatSnackBarModule ]
-
-    })
-    .compileComponents();
+      declarations: [MatchDetailsComponent],
+      imports: [HttpClientTestingModule, MatSnackBarModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MatchDetailsComponent);
     component = fixture.componentInstance;
-    httpMock = TestBed.inject( HttpTestingController );
+    httpMock = TestBed.inject(HttpTestingController);
     compiled = fixture.nativeElement;
     fixture.detectChanges();
-
   });
 
   it('should create', () => {
@@ -35,18 +33,18 @@ describe('MatchDetailsComponent', () => {
   });
 
   it('Contar goles valid', () => {
-    expect(component.goalCount([2,1,3]) == 6).toBeTruthy();
-  })
+    expect(component.goalCount([2, 1, 3]) == 6).toBeTruthy();
+  });
 
   it('Contar goles invalid', () => {
-    expect(component.goalCount([2,1,3]) == 1).toBeFalsy();
-  })
-  
+    expect(component.goalCount([2, 1, 3]) == 1).toBeFalsy();
+  });
+
   it('Contar asistencias valid', () => {
-    expect(component.assistCount([2,1,3]) == 6).toBeTruthy();
-  })
+    expect(component.assistCount([2, 1, 3]) == 6).toBeTruthy();
+  });
 
   it('Contar asistencias invalid', () => {
-    expect(component.assistCount([2,1,3]) == 3).toBeFalsy();
-  })
+    expect(component.assistCount([2, 1, 3]) == 3).toBeFalsy();
+  });
 });

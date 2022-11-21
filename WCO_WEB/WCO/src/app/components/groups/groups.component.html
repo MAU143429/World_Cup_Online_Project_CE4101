@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="groups.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+
+<body>
+  <app-navbar></app-navbar>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="input-box">
+    <div class="title">Mis grupos</div>
+    <input style="margin-left: 37%;" class="code" type="text" placeholder="Ingrese ID de grupo">
+    <input class="inbtn" type="submit" value="Unirme Grupo">
+    <input class="inbtn" type="submit" value="Crear Grupo" routerLink="/create-groups">
+  </div>
+  <div class="container">
+    <div class="content">
+
+      <table id="groups" class="table table-bordered mt-4 mytable">
+        <tr class="table-primary mytable">
+          <th>Nombre del Grupo</th>
+          <th>ID de invitación</th>
+          <th>Grupo de torneo</th>
+          <th>Detalles</th>
+        </tr>
+      <tr *ngFor="let data of groupsData">
+        <td>{{data.name}}</td>
+          <td>{{data.gId}}</td>
+          <td>{{data.t_name}}</td>
+          <td><button class="viewbtn" routerLink="/group-details" >Ver Grupo</button></td>
+      </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

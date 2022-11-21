@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Countries } from '../../interface/countries';
 import countriesData from '../../../assets/scripts/countries.json';
-import { CreateAccount } from '../../model/create-account';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccountService } from '../../services/account.service';
+import { CreateAccount } from '../../model/create-account';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 var sha256 = require('js-sha256');
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   newAccount: CreateAccount = new CreateAccount();
   age: number = 0;
   checkboxStatus: Boolean = false;
+
   constructor(
     private service: AccountService,
     private _snackBar: MatSnackBar,
@@ -126,7 +127,6 @@ export class RegisterComponent implements OnInit {
       .subscribe((data) => (this.UsersNickname = data));
 
     this.delay(50).then(() => {
-      //Verificar que esten todos los espacios requeridos
       if (
         this.newAccount.email == '' ||
         this.newAccount.password == '' ||
