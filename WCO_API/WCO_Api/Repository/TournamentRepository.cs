@@ -12,19 +12,9 @@ namespace WCO_Api.Repository
 
         TournamentDatabase sQLDB = new TournamentDatabase();
 
-        public async Task<int> createNewTournament(TournamentOut tournament)
+        public async Task<int> createNewTournament(TournamentWEB tournament)
         {
             return await sQLDB.insertTournament(tournament);
-        }
-
-        public async Task<int> createNewBracket(BracketWEB bracket)
-        {
-            return await sQLDB.insertBracket(bracket);
-        }
-
-        public async Task<int> updateTeamId(TeamOut team)
-        {
-            return await sQLDB.updateTeam(team);
         }
 
         public async Task<IEnumerable<TournamentOut>> getTournaments()
