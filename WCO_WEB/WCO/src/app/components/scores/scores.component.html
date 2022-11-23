@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="scores.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <app-navbar></app-navbar>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="input-box">
+    <div class="title">Seleccione un torneo para ver la tabla de puntajes</div>
+    <mbsc-select style="margin-left: 35% ;" [data]="allTournaments" [touchUi]="false"   placeholder="Seleccione el torneo" ></mbsc-select>
+    <input type="submit" value="Ver Puntajes" >
+  </div>
+  <div class="container">
+    <div class="content">
+
+      <table id="scores" class="table table-bordered mt-4 mytable">
+        <tr class="table-primary mytable">
+          <th>Posición</th>
+          <th>Nickname</th>
+          <th>Puntaje</th>
+        </tr>
+        <tr *ngFor="let data of allScores; index as i">
+            <td>{{i + 1}}</td>
+            <td>{{data.nickname}}</td>
+            <td>{{data.score}} pts</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+

@@ -7,11 +7,8 @@ import { DbMatch } from 'src/app/model/db-match';
 import { MatchesService } from 'src/app/services/matches.service';
 import { DbPlayer } from 'src/app/model/db-player';
 import { Dropdown } from 'src/app/model/dropdown';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import da from '@mobiscroll/angular/dist/js/i18n/da';
 import { Router } from '@angular/router';
 import { PredictionsService } from 'src/app/services/predictions.service';
-import { loadTranslations } from '@angular/localize';
 
 var initialPrediction = {
   PId: 0,
@@ -29,14 +26,15 @@ export class MatchDetailsComponent implements OnInit {
   myPrediction: CreatePrediction = new CreatePrediction();
   matchData: DbMatch[] = [];
   allPredictions: Prediction[] = [];
-  goalsT1: number[] = new Array(20).fill(0);
-  goalsT2: number[] = new Array(20).fill(0);
+  goalsT1: number[] = new Array(21).fill(0);
+  goalsT2: number[] = new Array(21).fill(0);
   assistsT1: number[] = new Array(20).fill(0);
   assistsT2: number[] = new Array(20).fill(0);
   currentMatch: number = 0;
   playersteam1: DbPlayer[] = [];
   playersteam2: DbPlayer[] = [];
   players: Dropdown[] = [];
+  winOptions: any[] = [];
 
   constructor(
     private connection: InternalService,
@@ -57,54 +55,58 @@ export class MatchDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.connection.currentMatch.subscribe(
-      (data) => (this.currentMatch = data)
-    );
+    this.matchService
+      .getMatchesById(localStorage.getItem('currentMatch'))
+      .subscribe((data) => (this.matchData = data));
     this.delay(50).then(() => {
+      var winT1: Dropdown = {
+        text: this.matchData[0].teams[0].name,
+        value: this.matchData[0].teams[0].teId,
+      };
+      var winT2: Dropdown = {
+        text: this.matchData[0].teams[1].name,
+        value: this.matchData[0].teams[1].teId,
+      };
+      var draw: Dropdown = { text: 'Empate', value: 0 };
+      this.winOptions = [winT1, winT2, draw];
       this.matchService
-        .getMatchesById(this.currentMatch)
-        .subscribe((data) => (this.matchData = data));
-
-      this.delay(50).then(() => {
-        this.matchService
-          .getPlayersByTeamId(this.matchData[0].teams[0].teId)
-          .subscribe((data) => (this.playersteam1 = data));
-
-        this.matchService
-          .getPlayersByTeamId(this.matchData[0].teams[1].teId)
-          .subscribe((data) => (this.playersteam2 = data));
-
-        this.matchService
-          .getAllPlayersByTeamsId(
-            this.matchData[0].teams[0].teId,
-            this.matchData[0].teams[1].teId
-          )
-          .subscribe((data) => {
-            var teams: Dropdown[] = [];
-            data.forEach((value: any) => {
-              var dropdownObject: Dropdown = { text: '', value: 0 };
-              dropdownObject.text = value.name;
-              dropdownObject.value = value.pId;
-              teams.push(dropdownObject);
-            });
-            console.log(teams);
-            this.players = teams;
+        .getAllPlayersByTeamsId(
+          this.matchData[0].teams[0].teId,
+          this.matchData[0].teams[1].teId
+        )
+        .subscribe((data) => {
+          var teams: Dropdown[] = [];
+          data.forEach((value: any) => {
+            var dropdownObject: Dropdown = { text: '', value: 0 };
+            dropdownObject.text = value.name;
+            dropdownObject.value = value.pId;
+            teams.push(dropdownObject);
           });
+          this.players = teams;
+          var ownGoalT1: DbPlayer = { pId: 1000, name: 'Autogol', tId: 1000 };
+          var ownGoalT2: DbPlayer = { pId: 1000, name: 'Autogol', tId: 1000 };
+          this.playersteam1 = data.slice(0, 20);
+          this.playersteam1.push(ownGoalT1);
+          this.playersteam2 = data.slice(20, 40);
+          this.playersteam2.push(ownGoalT2);
+        });
 
-        this.predictionService
-          .getPredictionbyIds(
-            localStorage.getItem('email'),
-            localStorage.getItem('nickname'),
-            this.matchData[0].mId
-          )
-          .subscribe((data) => {
-            this.myPrediction = data;
-            console.log(this.myPrediction);
-          });
-      });
+      this.predictionService
+        .getPredictionbyIds(
+          localStorage.getItem('email'),
+          localStorage.getItem('nickname'),
+          this.matchData[0].mId
+        )
+        .subscribe((data) => {
+          this.myPrediction = data;
+          console.log(this.myPrediction);
+        });
     });
   }
 
+  /**
+   * Este metodo permite asociar los partidos y asistencias a jugadores en concreto del equipo 1
+   */
   associatePredictionsT1() {
     for (var i = 0; i < 20; i++) {
       if (this.goalsT1[i] != 0 || this.assistsT1[i] != 0) {
@@ -113,7 +115,6 @@ export class MatchDetailsComponent implements OnInit {
           goals: 0,
           assists: 0,
         };
-
         initialPrediction.PId = this.playersteam1[i].pId;
         initialPrediction.goals = this.goalsT1[i];
         initialPrediction.assists = this.assistsT1[i];
@@ -122,6 +123,9 @@ export class MatchDetailsComponent implements OnInit {
     }
   }
 
+  /**
+   * Este metodo permite asociar los partidos y asistencias a jugadores en concreto del equipo 2
+   */
   associatePredictionsT2() {
     for (var i = 0; i < 20; i++) {
       if (this.goalsT2[i] != 0 || this.assistsT2[i] != 0) {
@@ -130,7 +134,6 @@ export class MatchDetailsComponent implements OnInit {
           goals: 0,
           assists: 0,
         };
-        console.log(this.playersteam2);
         initialPrediction2.PId = this.playersteam2[i].pId;
         initialPrediction2.goals = this.goalsT2[i];
         initialPrediction2.assists = this.assistsT2[i];
@@ -199,16 +202,31 @@ export class MatchDetailsComponent implements OnInit {
     return assists;
   }
 
+  /**
+   * Este metodo permite guardar el resultado de una prediccion
+   */
   addPrediction() {
     this.newPrediction.acc_email = localStorage.getItem('email');
     this.newPrediction.acc_nick = localStorage.getItem('nickname');
     this.newPrediction.match_id = this.matchData[0].mId;
     this.associatePredictionsT1();
-    this.delay(100).then(() => {
+    this.delay(20).then(() => {
       this.associatePredictionsT2();
 
+      console.log('Pid', this.newPrediction.PId);
+      console.log('Winner', this.newPrediction.winner);
       // Verificar que campo de MVP se haya llenado
-      if (
+      if (this.newPrediction.winner == null) {
+        this.openError(
+          'Debe agregar un ganador para continuar',
+          'Intente de nuevo'
+        );
+      } else if (this.newPrediction.PId == null) {
+        this.openError(
+          'Debe agregar un MVP para continuar',
+          'Intente de nuevo'
+        );
+      } else if (
         !(
           this.goalCount(this.goalsT1) == this.newPrediction.goalsT1 &&
           this.goalCount(this.goalsT2) == this.newPrediction.goalsT2
@@ -218,10 +236,7 @@ export class MatchDetailsComponent implements OnInit {
           'No hay coherencia entre goles de jugadores y marcador',
           'Ingrese una predicción coherente'
         );
-      }
-
-      // Verificar asistencias
-      else if (
+      } else if (
         !(
           this.assistCount(this.assistsT1) <= this.newPrediction.goalsT1 &&
           this.assistCount(this.assistsT2) <= this.newPrediction.goalsT2
@@ -236,7 +251,7 @@ export class MatchDetailsComponent implements OnInit {
         this.predictionService
           .addNewPrediction(this.newPrediction)
           .subscribe((data) => console.log(data));
-        this.router.navigate(['/tournament-details']);
+        this.router.navigate(['/home']);
         console.log(this.newPrediction);
       }
     });

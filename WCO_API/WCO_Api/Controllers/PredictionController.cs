@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using WCO_Api.Repository;
 using WCO_Api.WEBModels;
 
+/**
+ * Controlador encargado de realizar las acciones relacionadas con las Predicciones
+ * 
+*/
+
 namespace WCO_Api.Controllers
 {
     [Route("api/[controller]")]
@@ -12,10 +17,16 @@ namespace WCO_Api.Controllers
 
         PredictionRepository predRepository = new PredictionRepository();
 
+        /*
+         * Recibe un objeto PredictionWEB, se hacen las operaciones necesarias para poder crear una prediccion
+         * Retorna un Task<IActionResult> indicando si se pudo crear la predicción o no
+         */
+
         [HttpPost("AddPrediction")]
         public async Task<IActionResult> createPrediction( PredictionWEB prediction)
         {
 
+            //Validaciones de modelo enviado
             if (prediction == null)
                 return BadRequest("null input");
 
@@ -31,15 +42,16 @@ namespace WCO_Api.Controllers
             //Si no existe, la crea
             if (dbPrediction.Result.PrId == null)
             {
-                var predId = await predRepository.createNewPrediction(prediction);
+                var createdP = await predRepository.createNewPrediction(prediction);
 
-                foreach (var predPlayer in prediction.predictionPlayers)
+                if(createdP == 1)
                 {
-                    predPlayer.PrId = predId;        //Se le pone el id de la predicción que se acaba de hacer
-                    var created = await predRepository.createPredictionPlayer(predPlayer);
+                    return Created("api/Prediction/AddPrediction", "Se creo una prediccion exitosamente");
+                } else
+                {
+                    return StatusCode(500, "Error al crear una prediccion");
                 }
 
-                return Created("created", predId);
             }
             // Si existe, hace más bien un cambio a esa predicción
             else {
@@ -47,6 +59,11 @@ namespace WCO_Api.Controllers
             }
 
         }
+
+        /*
+         * Recibe un objeto MarchWEB, se hacen las operaciones necesarias para poder crear un partido
+         * Retorna un Task<IActionResult> indicando si se pudo crear el partido o no
+         */
 
         [HttpGet("getPredictionByNEM/{nickname}/{email}/{idMatch}")]
         public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch )

@@ -1,18 +1,16 @@
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { TournamentService } from '../../services/tournament.service';
+import { CreateTournament } from '../../model/create-tournament';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { setOptions, localeEs } from '@mobiscroll/angular';
+import { BracketName } from '../../interface/bracket-name';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
-import { CreateTournament } from '../../model/create-tournament';
-import { setOptions, localeEs } from '@mobiscroll/angular';
-import { TournamentService } from '../../services/tournament.service';
-import { Type } from '../../interface/type';
-import { Router } from '@angular/router';
-import { BracketName } from '../../interface/bracket-name';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DbTeam } from '../../model/db-team';
-import { InternalService } from '..//../services/internal.service';
 import { Dropdown } from '../../model/dropdown';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { DbTeam } from '../../model/db-team';
+import { Type } from '../../interface/type';
 
 export const ITEMS: Type[] = [
   { type: 'Selecciones' },
@@ -30,7 +28,6 @@ setOptions({
   styleUrls: ['./create-tournament.component.css'],
 })
 export class CreateTournamentComponent implements OnInit {
-  /**Instanciando variables del sistema */
   newTournament: CreateTournament = new CreateTournament();
   radioSel: any;
   radioSelected: string = '';
@@ -42,25 +39,15 @@ export class CreateTournamentComponent implements OnInit {
   selectedTeams: string[] = [];
   closeResult = '';
 
-  /**
-   * Este metodo permite realizar un pequeño delay
-   * @param ms el tiempo del delay en ms
-   */
-  async delay(ms: number) {
-    await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
-      () => console.log('fired')
-    );
-  }
-
   @ViewChild(MatTable, { static: true }) table: MatTable<any> | any;
   constructor(
     private modalService: NgbModal,
     public dialog: MatDialog,
     private service: TournamentService,
-    private internal: InternalService,
-    private router: Router,
     private _snackBar: MatSnackBar
   ) {}
+
+  ngOnInit(): void {}
 
   /**
    * Este metodo permite la creacion de un pop up
@@ -149,12 +136,31 @@ export class CreateTournamentComponent implements OnInit {
     });
   }
 
-  openSnackBar(message: string, message2: string) {
+  /**
+   * Metodo para mostrar alerta de error por 2 segundos
+   * @param message1 Mensaje de error
+   * @param message2 Mensaje para cerrar alerta
+   */
+  openError(message: string, message2: string) {
     this._snackBar.open(message, message2, {
       duration: 2000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: 'red-snackbar',
+    });
+  }
+
+  /**
+   * Metodo para mostrar alerta de exito por 2 segundos
+   * @param message1 Mensaje de exito
+   * @param message2 Mensaje para cerrar alerta
+   */
+  openSuccess(message1: string, message2: string) {
+    this._snackBar.open(message1, message2, {
+      duration: 2000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: 'green-snackbar',
     });
   }
 
@@ -176,37 +182,30 @@ export class CreateTournamentComponent implements OnInit {
       this.newTournament.teams.length == 0 ||
       this.newTournament.brackets.length == 0
     ) {
-      this.openSnackBar(
+      this.openError(
         'Falta al menos uno de los espacios requeridos!',
         'Intente de nuevo'
       );
     } else if (startD > endD) {
-      this.openSnackBar(
-        'Error en fechas ingresadas!',
-        'Fecha final incorrecta!'
-      );
+      this.openError('Error en fechas ingresadas!', 'Fecha final incorrecta!');
     } else if (today > startD || today > endD) {
-      this.openSnackBar(
+      this.openError(
         'Error no se pueden generar torneos en el pasado!',
         'Ingrese una fecha correcta para continuar!'
       );
     } else if (this.newTournament.teams.length < 2) {
-      this.openSnackBar(
+      this.openError(
         'Se requiere al menos dos equipos para crear un torneo!',
         'Ingrese algún otro antes de continuar!'
       );
     } else {
       this.service
         .setTournament(this.newTournament)
-        .subscribe((tournament) => console.log(this.newTournament));
+        .subscribe((tournament) => console.log(tournament));
 
-      this.delay(100).then(() => {
-        this.router.navigate(['/home']);
-      });
+      this.openSuccess('Torneo creado con éxito', 'Ok');
     }
   }
-
-  ngOnInit(): void {}
 
   /**
    * Este metodo permite controlar las ventanas emergentes(pop up)

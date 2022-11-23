@@ -14,9 +14,92 @@ namespace WCO_Api.Database
             CONNECTION_STRING = "Data Source=localhost;Initial Catalog=WCODB;Integrated Security=True";
         }
 
+        /*
+         * Query para insertar un partido
+         */
+
         public async Task<int> insertMatch(MatchWEB match)
         {
 
+            SqlTransaction transaction = null;
+            SqlConnection myConnection = null;
+            SqlCommand command = null;
+            SqlDataReader reader = null;
+
+            try
+            {
+
+                myConnection = new SqlConnection(CONNECTION_STRING);
+
+                myConnection.Open();
+
+                //Start the transaction
+                transaction = myConnection.BeginTransaction();
+
+                string query = $"INSERT INTO [dbo].[Match] ([startTime], [date], [venue], [scoreT1], [scoreT2] , [bracket_id])" +
+                                $"VALUES ('{match.startTime}', '{match.date}', '{match.venue}', '{match.scoreT1}', '{match.scoreT2}' , '{match.bracketId}');";
+
+                command = new SqlCommand(query, myConnection);
+
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla torneos el torneo en sí
+                command.ExecuteNonQuery();
+
+                //Obtener id del ultimo match creado
+                
+                string query2 = "SELECT TOP 1 * FROM [dbo].[Match] ORDER BY [m_id] DESC;";
+
+                command = new SqlCommand(query2, myConnection);
+
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                var result = command.ExecuteNonQuery();
+
+                reader = command.ExecuteReader();
+
+                int MId = 0;
+
+                while (reader.Read())
+                {
+                    Console.WriteLine("EL ID ES");
+                    Console.WriteLine(reader.GetValue(0));
+                    MId = (int)reader.GetValue(0);
+                }
+
+                reader.Close();
+                
+                string query3 =
+                        $"INSERT INTO [dbo].[Match_Team] ([team_id], [match_id])" +
+                        $"VALUES ('{match.idTeam1}', '{MId}');" +
+                        $"INSERT INTO [dbo].[Match_Team] ([team_id], [match_id])" +
+                        $"VALUES ('{match.idTeam2}', '{MId}');";
+
+                command = new SqlCommand(query3, myConnection);
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+
+                command.ExecuteNonQuery();
+                
+                transaction.Commit();
+
+                return 1;
+            }
+            catch (Exception error)
+            {
+                reader.Close();
+                transaction.Rollback();
+                Console.WriteLine(error);
+                return -1;
+            }
+            finally
+            {
+                myConnection.Close();
+            }
+
+         }
+
+            /*
             SqlDataReader reader = null;
             SqlConnection myConnection = new SqlConnection();
 
@@ -71,8 +154,12 @@ namespace WCO_Api.Database
 
 
             return created;
+            */
+        
 
-        }
+        /*
+         * Query para obtener una lista de MatchOut respecto a un id de bracket
+         */
 
         public async Task<List<MatchOut>> getMatchesByBracketId(int id)
         {
@@ -114,6 +201,10 @@ namespace WCO_Api.Database
 
             return matches;
         }
+
+        /*
+         * Query para obtener una lista de MatchOut respecto a su match_id
+         */
 
         public async Task<List<MatchOut>> getMatchById(int id)
         {

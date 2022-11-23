@@ -19,11 +19,10 @@ export class WcoService {
   };
 
   /**
-
- * Este metodo permite realizar todas las consultas GET de WCO
- * @param route Ruta a la que realiza la consulta
- * @returns Objeto observable con la respuesta del API
- */
+   * Este metodo permite realizar todas las consultas GET de WCO
+   * @param route Ruta a la que realiza la consulta
+   * @returns Objeto observable con la respuesta del API
+   */
   public getData(route: string): Observable<any> {
     return this.http.get(
       this.createCompleteRoute(route, this.envUrl.urlAddress)
