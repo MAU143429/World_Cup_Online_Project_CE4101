@@ -31,11 +31,6 @@ namespace WCO_Api.Models
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            match.startTime = match.startTime;
-            match.date = match.date;
-            match.venue = match.venue;
-            match.bracketId = match.bracketId;
-
             var created = await matchRepository.createNewMatch(match);
 
             return Created("created", created);

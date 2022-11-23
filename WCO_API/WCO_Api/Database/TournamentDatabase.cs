@@ -14,66 +14,76 @@ namespace WCO_Api.Database
             CONNECTION_STRING = "Data Source=localhost;Initial Catalog=WCODB;Integrated Security=True";
         }
 
-        public async Task<int> insertTournament(TournamentOut newTournament)
+        public async Task<int> insertTournament(TournamentWEB newTournament)
         {
 
-            SqlConnection myConnection = new SqlConnection();
+            SqlTransaction transaction = null;
+            SqlConnection myConnection = null;
+            SqlCommand command = null;
 
-            myConnection.ConnectionString = CONNECTION_STRING;
+            try
+            {
 
-            string query = $"INSERT INTO [dbo].[Tournament] ([to_id], [name], [startDate], [endDate], [description], [type])" +
+                myConnection = new SqlConnection(CONNECTION_STRING);
+
+                myConnection.Open();
+
+                //Start the transaction
+                transaction = myConnection.BeginTransaction();
+
+                string query = $"INSERT INTO [dbo].[Tournament] ([to_id], [name], [startDate], [endDate], [description], [type])" +
                           $"VALUES ('{newTournament.ToId}', '{newTournament.Name}', '{newTournament.StartDate}', '{newTournament.EndDate}', '{newTournament.Description}' , '{newTournament.Type}');";
 
-            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+                command = new SqlCommand(query, myConnection);
 
-            myConnection.Open();
-            var created = sqlCmd.ExecuteNonQuery();
-            myConnection.Close();
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla torneos el torneo en sí
+                command.ExecuteNonQuery();
 
-            return created;
+                //Crear los brackets asociados al torneo
 
-        }
+                foreach (var bracketName in newTournament.brackets)
+                {
+                    string query2 = $"INSERT INTO [dbo].[Bracket] ( [name], [tournamentId])" +
+                          $"VALUES ('{bracketName}', '{newTournament.ToId}');";
 
-        public async Task<int> insertBracket(BracketWEB newBracket)
-        {
+                    command = new SqlCommand(query2, myConnection);
 
-            SqlConnection myConnection = new SqlConnection();
+                    command.Transaction = transaction;
+                    command.ExecuteNonQuery();
 
-            myConnection.ConnectionString = CONNECTION_STRING;
+                }
 
-            string query =
-                          $"INSERT INTO [dbo].[Bracket] ([name], [tournamentId])" +
-                          $"VALUES ('{newBracket.Name}', '{newBracket.TournamentId}');";
+                //Update a equipos registrados a un torneo
 
-            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
-
-            myConnection.Open();
-            var created = sqlCmd.ExecuteNonQuery();
-            myConnection.Close();
-
-            return created;
-
-        }
-
-        public async Task<int> updateTeam(TeamOut newTeam)
-        {
-
-            SqlConnection myConnection = new SqlConnection();
-
-            myConnection.ConnectionString = CONNECTION_STRING;
-
-            string query =
+                foreach (var teamId in newTournament.teams)
+                {
+                    string query3 =
                           $"UPDATE [dbo].[Team]" +
-                          $"SET [tournamentId] = '{newTeam.TournamentId}'" +
-                          $"WHERE [te_id] = {newTeam.TeId}";
+                          $"SET [tournamentId] = '{newTournament.ToId}'" +
+                          $"WHERE [te_id] = {teamId}";
 
-            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+                    command = new SqlCommand(query3, myConnection);
 
-            myConnection.Open();
-            var created = sqlCmd.ExecuteNonQuery();
-            myConnection.Close();
+                    command.Transaction = transaction;
+                    command.ExecuteNonQuery();
 
-            return created;
+                }
+
+                transaction.Commit();
+
+                return 1;
+            }
+            catch (Exception error)
+            {
+                transaction.Rollback();
+                Console.WriteLine(error);
+                return -1;
+            }
+            finally {
+                myConnection.Close();
+            }
 
         }
 

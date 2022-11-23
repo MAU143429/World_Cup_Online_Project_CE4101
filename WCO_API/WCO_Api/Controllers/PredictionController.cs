@@ -26,6 +26,7 @@ namespace WCO_Api.Controllers
         public async Task<IActionResult> createPrediction( PredictionWEB prediction)
         {
 
+            //Validaciones de modelo enviado
             if (prediction == null)
                 return BadRequest("null input");
 
@@ -41,15 +42,16 @@ namespace WCO_Api.Controllers
             //Si no existe, la crea
             if (dbPrediction.Result.PrId == null)
             {
-                var predId = await predRepository.createNewPrediction(prediction);
+                var createdP = await predRepository.createNewPrediction(prediction);
 
-                foreach (var predPlayer in prediction.predictionPlayers)
+                if(createdP == 1)
                 {
-                    predPlayer.PrId = predId;        //Se le pone el id de la predicción que se acaba de hacer
-                    var created = await predRepository.createPredictionPlayer(predPlayer);
+                    return Created("api/Prediction/AddPrediction", "Se creo una prediccion exitosamente");
+                } else
+                {
+                    return StatusCode(500, "Error al crear una prediccion");
                 }
 
-                return Created("created", predId);
             }
             // Si existe, hace más bien un cambio a esa predicción
             else {

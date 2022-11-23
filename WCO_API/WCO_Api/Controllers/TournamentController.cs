@@ -32,23 +32,16 @@ namespace WCO_Api.Controllers
 
             foreach (var tournament in dbTournaments)
             {
-                TournamentOut newTournament = new TournamentOut();
-
-                newTournament.ToId = tournament.ToId;
-                newTournament.Name = tournament.Name;
-                newTournament.StartDate = tournament.StartDate;
-                newTournament.EndDate = tournament.EndDate;
-                newTournament.Description = tournament.Description;
-                newTournament.Type = tournament.Type;
-                newTournament.teams = (List<TeamWEB>)await tournamentRepository.getTeamByTournamentId(tournament.ToId);
+                
+                tournament.teams = (List<TeamWEB>)await tournamentRepository.getTeamByTournamentId(tournament.ToId);
 
                 List<BracketWEB> brackets = new List<BracketWEB>();
 
                 brackets = (List<BracketWEB>)await tournamentRepository.getBracketsByTournamentId(tournament.ToId);
 
-                newTournament.brackets = brackets;
+                tournament.brackets = brackets;
 
-                allTournaments.Add(newTournament);
+                allTournaments.Add(tournament);
 
             }
 
@@ -70,23 +63,16 @@ namespace WCO_Api.Controllers
 
             foreach (var tournament in dbTournaments)
             {
-                TournamentOut newTournament = new TournamentOut();
 
-                newTournament.ToId = tournament.ToId;
-                newTournament.Name = tournament.Name;
-                newTournament.StartDate = tournament.StartDate;
-                newTournament.EndDate = tournament.EndDate;
-                newTournament.Description = tournament.Description;
-                newTournament.Type = tournament.Type;
-                newTournament.teams = (List<TeamWEB>)await tournamentRepository.getTeamByTournamentId(tournament.ToId);
+                tournament.teams = (List<TeamWEB>)await tournamentRepository.getTeamByTournamentId(tournament.ToId);
 
                 List<BracketWEB> brackets = new List<BracketWEB>();
 
                 brackets = (List<BracketWEB>)await tournamentRepository.getBracketsByTournamentId(tournament.ToId);
 
-                newTournament.brackets = brackets;
+                tournament.brackets = brackets;
 
-                allTournaments.Add(newTournament);
+                allTournaments.Add(tournament);
 
             }
 
@@ -120,6 +106,7 @@ namespace WCO_Api.Controllers
         /*
          * Recibe un objeto TournamentWEB, se hacen las operaciones necesarias para que se meta la información a la base de datos.
          * Retorna un Task<IActionResult> que indica si la opracion tuvo exito o no
+         * Ruta: "api/Tournament/AddTournament"
          */
 
 
@@ -139,41 +126,19 @@ namespace WCO_Api.Controllers
 
             tournament.ToId = newuuid;
 
-            TournamentOut to = new TournamentOut();
-            to.ToId = newuuid;
-            to.Name = tournament.Name;
-            to.StartDate = tournament.StartDate;
-            to.EndDate = tournament.EndDate;
-            to.Description = tournament.Description;
-            to.Type = tournament.Type;
+            var createdT = await tournamentRepository.createNewTournament(tournament);
 
-            var created = await tournamentRepository.createNewTournament(to);
+            if (createdT == 1)
+            {
+                return Created("api/Tournament/AddTournament","Se creo un torneo exitosamente");
+            }
+            else
+            {
+                return StatusCode(500, "Error al crear un torneo");
+            }
+
+
             
-            //Agregar Brackets webmodel
-            foreach (var bracket in tournament.brackets)
-            {
-                BracketWEB newBracket = new BracketWEB();
-
-                newBracket.Name = bracket;
-                newBracket.TournamentId = newuuid;
-
-                var create2 = await tournamentRepository.createNewBracket(newBracket);
-
-            }
-            //Put a equipo
-
-            foreach (var team in tournament.teams)
-            {
-                TeamOut dbTeam= new TeamOut();
-
-                dbTeam.TeId = team;
-                dbTeam.TournamentId = newuuid;
-
-                var created3 = await tournamentRepository.updateTeamId(dbTeam);
-
-            }
-
-            return Created("created", created);
         }
     }
 }

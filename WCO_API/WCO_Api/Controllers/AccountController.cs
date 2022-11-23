@@ -15,11 +15,13 @@ namespace WCO_Api.Controllers
     {
         AccountRepository accountRepository = new();
 
+
         /* <summary>
         * Method <c>createAccount</c> método que se comunica con el repositorio, el cual 
         * hace la petición a la propiedad AccountDatabase para hacer la inserción de la cuenta a WCO database.
         * </summary>
         */
+
         [HttpPost("AddAccount")]
         public async Task<IActionResult> createAccount([FromBody] AccountWEB account)
         {
@@ -33,9 +35,16 @@ namespace WCO_Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var created = await accountRepository.createNewAccount(account);
+            var createdA = await accountRepository.createNewAccount(account);
 
-            return Created("created", created);
+            if (createdA == 1)
+            {
+                return Created("api/Account/AddAccount", "Se creo un usuario exitosamente");
+            }
+            else
+            {
+                return StatusCode(500, "Error al crear un usuario, intente de nuevo mas tarde");
+            }
 
         }
 

@@ -32,6 +32,79 @@ namespace WCO_Api.Database
                 transaction = myConnection.BeginTransaction();
 
                 string query =
+                          $"INSERT INTO [dbo].[Prediction] ([goalsT1], [goalsT2], [points], [player_id], [acc_nick], [acc_email], [match_id] )" +
+                          $"VALUES ('{prediction.goalsT1}', '{prediction.goalsT2}', '{prediction.points}', '{prediction.PId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.match_id}');" +
+                          $"SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY];";
+
+                command = new SqlCommand(query, myConnection);
+
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla predicciones la prediccion general, y se revisa que id fue la prediccion que se acaba de hacer
+                
+                reader = command.ExecuteReader();
+
+                int thisPredId = 0;
+
+                while (reader.Read())
+                {
+                    thisPredId = Decimal.ToInt32((decimal)reader.GetValue(0));
+                }
+
+                Console.WriteLine("EL ID DE LA PREDICCION QUE ACABA DE HACER ES");
+                Console.WriteLine(thisPredId);
+
+                reader.Close();
+
+                //Añado a cada uno de los jugadores de la prediccion con sus respectivos goles y asistencias
+                
+                foreach (var predPlayer in prediction.predictionPlayers)
+                {
+                    predPlayer.PrId = thisPredId;        //Se le pone el id de la predicción que se acaba de hacer
+
+                    string query2 =
+                          $"INSERT INTO [dbo].[Scores_Assists] ([player_id], [prediction_id], [assists], [goals])" +
+                          $"VALUES ('{predPlayer.PId}', '{predPlayer.PrId}', '{predPlayer.assists}', '{predPlayer.goals}');";
+
+                    command = new SqlCommand(query2, myConnection);
+
+                    command.Transaction = transaction;
+                    command.ExecuteNonQuery();
+
+                }
+                
+                transaction.Commit();
+
+                return 1;
+            }
+            catch (Exception error)
+            {
+                reader.Close();
+                transaction.Rollback();
+                Console.WriteLine(error);
+                return -1;
+            }
+            finally
+            {
+                myConnection.Close();
+            }
+
+        }
+
+            /*
+            SqlDataReader reader = null;
+
+            try
+            {
+
+                myConnection = new SqlConnection(CONNECTION_STRING);
+
+                myConnection.Open();
+
+                //Start the transaction
+                transaction = myConnection.BeginTransaction();
+
+                string query =
                           $"INSERT INTO [dbo].[Prediction] ([goalsT1], [goalsT2], [winner], [points], [player_id], [acc_nick], [acc_email], [match_id] )" +
                           $"VALUES ('{prediction.goalsT1}', '{prediction.goalsT2}', '{prediction.winnerId}','{prediction.points}', '{prediction.PId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.match_id}');" +
                           $"SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY];";
@@ -63,6 +136,20 @@ namespace WCO_Api.Database
                     predPlayer.PrId = thisPredId;        //Se le pone el id de la predicción que se acaba de hacer
 
                     string query2 =
+            return thisPredId;
+            */
+        
+
+        public async Task<int> insertPredictionPlayer(PredictionPlayerWEB predPlayer)
+        {
+            SqlDataReader reader = null;
+            SqlConnection myConnection = new SqlConnection();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            //Hace el insert a la tabla de partidos
+
+            string query =
                           $"INSERT INTO [dbo].[Scores_Assists] ([player_id], [prediction_id], [assists], [goals])" +
                           $"VALUES ('{predPlayer.PId}', '{predPlayer.PrId}', '{predPlayer.assists}', '{predPlayer.goals}');";
 
