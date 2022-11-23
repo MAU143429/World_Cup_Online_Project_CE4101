@@ -3,7 +3,8 @@ Use WCODB
 INSERT INTO Account
 (nickname, email, name, lastName, birthdate, country, password,isAdmin)
 VALUES ('admin1', 'admin1@gmail.com', 'Admin', 'Admin1', '16-03-2000', 'Costa Rica', '3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2', 1),
-		('admin2', 'admin2@gmail.com', 'Admin', 'Admin2', '12-08-2001', 'Costa Rica', '3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2', 1);
+		('admin2', 'admin2@gmail.com', 'Admin', 'Admin2', '12-08-2001', 'Costa Rica', '3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2', 1),
+		('jmendoza', 'jmendoza@gmail.com', 'Jose', 'Mendoza', '16-03-2000', 'Costa Rica', '1cd763f4482ed8c2f58fe7608542b975c0b158c81aae7aaade5d58b0164b4a37', 1);
 
 INSERT INTO Team
 (tournamentId, name, type)

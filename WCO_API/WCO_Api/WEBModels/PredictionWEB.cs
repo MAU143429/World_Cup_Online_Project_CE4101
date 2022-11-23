@@ -4,9 +4,13 @@
     {
         public int? PrId { get; set; }
 
+        public string TId { get; set; }
+
         public int goalsT1 { get; set; }
 
         public int goalsT2 { get; set; }
+
+        public int winnerId { get; set; }
 
         public int? points { get; set; } = 0;
 

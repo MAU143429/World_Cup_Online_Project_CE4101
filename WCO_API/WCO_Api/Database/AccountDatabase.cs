@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using WCO_Api.Logic;
 using WCO_Api.WEBModels;
 
 namespace WCO_Api.Database
@@ -11,6 +12,8 @@ namespace WCO_Api.Database
     public class AccountDatabase
     {
         string CONNECTION_STRING;
+
+        MyIdGenerator myIdGenerator = new();
 
         public AccountDatabase()
         {
@@ -45,6 +48,174 @@ namespace WCO_Api.Database
         /*
          * Query para obtener una cuenta respecto a su email
          */
+        public async Task<int> insertGroup(GroupWEB group)
+        {
+
+            SqlTransaction transaction = null;
+            SqlConnection myConnection = null;
+            SqlCommand command = null;
+
+            try
+            {
+
+                myConnection = new SqlConnection(CONNECTION_STRING);
+
+                myConnection.Open();
+
+                //Start the transaction
+                transaction = myConnection.BeginTransaction();
+
+                //Se crea una llave para el grupo
+                string groupId = myIdGenerator.GetUUID();
+                groupId = group.TId + groupId;
+
+                string query =
+                          $"INSERT INTO [dbo].[Group] ([g_id], [name], [tournament_id])" +
+                          $"VALUES ('{groupId}', '{group.name}', '{group.TId}' )";
+
+                command = new SqlCommand(query, myConnection);
+
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla torneos el torneo en sí
+                command.ExecuteNonQuery();
+
+                transaction.Commit();
+
+                return 1;
+            }
+            catch (Exception error)
+            {
+                transaction.Rollback();
+                Console.WriteLine(error);
+                return -1;
+            }
+            finally
+            {
+                myConnection.Close();
+            }
+
+        }
+
+        public async Task<int> insertAccountGroup(Tournament_Account_SWEB ta)
+        {
+
+            SqlTransaction transaction = null;
+            SqlConnection myConnection = null;
+            SqlCommand command = null;
+
+            try
+            {
+
+                myConnection = new SqlConnection(CONNECTION_STRING);
+
+                myConnection.Open();
+
+                //Start the transaction
+                transaction = myConnection.BeginTransaction();
+
+                string query =
+                          $"UPDATE [dbo].[Tournament_Account_S]" +
+                          $"SET [group_id] = '{ta.GId}'" +
+                          $"WHERE [acc_nick] = '{ta.acc_nick}' and [acc_email] = '{ta.acc_email}' ";
+
+                command = new SqlCommand(query, myConnection);
+
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla torneos el torneo en sí
+                command.ExecuteNonQuery();
+
+                transaction.Commit();
+
+                return 1;
+            }
+            catch (Exception error)
+            {
+                transaction.Rollback();
+                Console.WriteLine(error);
+                return -1;
+            }
+            finally
+            {
+                myConnection.Close();
+            }
+
+        }
+
+        public async Task<List<GroupWEB?>> getGroupById(string inputGId)
+        {
+            SqlConnection myConnection = new();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Group]" +
+                $"WHERE g_id = '{inputGId}';";
+
+            SqlCommand sqlCmd = new(query, myConnection);
+
+            myConnection.Open();
+
+            SqlDataReader reader = sqlCmd.ExecuteReader();
+
+            List<GroupWEB> groupL = new();
+
+            while (reader.Read())
+            {
+                GroupWEB group = new();
+
+                group.GId = reader.GetValue(0).ToString();
+                group.name = reader.GetValue(1).ToString();
+                group.TId = reader.GetValue(2).ToString();
+
+                groupL.Add(group);
+            }
+            
+            myConnection.Close();
+
+            return groupL;
+
+        }
+
+        public async Task<List<Tournament_Account_SWEB?>> getScoreByGroupId(string inputGId)
+        {
+            SqlConnection myConnection = new();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Tournament_Account_S]" +
+                $"WHERE group_id = '{inputGId}';";
+
+            SqlCommand sqlCmd = new(query, myConnection);
+
+            myConnection.Open();
+
+            //SqlDataReader reader = sqlCmd.ExecuteReader();
+
+            List<Tournament_Account_SWEB> groupScoresL = new();
+
+            using (SqlDataReader reader = sqlCmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Tournament_Account_SWEB score = new();
+
+                    score.TId = reader.GetValue(0).ToString();
+                    score.acc_nick = reader.GetValue(1).ToString();
+                    score.acc_email = reader.GetValue(2).ToString();
+                    score.points = (int) reader.GetValue(3);
+                    score.GId = reader.GetValue(4).ToString();
+
+                    groupScoresL.Add(score);
+                }
+            }
+            myConnection.Close();
+
+            return groupScoresL;
+
+        }
 
         public async Task<AccountWEB?> getAccountByEmail(string inputEmail)
         {

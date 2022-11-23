@@ -43,6 +43,52 @@ namespace WCO_Api.Controllers
          * Recibe un objeto LoginAccountWEB, se hacen las operaciones necesarias para que se meta la información a la base de datos.
          * Retorna un Task<Bool> que indica si la opracion tuvo exito o no
          */
+        [HttpPost("AddGroup")]
+        public async Task<IActionResult> createGroup(GroupWEB group) 
+        {
+            if (group == null)
+                return BadRequest("null input");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var createdG = await accountRepository.createNewGroup(group);
+
+            if (createdG == 1)
+            {
+                return Created("api/Account/AddGroup", "Se creo un grupo exitosamente");
+            }
+            else
+            {
+                return StatusCode(500, "Error al crear un grupo, intente de nuevo mas tarde");
+            }
+
+        }
+
+        [HttpPost("AddAccountToGroup")]
+        public async Task<IActionResult> addAccountGroup(Tournament_Account_SWEB ta)
+        {
+            if (ta == null)
+                return BadRequest("null input");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            //Ver si alguien quiere meterse a un grupo en el que ya está
+
+
+            var createdG = await accountRepository.addAccountGroup(ta);
+
+            if (createdG == 1)
+            {
+                return Created("api/Account/AddGroup", "Se creo un grupo exitosamente");
+            }
+            else
+            {
+                return StatusCode(500, "Error al crear un grupo, intente de nuevo mas tarde");
+            }
+
+        }
 
         [HttpPost("Login")]
         public async Task<bool> loginAccount([FromBody] LoginAccountWEB loginAccount)
@@ -62,6 +108,21 @@ namespace WCO_Api.Controllers
          * Recibe un string nick, se hacen las operaciones necesarias para que retorne una lista que contiene un objeto AccountWEB
          * Retorna un Task<List<AccountWEB>> que utilizará la página web
          */
+        [HttpGet("GetGroupById/{GId}")]
+        public async Task<List<GroupWEB>> getGroupById(string GId)
+        {
+
+            return await accountRepository.getGroupById(GId);
+
+        }
+
+        [HttpGet("GetScoreByGroupId/{GId}")]
+        public async Task<List<Tournament_Account_SWEB>> getScoreByGroupId(string GId)
+        {
+
+            return await accountRepository.getScoreByGroupId(GId);
+
+        }
 
         [HttpGet("GetAccountByNickname/{nick}")]
         public async Task<List<AccountWEB>> getAccountByNickname(string nick)

@@ -20,6 +20,26 @@ namespace WCO_Api.Repository
             return await sQLDB.insertAccount(account);
         }
 
+        public async Task<int> createNewGroup(GroupWEB group)
+        {
+            return await sQLDB.insertGroup(group);
+        }
+
+        public async Task<int> addAccountGroup(Tournament_Account_SWEB ta)
+        {
+            return await sQLDB.insertAccountGroup(ta);
+        }
+
+        public async Task<List<GroupWEB>> getGroupById(string GId)
+        {
+            return await sQLDB.getGroupById(GId);
+        }
+
+        public async Task<List<Tournament_Account_SWEB>> getScoreByGroupId(string GId)
+        {
+            return await sQLDB.getScoreByGroupId(GId);
+        }
+
         public async Task<AccountWEB> getLoginAccountWEB (string login)
         {
             return await sQLDB.getAccountByEmail(login);

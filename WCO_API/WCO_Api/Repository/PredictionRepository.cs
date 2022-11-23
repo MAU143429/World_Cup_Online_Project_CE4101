@@ -12,11 +12,6 @@ namespace WCO_Api.Repository
             return await sQLDB.insertPrediction(prediction);
         }
 
-        public async Task<int> createPredictionPlayer(PredictionPlayerWEB predPlayer)
-        {
-            return await sQLDB.insertPredictionPlayer(predPlayer);
-        }
-
         public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch)
         {
             return await sQLDB.getPredictionByNEM(nickname, email, idMatch);

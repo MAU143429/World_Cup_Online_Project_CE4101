@@ -16,62 +16,90 @@ namespace WCO_Api.Database
         public async Task<int> insertPrediction(PredictionWEB prediction)
         {
 
-
+            SqlTransaction transaction = null;
+            SqlConnection myConnection = null;
+            SqlCommand command = null;
             SqlDataReader reader = null;
-            SqlConnection myConnection = new SqlConnection();
 
-            myConnection.ConnectionString = CONNECTION_STRING;
+            try
+            {
 
-            //Hace el insert a la tabla de partidos
+                myConnection = new SqlConnection(CONNECTION_STRING);
 
-            string query =
-                          $"INSERT INTO [dbo].[Prediction] ([goalsT1], [goalsT2], [points], [player_id], [acc_nick], [acc_email], [match_id] )" +
-                          $"VALUES ('{prediction.goalsT1}', '{prediction.goalsT2}', '{prediction.points}', '{prediction.PId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.match_id}');" +
+                myConnection.Open();
+
+                //Start the transaction
+                transaction = myConnection.BeginTransaction();
+
+                string query =
+                          $"INSERT INTO [dbo].[Prediction] ([goalsT1], [goalsT2], [winner], [points], [player_id], [acc_nick], [acc_email], [match_id] )" +
+                          $"VALUES ('{prediction.goalsT1}', '{prediction.goalsT2}', '{prediction.winnerId}','{prediction.points}', '{prediction.PId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.match_id}');" +
                           $"SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY];";
 
-            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+                command = new SqlCommand(query, myConnection);
 
-            myConnection.Open();
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla predicciones la prediccion general, y se revisa que id fue la prediccion que se acaba de hacer
+                
+                reader = command.ExecuteReader();
 
-            reader = sqlCmd.ExecuteReader();
+                int thisPredId = 0;
 
-            int thisPredId = 0;
+                while (reader.Read())
+                {
+                    thisPredId = Decimal.ToInt32((decimal)reader.GetValue(0));
+                }
 
-            while (reader.Read())
-            {
-                thisPredId = Decimal.ToInt32((decimal)reader.GetValue(0));
-            }
+                Console.WriteLine("EL ID DE LA PREDICCION QUE ACABA DE HACER ES");
+                Console.WriteLine(thisPredId);
 
-            Console.WriteLine("EL ID DE LA PREDICCION QUE ACABA DE HACER ES");
-            Console.WriteLine(thisPredId);
+                reader.Close();
 
-            myConnection.Close();
+                //Añado a cada uno de los jugadores de la prediccion con sus respectivos goles y asistencias
+                
+                foreach (var predPlayer in prediction.predictionPlayers)
+                {
+                    predPlayer.PrId = thisPredId;        //Se le pone el id de la predicción que se acaba de hacer
 
-            return thisPredId;
-        }
-
-        public async Task<int> insertPredictionPlayer(PredictionPlayerWEB predPlayer)
-        {
-            SqlDataReader reader = null;
-            SqlConnection myConnection = new SqlConnection();
-
-            myConnection.ConnectionString = CONNECTION_STRING;
-
-            //Hace el insert a la tabla de partidos
-
-            string query =
+                    string query2 =
                           $"INSERT INTO [dbo].[Scores_Assists] ([player_id], [prediction_id], [assists], [goals])" +
                           $"VALUES ('{predPlayer.PId}', '{predPlayer.PrId}', '{predPlayer.assists}', '{predPlayer.goals}');";
 
-            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+                    command = new SqlCommand(query2, myConnection);
 
-            myConnection.Open();
+                    command.Transaction = transaction;
+                    command.ExecuteNonQuery();
 
-            var created = sqlCmd.ExecuteNonQuery();
-            myConnection.Close();
+                }
 
-            return created;
-        }
+                //Cuando se hace una predicción, la tabla torneo puntaje se llena con el id del torneo, usuario y el puntaje
+                //Ver group_id de predicción, que procede con eso
+                string query3 = $"INSERT INTO [dbo].[Tournament_Account_S] ([t_id], [acc_nick], [acc_email], [points], [group_id] )" +
+                          $"VALUES ('{prediction.TId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.points}', NULL);";
+
+                command = new SqlCommand(query3, myConnection);
+
+                command.Transaction = transaction;
+                command.ExecuteNonQuery();
+
+                transaction.Commit();
+
+                return 1;
+            }
+            catch (Exception error)
+            {
+                reader.Close();
+                transaction.Rollback();
+                Console.WriteLine(error);
+                return -1;
+            }
+            finally
+            {
+                myConnection.Close();
+            }
+
+        }        
 
         public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch)
         {
@@ -99,11 +127,12 @@ namespace WCO_Api.Database
                 prediction.PrId = (int)reader.GetValue(0);
                 prediction.goalsT1 = (int)reader.GetValue(1);
                 prediction.goalsT2 = (int)reader.GetValue(2);
-                prediction.points = (int)reader.GetValue(3);
-                prediction.PId = (int)reader.GetValue(4);
-                prediction.acc_nick = reader.GetValue(5).ToString();
-                prediction.acc_email = reader.GetValue(6).ToString();
-                prediction.match_id = (int)reader.GetValue(7);
+                prediction.winnerId = (int)reader.GetValue(3);
+                prediction.points = (int)reader.GetValue(4);
+                prediction.PId = (int)reader.GetValue(5);
+                prediction.acc_nick = reader.GetValue(6).ToString();
+                prediction.acc_email = reader.GetValue(7).ToString();
+                prediction.match_id = (int)reader.GetValue(8);
 
             }
 
@@ -115,7 +144,7 @@ namespace WCO_Api.Database
                 $"FROM [dbo].[Scores_Assists]" +
                 $"WHERE prediction_id = '{prediction.PrId}'";
 
-            SqlCommand sqlCmd2 = new SqlCommand(query, myConnection);
+            SqlCommand sqlCmd2 = new SqlCommand(query2, myConnection);
 
             myConnection.Open();
 
@@ -133,7 +162,6 @@ namespace WCO_Api.Database
                 predictionPlayer.PId = (int)reader.GetValue(0);
                 predictionPlayer.assists = (int)reader.GetValue(2);
                 predictionPlayer.goals = (int)reader.GetValue(3);
-
                 predictionPlayers.Add(predictionPlayer);
             }
 
