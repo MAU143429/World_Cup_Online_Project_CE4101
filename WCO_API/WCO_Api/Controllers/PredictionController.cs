@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WCO_Api.Logic;
 using WCO_Api.Repository;
 using WCO_Api.WEBModels;
 
@@ -16,14 +17,14 @@ namespace WCO_Api.Controllers
     {
 
         PredictionRepository predRepository = new PredictionRepository();
-
+        ScoreCalculator sc = new();
         /*
          * Recibe un objeto PredictionWEB, se hacen las operaciones necesarias para poder crear una prediccion
          * Retorna un Task<IActionResult> indicando si se pudo crear la predicción o no
          */
 
         [HttpPost("AddPrediction")]
-        public async Task<IActionResult> createPrediction( PredictionWEB prediction)
+        public async Task<IActionResult> createPrediction(PredictionWEB prediction)
         {
 
             //Validaciones de modelo enviado
@@ -44,7 +45,7 @@ namespace WCO_Api.Controllers
             {
                 var createdP = await predRepository.createNewPrediction(prediction);
 
-                if(createdP == 1)
+                if (createdP == 1)
                 {
                     return Created("api/Prediction/AddPrediction", "Se creo una prediccion exitosamente");
                 } else
@@ -66,10 +67,53 @@ namespace WCO_Api.Controllers
          */
 
         [HttpGet("getPredictionByNEM/{nickname}/{email}/{idMatch}")]
-        public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch )
+        public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch)
         {
             return await predRepository.getPredictionByNEM(nickname, email, idMatch);
         }
 
+        [HttpPost("comparePrediction")]
+        public async Task<double> comparePrediction(PredictionWEB predictionUser)
+        {
+
+            PredictionWEB predictionAdmin = new();
+
+            predictionAdmin.TId = "12345678901234";
+            predictionAdmin.goalsT1 = 2;
+            predictionAdmin.goalsT2 = 0;
+            predictionAdmin.winnerId = 0;
+            predictionAdmin.PId = 12;
+
+            List<PredictionPlayerWEB> adminPredPlayers = new();
+
+            PredictionPlayerWEB predP1 = new PredictionPlayerWEB
+            {
+                PId = 12,
+                goals = 2,
+                assists = 0
+            };
+
+            PredictionPlayerWEB predP2 = new PredictionPlayerWEB
+            {
+                PId = 11,
+                goals = 0,
+                assists = 1
+            };
+
+            PredictionPlayerWEB predP3 = new PredictionPlayerWEB
+            {
+                PId = 10,
+                goals = 0,
+                assists = 1
+            };
+
+            adminPredPlayers.Add(predP1);
+            adminPredPlayers.Add(predP2);
+            adminPredPlayers.Add(predP3);
+
+            predictionAdmin.predictionPlayers = adminPredPlayers;
+
+            return sc.calculatePts(predictionAdmin, predictionUser);
+        }
     }
 }
