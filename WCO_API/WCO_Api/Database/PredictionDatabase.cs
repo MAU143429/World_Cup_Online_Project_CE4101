@@ -129,7 +129,7 @@ namespace WCO_Api.Database
                 prediction.goalsT1 = (int)reader.GetValue(1);
                 prediction.goalsT2 = (int)reader.GetValue(2);
                 prediction.winner = (int)reader.GetValue(3);
-                prediction.points = (int)reader.GetValue(4);
+                prediction.points = (float?)(double)reader.GetValue(4);
                 prediction.PId = (int)reader.GetValue(5);
                 prediction.acc_nick = reader.GetValue(6).ToString();
                 prediction.acc_email = reader.GetValue(7).ToString();
@@ -202,7 +202,7 @@ namespace WCO_Api.Database
                 prediction.goalsT1 = (int)reader.GetValue(1);
                 prediction.goalsT2 = (int)reader.GetValue(2);
                 prediction.winner = (int)reader.GetValue(3);
-                prediction.points = (int)reader.GetValue(4);
+                prediction.points = (float?)(double)reader.GetValue(4);
                 prediction.PId = (int)reader.GetValue(5);
                 prediction.acc_nick = reader.GetValue(6).ToString();
                 prediction.acc_email = reader.GetValue(7).ToString();
@@ -254,7 +254,7 @@ namespace WCO_Api.Database
 
         }
 
-        public async Task<int> setPredictionPoints(int? predId, double points)
+        public async Task<int> setPredictionPoints(int? predId, float points)
         {
 
             SqlTransaction transaction = null;
@@ -273,8 +273,10 @@ namespace WCO_Api.Database
 
                 string query =
                           $"UPDATE [dbo].[Prediction]" +
-                          $"SET [points] = '{points}'" +
+                          $"SET [points] = CAST('{points.ToString().Replace(",",".")}' AS FLOAT)" +
                           $"WHERE [pr_id] = '{predId}'";
+
+                Console.WriteLine(query);
 
                 command = new SqlCommand(query, myConnection);
 

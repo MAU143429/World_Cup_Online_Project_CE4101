@@ -12,7 +12,7 @@
 
         public int winner { get; set; }
 
-        public int? points { get; set; } = 0;
+        public float? points { get; set; } = 0f;
 
         public int PId { get; set; }
 

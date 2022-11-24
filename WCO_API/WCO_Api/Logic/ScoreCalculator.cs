@@ -8,26 +8,26 @@ namespace WCO_Api.Logic
         //Repositorios necesarios
 
         //Reglas de puntaje
-        int exactMatchPts = 10;             //Rule 1
-        int winnerMatchPts = 10;            //Rule 2
-        int mvpMatchPts = 10;               //Rule 3
-        int playerGoalPts = 5;              //Rule 4
-        int playerAssistPts = 5;            //Rule 5
+        float exactMatchPts = 10f;             //Rule 1
+        float winnerMatchPts = 10f;            //Rule 2
+        float mvpMatchPts = 10f;               //Rule 3
+        float playerGoalPts = 5f;              //Rule 4
+        float playerAssistPts = 5f;            //Rule 5
 
         bool guessAllGoals = true;
         bool guessAllAssists = true;
 
         //Método para calcular el puntaje
-        public double calculatePts(PredictionWEB adminPredResult, PredictionWEB userPred)
+        public float calculatePts(PredictionWEB adminPredResult, PredictionWEB userPred)
         {
 
-            double bonus = 0.75;
+            float bonus = 0.75f;
 
-            int rule1Pts = finalScorePts(userPred.goalsT1, userPred.goalsT2, adminPredResult.goalsT1, adminPredResult.goalsT2);
-            int rule2Pts = winnerPts(userPred.winner, adminPredResult.winner);
-            int rule3Pts = mvpPts(userPred.PId, adminPredResult.PId);
-            int rule4Pts = goalsPts(adminPredResult.predictionPlayers, userPred.predictionPlayers);
-            int rule5Pts = asistsPts(adminPredResult.predictionPlayers, userPred.predictionPlayers);
+            float rule1Pts = finalScorePts(userPred.goalsT1, userPred.goalsT2, adminPredResult.goalsT1, adminPredResult.goalsT2);
+            float rule2Pts = winnerPts(userPred.winner, adminPredResult.winner);
+            float rule3Pts = mvpPts(userPred.PId, adminPredResult.PId);
+            float rule4Pts = goalsPts(adminPredResult.predictionPlayers, userPred.predictionPlayers);
+            float rule5Pts = asistsPts(adminPredResult.predictionPlayers, userPred.predictionPlayers);
 
             Console.WriteLine("Puntos R1: " + rule1Pts);
             Console.WriteLine("Puntos R2: " + rule2Pts);
@@ -37,41 +37,42 @@ namespace WCO_Api.Logic
 
             if (rule1Pts != 0)
             {
-                bonus += 0.25;
+                bonus += 0.25f;
                 Console.WriteLine("Activa bonus R1 ");
             }
 
             if (rule2Pts != 0)
             {
-                bonus += 0.25;
+                bonus += 0.25f;
                 Console.WriteLine("Activa bonus R2 ");
             }
 
             if (rule3Pts != 0)
             {
 
-                bonus += 0.25;
+                bonus += 0.25f;
                 Console.WriteLine("Activa bonus R3 ");
             }
 
             if (guessAllGoals)
             {
-                bonus += 0.25;
+                bonus += 0.25f;
                 Console.WriteLine("Activa bonus R4 ");
             }
 
             if (guessAllAssists)
             {
-                bonus += 0.25;
+                bonus += 0.25f;
                 Console.WriteLine("Activa bonus R5 ");
             }
 
             Console.WriteLine("Multiplicador al final: " + bonus);
+            Console.WriteLine("Puntaje al final: " + (bonus * (rule1Pts + rule2Pts + rule3Pts + rule4Pts + rule5Pts)));
 
             return bonus * (rule1Pts + rule2Pts + rule3Pts + rule4Pts + rule5Pts);
         }
 
-        public int finalScorePts(int userGoalsT1, int userGoalsT2, int adminGoalsT1, int adminGoalsT2)
+        public float finalScorePts(int userGoalsT1, int userGoalsT2, int adminGoalsT1, int adminGoalsT2)
         {
 
             if (userGoalsT1 == adminGoalsT1 && userGoalsT2 == adminGoalsT2)
@@ -82,7 +83,7 @@ namespace WCO_Api.Logic
             return 0;
         }
 
-        public int winnerPts(int userWinner, int adminWinner)
+        public float winnerPts(int userWinner, int adminWinner)
         {
 
             if (userWinner == adminWinner)
@@ -93,7 +94,7 @@ namespace WCO_Api.Logic
             return 0;
         }
 
-        public int mvpPts(int userMVP, int adminMVP)
+        public float mvpPts(int userMVP, int adminMVP)
         {
 
             if (userMVP == adminMVP)
@@ -104,7 +105,7 @@ namespace WCO_Api.Logic
             return 0;
         }
 
-        public int goalsPts(List<PredictionPlayerWEB> adminPlayerList, List<PredictionPlayerWEB> userPlayerList)
+        public float goalsPts(List<PredictionPlayerWEB> adminPlayerList, List<PredictionPlayerWEB> userPlayerList)
         {
 
             int total = 0;
@@ -171,7 +172,7 @@ namespace WCO_Api.Logic
             return total * playerGoalPts;
         }
 
-        public int asistsPts(List<PredictionPlayerWEB> adminPlayerList, List<PredictionPlayerWEB> userPlayerList)
+        public float asistsPts(List<PredictionPlayerWEB> adminPlayerList, List<PredictionPlayerWEB> userPlayerList)
         {
 
             int total = 0;

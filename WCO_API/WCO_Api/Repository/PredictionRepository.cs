@@ -22,7 +22,7 @@ namespace WCO_Api.Repository
             return await sQLDB.getPredictionByMatchId(idMatch);
         }
 
-        public async Task<int> setPredictionPoints(int? predId, double points)
+        public async Task<int> setPredictionPoints(int? predId, float points)
         {
             return await sQLDB.setPredictionPoints(predId, points);
         }

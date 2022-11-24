@@ -52,10 +52,11 @@ namespace WCO_Api.Controllers
                     foreach (var predictionDB in predictions)
                     {
                         //calcular los puntos para la prediccion
-                        double points = sc.calculatePts(predictionDB, prediction);
+                        float points = sc.calculatePts(predictionDB, prediction);
 
+                        Console.WriteLine("Obtuve " + points + " de prediccion " + predictionDB.PrId);
                         //Setea los puntos de la predicción
-                        int result = predRepository.setPredictionPoints(prediction.PrId, points).Result;
+                        int result = predRepository.setPredictionPoints(predictionDB.PrId, points).Result;
 
                     }
 
