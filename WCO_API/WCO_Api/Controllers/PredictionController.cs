@@ -43,15 +43,39 @@ namespace WCO_Api.Controllers
             //Si no existe, la crea
             if (dbPrediction.Result.PrId == null)
             {
-                var createdP = await predRepository.createNewPrediction(prediction);
 
-                if (createdP == 1)
+                if (prediction.isAdmin)
                 {
-                    return Created("api/Prediction/AddPrediction", "Se creo una prediccion exitosamente");
-                } else
-                {
-                    return StatusCode(500, "Error al crear una prediccion");
+
+                    List<PredictionWEB> predictions = predRepository.getPredictionByMatchId(prediction.match_id).Result;
+
+                    foreach (var predictionDB in predictions)
+                    {
+                        //calcular los puntos para la prediccion
+                        double points = sc.calculatePts(predictionDB, prediction);
+
+                        //Setea los puntos de la predicción
+                        int result = predRepository.setPredictionPoints(prediction.PrId, points).Result;
+
+                    }
+
+                    return StatusCode(500, "Admin");
                 }
+                else
+                {
+                    var createdP = await predRepository.createNewPrediction(prediction);
+
+                    if (createdP == 1)
+                    {
+                        return Created("api/Prediction/AddPrediction", "Se creo una prediccion exitosamente");
+                    }
+                    else
+                    {
+                        return StatusCode(500, "Error al crear una prediccion");
+                    }
+                }
+
+                
 
             }
             // Si existe, hace más bien un cambio a esa predicción
@@ -72,6 +96,12 @@ namespace WCO_Api.Controllers
             return await predRepository.getPredictionByNEM(nickname, email, idMatch);
         }
 
+        [HttpGet("getPredictionByMatchId/{idMatch}")]
+        public async Task<List<PredictionWEB>> getPredictionByMatchId(int idMatch)
+        {
+            return await predRepository.getPredictionByMatchId(idMatch);
+        }
+
         [HttpPost("comparePrediction")]
         public async Task<double> comparePrediction(PredictionWEB predictionUser)
         {
@@ -79,20 +109,20 @@ namespace WCO_Api.Controllers
             PredictionWEB predictionAdmin = new();
 
             predictionAdmin.TId = "12345678901234";
-            predictionAdmin.goalsT1 = 2;
+            predictionAdmin.goalsT1 = 3;
             predictionAdmin.goalsT2 = 0;
-            predictionAdmin.winnerId = 0;
+            predictionAdmin.winner = 0;
             predictionAdmin.PId = 12;
 
             List<PredictionPlayerWEB> adminPredPlayers = new();
-
+            
             PredictionPlayerWEB predP1 = new PredictionPlayerWEB
             {
                 PId = 12,
-                goals = 2,
+                goals = 3,
                 assists = 0
             };
-
+            /*
             PredictionPlayerWEB predP2 = new PredictionPlayerWEB
             {
                 PId = 11,
@@ -106,11 +136,11 @@ namespace WCO_Api.Controllers
                 goals = 0,
                 assists = 1
             };
-
+            */
             adminPredPlayers.Add(predP1);
-            adminPredPlayers.Add(predP2);
-            adminPredPlayers.Add(predP3);
-
+            //adminPredPlayers.Add(predP2);
+            //adminPredPlayers.Add(predP3);
+            
             predictionAdmin.predictionPlayers = adminPredPlayers;
 
             return sc.calculatePts(predictionAdmin, predictionUser);

@@ -16,5 +16,21 @@ namespace WCO_Api.Repository
         {
             return await sQLDB.getPredictionByNEM(nickname, email, idMatch);
         }
+
+        public async Task<List<PredictionWEB>> getPredictionByMatchId(int idMatch)
+        {
+            return await sQLDB.getPredictionByMatchId(idMatch);
+        }
+
+        public async Task<int> setPredictionPoints(int? predId, double points)
+        {
+            return await sQLDB.setPredictionPoints(predId, points);
+        }
+        /*
+        public async Task<int> setTournamentPoints(PredictionWEB pred, int points)
+        {
+            return await sQLDB.setTournamentPoints(pred, points);
+        }
+        */
     }
 }

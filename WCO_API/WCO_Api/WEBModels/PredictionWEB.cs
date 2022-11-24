@@ -10,11 +10,13 @@
 
         public int goalsT2 { get; set; }
 
-        public int winnerId { get; set; }
+        public int winner { get; set; }
 
         public int? points { get; set; } = 0;
 
         public int PId { get; set; }
+
+        public bool isAdmin { get; set; }
 
         public string acc_nick { get; set; }
 

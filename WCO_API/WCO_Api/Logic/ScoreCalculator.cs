@@ -24,8 +24,8 @@ namespace WCO_Api.Logic
             double bonus = 0.75;
 
             int rule1Pts = finalScorePts(userPred.goalsT1, userPred.goalsT2, adminPredResult.goalsT1, adminPredResult.goalsT2);
-            int rule2Pts = winnerPts(userPred.winnerId, adminPredResult.winnerId);
-            int rule3Pts = mvpPts(userPred.PId, userPred.PId);
+            int rule2Pts = winnerPts(userPred.winner, adminPredResult.winner);
+            int rule3Pts = mvpPts(userPred.PId, adminPredResult.PId);
             int rule4Pts = goalsPts(adminPredResult.predictionPlayers, userPred.predictionPlayers);
             int rule5Pts = asistsPts(adminPredResult.predictionPlayers, userPred.predictionPlayers);
 
@@ -38,26 +38,32 @@ namespace WCO_Api.Logic
             if (rule1Pts != 0)
             {
                 bonus += 0.25;
+                Console.WriteLine("Activa bonus R1 ");
             }
 
             if (rule2Pts != 0)
             {
                 bonus += 0.25;
+                Console.WriteLine("Activa bonus R2 ");
             }
 
             if (rule3Pts != 0)
             {
+
                 bonus += 0.25;
+                Console.WriteLine("Activa bonus R3 ");
             }
 
             if (guessAllGoals)
             {
                 bonus += 0.25;
+                Console.WriteLine("Activa bonus R4 ");
             }
 
             if (guessAllAssists)
             {
                 bonus += 0.25;
+                Console.WriteLine("Activa bonus R5 ");
             }
 
             Console.WriteLine("Multiplicador al final: " + bonus);
@@ -102,6 +108,18 @@ namespace WCO_Api.Logic
         {
 
             int total = 0;
+
+            //Pega puntos por acertar que queda 0 a 0 y no hay goles
+            if (userPlayerList.Count() == 0 && adminPlayerList.Count() == 0)
+            {
+                return total;
+            }
+
+            if (userPlayerList.Count() == 0 || adminPlayerList.Count() == 0)
+            {
+                guessAllGoals = false;
+                return total;
+            }
 
             foreach (var adminPlayer in adminPlayerList)
             {
@@ -157,6 +175,18 @@ namespace WCO_Api.Logic
         {
 
             int total = 0;
+
+            //Pega puntos por acertar que queda 0 a 0 y no hay asistencias
+            if (userPlayerList.Count() == 0 && adminPlayerList.Count() == 0)
+            {
+                return total;
+            }
+
+            if (userPlayerList.Count() == 0 || adminPlayerList.Count() == 0)
+            {
+                guessAllAssists = false;
+                return total;
+            }
 
             foreach (var adminPlayer in adminPlayerList)
             {
