@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { DialogBoxComponent } from './dialog-box.component';
+import { DialogBoxComponent } from '../../src/app/components/dialog-box/dialog-box.component';
 
 describe('DialogBoxComponent', () => {
   let component: DialogBoxComponent;
@@ -8,7 +10,11 @@ describe('DialogBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DialogBoxComponent ]
+      declarations: [ DialogBoxComponent ],
+      imports: [
+        MatDialogModule,
+        NoopAnimationsModule],
+      providers: [{provide: MatDialogRef, useValue: {}}]
     })
     .compileComponents();
 
