@@ -302,5 +302,84 @@ namespace WCO_Api.Database
 
         }
 
+
+        public async Task<int> setTournamentPoints(String tId,  PredictionWEB pred, float points)
+        {
+
+            SqlTransaction transaction = null;
+            SqlConnection myConnection = null;
+            SqlCommand command = null;
+            SqlDataReader reader = null;
+
+            try
+            {
+
+                myConnection = new SqlConnection(CONNECTION_STRING);
+
+                myConnection.Open();
+
+                //Start the transaction
+                transaction = myConnection.BeginTransaction();
+
+                //Obtener el puntaje del torneo en la tabla de puntajes por torneo
+
+
+                string query = $"SELECT * " +
+                $"FROM [dbo].[Tournament_Account_S]" +
+                $"WHERE t_id = '{tId}' and acc_nick = '{pred.acc_nick}' and acc_email = '{pred.acc_email}'";
+
+                command = new SqlCommand(query, myConnection);
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+
+                reader = command.ExecuteReader();
+
+                float tournamentPoints = 0;
+
+                while (reader.Read())
+                {
+                    //Se le suman los puntos que tenía con los nuevos de la prediccion
+                    tournamentPoints = (float)(double)reader.GetValue(3) + points;
+
+                }
+                Console.WriteLine("Habian estos puntos en la prediccion: " + tournamentPoints);
+
+                reader.Close();
+
+                string query2 =
+                          $"UPDATE [dbo].[Tournament_Account_S]" +
+                          $"SET [points] = CAST('{tournamentPoints.ToString().Replace(",", ".")}' AS FLOAT)" +
+                          $"WHERE t_id = '{tId}' and acc_nick = '{pred.acc_nick}' and acc_email = '{pred.acc_email}'";
+
+                Console.WriteLine(query2);
+
+                command = new SqlCommand(query2, myConnection);
+
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla torneos el torneo en sí
+                command.ExecuteNonQuery();
+
+                transaction.Commit();
+
+                return 1;
+            }
+            catch (Exception error)
+            {
+                reader.Close();
+                transaction.Rollback();
+                Console.WriteLine(error);
+                return -1;
+            }
+            finally
+            {
+                myConnection.Close();
+            }
+
+        }
+
     }
+
 }
+
+

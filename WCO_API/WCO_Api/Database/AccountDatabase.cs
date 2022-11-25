@@ -204,6 +204,45 @@ namespace WCO_Api.Database
 
         }
 
+        public async Task<bool> isAccountInGroup(Tournament_Account_SWEB ta)
+        {
+            SqlConnection myConnection = new();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT [group_id] " +
+                $"FROM [dbo].[Tournament_Account_S]" +
+                $"WHERE t_id = '{ta.TId}' and acc_nick = '{ta.acc_nick}' and acc_email = '{ta.acc_email}'";
+
+            SqlCommand sqlCmd = new(query, myConnection);
+
+            myConnection.Open();
+
+            SqlDataReader reader = sqlCmd.ExecuteReader();
+
+            bool isInGroup = false;
+
+
+            while (reader.Read())
+            {
+
+                Console.WriteLine(reader.GetValue(0).ToString());
+                //Se encuentra en un grupo
+                if (reader.GetValue(0).ToString().Length != 0)
+                {
+                    isInGroup = true;
+                }
+                //Sino no se encuentra en grupo
+
+            }
+
+            myConnection.Close();
+
+            return isInGroup;
+
+        }
+
+
         public async Task<List<Tournament_Account_SWEB?>> getScoreByGroupId(string inputGId)
         {
             SqlConnection myConnection = new();
@@ -231,7 +270,7 @@ namespace WCO_Api.Database
                     score.TId = reader.GetValue(0).ToString();
                     score.acc_nick = reader.GetValue(1).ToString();
                     score.acc_email = reader.GetValue(2).ToString();
-                    score.points = (int) reader.GetValue(3);
+                    score.points = (float)(double) reader.GetValue(3);
                     score.GId = reader.GetValue(4).ToString();
 
                     groupScoresL.Add(score);

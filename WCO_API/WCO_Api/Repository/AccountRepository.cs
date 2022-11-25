@@ -30,6 +30,11 @@ namespace WCO_Api.Repository
             return await sQLDB.insertAccountGroup(ta);
         }
 
+        public async Task<bool> isAccountInGroup(Tournament_Account_SWEB ta)
+        {
+            return await sQLDB.isAccountInGroup(ta);
+        }
+
         public async Task<List<GroupWEB>> getGroupById(string GId)
         {
             return await sQLDB.getGroupById(GId);

@@ -47,20 +47,37 @@ namespace WCO_Api.Controllers
                 if (prediction.isAdmin)
                 {
 
-                    List<PredictionWEB> predictions = predRepository.getPredictionByMatchId(prediction.match_id).Result;
 
-                    foreach (var predictionDB in predictions)
+                    try
                     {
-                        //calcular los puntos para la prediccion
-                        float points = sc.calculatePts(predictionDB, prediction);
 
-                        Console.WriteLine("Obtuve " + points + " de prediccion " + predictionDB.PrId);
-                        //Setea los puntos de la predicción
-                        int result = predRepository.setPredictionPoints(predictionDB.PrId, points).Result;
+                        List<PredictionWEB> predictions = predRepository.getPredictionByMatchId(prediction.match_id).Result;
+
+                        foreach (var predictionDB in predictions)
+                        {
+                            //calcular los puntos para la prediccion
+                            float points = sc.calculatePts(predictionDB, prediction);
+
+                            Console.WriteLine("Obtuve " + points + " de prediccion " + predictionDB.PrId);
+                            //Setea los puntos de la predicción
+                            int result = predRepository.setPredictionPoints(predictionDB.PrId, points).Result;
+
+                            //Setea los puntos de la tabla de puntuaciones general
+
+                            int result2 = predRepository.setTournamentPoints(prediction.TId, predictionDB, points).Result;
+
+                        }
+
+                        return Ok("Se asignaron los puntos de la predicción del partido " + prediction.match_id + " correctamente");
 
                     }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        return StatusCode(500, "Error al asignar puntos a predicción");
+                    }
 
-                    return StatusCode(500, "Admin");
+                    
                 }
                 else
                 {

@@ -8,7 +8,7 @@
 
         public string acc_email { get; set; }
 
-        public int? points { get; set; } = 0;
+        public float? points { get; set; } = 0;
 
         public string GId { get; set; }
 

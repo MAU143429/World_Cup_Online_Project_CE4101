@@ -84,13 +84,16 @@ namespace WCO_Api.Controllers
                 return BadRequest(ModelState);
 
             //Ver si alguien quiere meterse a un grupo en el que ya está
-
+            if (accountRepository.isAccountInGroup(ta).Result) 
+            {
+                return BadRequest("Ya se encuentra en un grupo para el torneo indicado!");
+            }
 
             var createdG = await accountRepository.addAccountGroup(ta);
 
             if (createdG == 1)
             {
-                return Created("api/Account/AddGroup", "Se creo un grupo exitosamente");
+                return Created("api/Account/AddGroup", "Se unio a un grupo exitosamente");
             }
             else
             {

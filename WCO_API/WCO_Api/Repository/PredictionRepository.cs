@@ -26,11 +26,11 @@ namespace WCO_Api.Repository
         {
             return await sQLDB.setPredictionPoints(predId, points);
         }
-        /*
-        public async Task<int> setTournamentPoints(PredictionWEB pred, int points)
+
+        public async Task<int> setTournamentPoints(string tId,  PredictionWEB pred, float points)
         {
-            return await sQLDB.setTournamentPoints(pred, points);
+            return await sQLDB.setTournamentPoints(tId, pred, points);;
         }
-        */
+        
     }
 }
