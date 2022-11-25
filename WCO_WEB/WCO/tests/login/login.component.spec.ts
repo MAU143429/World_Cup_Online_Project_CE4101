@@ -69,7 +69,7 @@ describe('LoginComponent', () => {
     component = fixture.componentInstance;
     service = TestBed.inject( AccountService );
     httpMock = TestBed.inject( HttpTestingController );
-    router = TestBed.inject(Router)
+    router = TestBed.inject(Router);
 
     fixture.detectChanges();
     compiled = fixture.nativeElement;
