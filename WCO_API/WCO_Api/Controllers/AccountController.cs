@@ -83,7 +83,7 @@ namespace WCO_Api.Controllers
             
         }
 
-        [HttpPost("AddAccountToGroup")]
+        [HttpGet("AddAccountToGroup")]
         public async Task<IActionResult> addAccountGroup(GroupWEB ta)
         {
             if (ta == null)
