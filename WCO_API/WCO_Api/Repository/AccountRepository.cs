@@ -45,6 +45,11 @@ namespace WCO_Api.Repository
             return await sQLDB.getScoreByGroupId(GId);
         }
 
+        public async Task<List<Tournament_Account_SWEB>> getScoreByTournamentId(string tId)
+        {
+            return await sQLDB.getScoreByTournamentId(tId);
+        }
+
         public async Task<AccountWEB> getLoginAccountWEB (string login)
         {
             return await sQLDB.getAccountByEmail(login);

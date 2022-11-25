@@ -282,6 +282,46 @@ namespace WCO_Api.Database
 
         }
 
+        public async Task<List<Tournament_Account_SWEB?>> getScoreByTournamentId(string inputTId)
+        {
+            SqlConnection myConnection = new();
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            string query = $"SELECT * " +
+                $"FROM [dbo].[Tournament_Account_S]" +
+                $"WHERE t_id = '{inputTId}'" +
+                $"ORDER BY points DESC;";
+
+            SqlCommand sqlCmd = new(query, myConnection);
+
+            myConnection.Open();
+
+            //SqlDataReader reader = sqlCmd.ExecuteReader();
+
+            List<Tournament_Account_SWEB> groupScoresL = new();
+
+            using (SqlDataReader reader = sqlCmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Tournament_Account_SWEB score = new();
+
+                    score.TId = reader.GetValue(0).ToString();
+                    score.acc_nick = reader.GetValue(1).ToString();
+                    score.acc_email = reader.GetValue(2).ToString();
+                    score.points = (float)(double)reader.GetValue(3);
+                    score.GId = reader.GetValue(4).ToString();
+
+                    groupScoresL.Add(score);
+                }
+            }
+            myConnection.Close();
+
+            return groupScoresL;
+
+        }
+
         public async Task<AccountWEB?> getAccountByEmail(string inputEmail)
         {
             SqlConnection myConnection = new();

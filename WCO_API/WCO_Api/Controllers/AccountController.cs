@@ -136,6 +136,14 @@ namespace WCO_Api.Controllers
 
         }
 
+        [HttpGet("GetScoreByTournamentId/{tId}")]
+        public async Task<List<Tournament_Account_SWEB>> getScoreByTournamentId(string tId)
+        {
+
+            return await accountRepository.getScoreByTournamentId(tId);
+
+        }
+
         [HttpGet("GetAccountByNickname/{nick}")]
         public async Task<List<AccountWEB>> getAccountByNickname(string nick)
         {
