@@ -46,8 +46,6 @@ describe('CreateTournamentComponent', () => {
       imports: [ 
         HttpClientTestingModule, 
         MatSnackBarModule,
-        //FormsModule,
-        //ReactiveFormsModule,
         MatDialogModule,
         NoopAnimationsModule
       ],
