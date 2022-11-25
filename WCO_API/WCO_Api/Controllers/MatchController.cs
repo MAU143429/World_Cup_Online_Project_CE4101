@@ -13,8 +13,8 @@ namespace WCO_Api.Models
     public class MatchController : ControllerBase
     {
 
-        MatchRepository matchRepository = new MatchRepository();
-        TournamentRepository tournamentRepository = new TournamentRepository();
+        IMatchRepository matchRepository = new MatchRepository();
+        ITournamentRepository tournamentRepository = new TournamentRepository();
 
         /*
          * Recibe un objeto MarchWEB, se hacen las operaciones necesarias para poder crear un partido

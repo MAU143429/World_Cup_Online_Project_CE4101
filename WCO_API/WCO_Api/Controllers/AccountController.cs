@@ -13,7 +13,7 @@ namespace WCO_Api.Controllers
     */
     public class AccountController : ControllerBase
     {
-        AccountRepository accountRepository = new();
+        IAccountRepository _accountRepository;
 
 
         /* <summary>
@@ -21,21 +21,24 @@ namespace WCO_Api.Controllers
         * hace la petición a la propiedad AccountDatabase para hacer la inserción de la cuenta a WCO database.
         * </summary>
         */
-
+        public AccountController(IAccountRepository accountRepository)
+        {
+            _accountRepository = accountRepository;
+        }
         [HttpPost("AddAccount")]
         public async Task<IActionResult> createAccount([FromBody] AccountWEB account)
         {
 
             if (account == null)
                 return BadRequest("null input");
-            Task<AccountWEB>? accountInDB = accountRepository.getLoginAccountWEB(account.email);
+            Task<AccountWEB>? accountInDB = _accountRepository.getLoginAccountWEB(account.email);
             if (accountInDB.Result != null)
                 return BadRequest("Account already exists");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var createdA = await accountRepository.createNewAccount(account);
+            var createdA = await _accountRepository.createNewAccount(account);
 
             if (createdA == 1)
             {
@@ -57,7 +60,7 @@ namespace WCO_Api.Controllers
         public async Task<bool> loginAccount([FromBody] LoginAccountWEB loginAccount)
         {
             
-            Task<AccountWEB>? accountInDB = accountRepository.getLoginAccountWEB(loginAccount.email);
+            Task<AccountWEB>? accountInDB = _accountRepository.getLoginAccountWEB(loginAccount.email);
 
                 
             if (accountInDB.Result.password != loginAccount.password)
@@ -76,7 +79,7 @@ namespace WCO_Api.Controllers
         public async Task<List<AccountWEB>> getAccountByNickname(string nick)
         {
 
-            return await accountRepository.getAccountByNickname(nick);
+            return await _accountRepository.getAccountByNickname(nick);
 
         }
 
@@ -89,7 +92,7 @@ namespace WCO_Api.Controllers
         public async Task<List<AccountWEB>> getInformationAccountByEmail(string email)
         {
 
-            return await accountRepository.getInformationAccountByEmail(email);
+            return await _accountRepository.getInformationAccountByEmail(email);
 
         }
 
@@ -102,7 +105,7 @@ namespace WCO_Api.Controllers
         public async Task<bool> getRoleAccountByEmail(string email)
         {
 
-            return await accountRepository.getRoleAccountByEmail(email);
+            return await _accountRepository.getRoleAccountByEmail(email);
 
         }
 

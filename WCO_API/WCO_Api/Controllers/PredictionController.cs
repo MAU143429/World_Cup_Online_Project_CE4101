@@ -15,7 +15,7 @@ namespace WCO_Api.Controllers
     public class PredictionController : ControllerBase
     {
 
-        PredictionRepository predRepository = new PredictionRepository();
+        IPredictionRepository predRepository = new PredictionRepository();
 
         /*
          * Recibe un objeto PredictionWEB, se hacen las operaciones necesarias para poder crear una prediccion

@@ -14,7 +14,7 @@ namespace WCO_Api.Controllers
     public class TournamentController : ControllerBase
     {
 
-        TournamentRepository tournamentRepository = new TournamentRepository();
+        ITournamentRepository tournamentRepository = new TournamentRepository();
 
         /*
          * Obtiene una lista con objetos TournamentOut que se mandarán a la web, no recibe nada
