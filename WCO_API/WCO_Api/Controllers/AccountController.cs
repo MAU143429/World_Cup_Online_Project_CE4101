@@ -13,18 +13,18 @@ namespace WCO_Api.Controllers
     */
     public class AccountController : ControllerBase
     {
-        IAccountRepository _accountRepository;
-
+        readonly IAccountRepository _accountRepository;
+        public AccountController(IAccountRepository accountRepository)
+        {
+            _accountRepository = accountRepository;
+        }
 
         /* <summary>
         * Method <c>createAccount</c> método que se comunica con el repositorio, el cual 
         * hace la petición a la propiedad AccountDatabase para hacer la inserción de la cuenta a WCO database.
         * </summary>
         */
-        public AccountController(IAccountRepository accountRepository)
-        {
-            _accountRepository = accountRepository;
-        }
+
         [HttpPost("AddAccount")]
         public async Task<IActionResult> createAccount([FromBody] AccountWEB account)
         {

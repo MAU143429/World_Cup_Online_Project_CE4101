@@ -14,9 +14,12 @@ namespace WCO_Api.Controllers
     [ApiController]
     public class PredictionController : ControllerBase
     {
+        readonly IPredictionRepository _predRepository;
 
-        IPredictionRepository predRepository = new PredictionRepository();
-
+        public PredictionController(IPredictionRepository predictionRepository)
+        {
+            _predRepository = predictionRepository;
+        }
         /*
          * Recibe un objeto PredictionWEB, se hacen las operaciones necesarias para poder crear una prediccion
          * Retorna un Task<IActionResult> indicando si se pudo crear la predicción o no
@@ -37,12 +40,12 @@ namespace WCO_Api.Controllers
                 return BadRequest(ModelState);
 
             //Revisar si la predicción ya existe
-            var dbPrediction = predRepository.getPredictionByNEM(prediction.acc_nick, prediction.acc_email, prediction.match_id);
+            var dbPrediction = _predRepository.getPredictionByNEM(prediction.acc_nick, prediction.acc_email, prediction.match_id);
 
             //Si no existe, la crea
             if (dbPrediction.Result.PrId == null)
             {
-                var createdP = await predRepository.createNewPrediction(prediction);
+                var createdP = await _predRepository.createNewPrediction(prediction);
 
                 if(createdP == 1)
                 {
@@ -68,7 +71,7 @@ namespace WCO_Api.Controllers
         [HttpGet("getPredictionByNEM/{nickname}/{email}/{idMatch}")]
         public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch )
         {
-            return await predRepository.getPredictionByNEM(nickname, email, idMatch);
+            return await _predRepository.getPredictionByNEM(nickname, email, idMatch);
         }
 
     }

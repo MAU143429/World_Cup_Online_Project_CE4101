@@ -12,9 +12,14 @@ namespace WCO_Api.Models
     [ApiController]
     public class MatchController : ControllerBase
     {
+        readonly IMatchRepository _matchRepository;
+        readonly ITournamentRepository _tournamentRepository;
 
-        IMatchRepository matchRepository = new MatchRepository();
-        ITournamentRepository tournamentRepository = new TournamentRepository();
+        public MatchController(IMatchRepository matchRepository, ITournamentRepository tournamentRepository)
+        {
+            _matchRepository = matchRepository;
+            _tournamentRepository = tournamentRepository;
+        }
 
         /*
          * Recibe un objeto MarchWEB, se hacen las operaciones necesarias para poder crear un partido
@@ -31,7 +36,7 @@ namespace WCO_Api.Models
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var created = await matchRepository.createNewMatch(match);
+            var created = await _matchRepository.createNewMatch(match);
 
             return Created("created", created);
 
@@ -46,19 +51,19 @@ namespace WCO_Api.Models
         public async Task<List<List<MatchOut>>> getMatchesByTournamentId(string id)
         {
 
-            List<BracketWEB> allBrackets = (List<BracketWEB>)await tournamentRepository.getBracketsByTournamentId(id);
+            List<BracketWEB> allBrackets = (List<BracketWEB>)await _tournamentRepository.getBracketsByTournamentId(id);
             List<List<MatchOut>> allMatches = new List<List<MatchOut>>();
 
             foreach (var bracket in allBrackets)
             {
                 List<MatchOut> matchesWeb = new List<MatchOut>();
 
-                matchesWeb = (List<MatchOut>)await matchRepository.getMatchesByBracketId(bracket.BId);
+                matchesWeb = (List<MatchOut>)await _matchRepository.getMatchesByBracketId(bracket.BId);
 
                 foreach (MatchOut dbMatch in matchesWeb)
                 {
 
-                    List<TeamWEB> teams = (List<TeamWEB>)await matchRepository.getTeamsByMatchId(dbMatch.MId);
+                    List<TeamWEB> teams = (List<TeamWEB>)await _matchRepository.getTeamsByMatchId(dbMatch.MId);
                     dbMatch.teams = teams;
 
                 }
@@ -79,7 +84,7 @@ namespace WCO_Api.Models
         public async Task<List<MatchOut>> getMatchById(int id)
         {
 
-            return (List<MatchOut>)await matchRepository.getMatchById(id);
+            return (List<MatchOut>)await _matchRepository.getMatchById(id);
 
         }
 
@@ -92,7 +97,7 @@ namespace WCO_Api.Models
         public async Task<List<PlayerWEB>> GetPlayersbyTeamId(int id)
         {
 
-            return (List<PlayerWEB>)await matchRepository.getPlayersbyTeamId(id);
+            return (List<PlayerWEB>)await _matchRepository.getPlayersbyTeamId(id);
 
         }
 
@@ -105,7 +110,7 @@ namespace WCO_Api.Models
         public async Task<List<PlayerWEB>> GetPlayersbyBothTeamId(int id1, int id2)
         {
 
-            return (List<PlayerWEB>)await matchRepository.getPlayersbyBothTeamId(id1, id2);
+            return (List<PlayerWEB>)await _matchRepository.getPlayersbyBothTeamId(id1, id2);
 
         }
 
