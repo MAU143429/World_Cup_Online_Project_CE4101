@@ -93,13 +93,25 @@ namespace WCO_Api.Database
 
                 //Se crea una llave para el grupo
                 string groupId = myIdGenerator.GetUUID();
-                groupId = group.TId + groupId;
+                groupId = group.tId + groupId;
 
                 string query =
                           $"INSERT INTO [dbo].[Group] ([g_id], [name], [tournament_id])" +
-                          $"VALUES ('{groupId}', '{group.name}', '{group.TId}' )";
+                          $"VALUES ('{groupId}', '{group.name}', '{group.tId}' )";
 
                 command = new SqlCommand(query, myConnection);
+
+                //assosiate the command-variable with the transaction
+                command.Transaction = transaction;
+                //Se inserta a la tabla torneos el torneo en sí
+                command.ExecuteNonQuery();
+
+                string query2 =
+                          $"UPDATE [dbo].[Tournament_Account_S]" +
+                          $"SET [group_id] = '{groupId}'" +
+                          $"WHERE [acc_nick] = '{group.acc_nick}' and [acc_email] = '{group.acc_email}' ";
+
+                command = new SqlCommand(query2, myConnection);
 
                 //assosiate the command-variable with the transaction
                 command.Transaction = transaction;
@@ -123,7 +135,7 @@ namespace WCO_Api.Database
 
         }
 
-        public async Task<int> insertAccountGroup(Tournament_Account_SWEB ta)
+        public async Task<int> insertAccountGroup(GroupWEB ta)
         {
 
             SqlTransaction transaction = null;
@@ -143,7 +155,7 @@ namespace WCO_Api.Database
                 string query =
                           $"UPDATE [dbo].[Tournament_Account_S]" +
                           $"SET [group_id] = '{ta.GId}'" +
-                          $"WHERE [acc_nick] = '{ta.acc_nick}' and [acc_email] = '{ta.acc_email}' ";
+                          $"WHERE [acc_nick] = '{ta.acc_nick}' and [acc_email] = '{ta.acc_email}' and [t_id] = '{ta.GId.Substring(0,6)}'";
 
                 command = new SqlCommand(query, myConnection);
 
@@ -193,7 +205,7 @@ namespace WCO_Api.Database
 
                 group.GId = reader.GetValue(0).ToString();
                 group.name = reader.GetValue(1).ToString();
-                group.TId = reader.GetValue(2).ToString();
+                group.tId = reader.GetValue(2).ToString();
 
                 groupL.Add(group);
             }
@@ -251,7 +263,7 @@ namespace WCO_Api.Database
 
                     group.GId = reader.GetValue(0).ToString();
                     group.name = reader.GetValue(1).ToString();
-                    group.TId = reader.GetValue(2).ToString();
+                    group.tId = reader.GetValue(2).ToString();
 
                     groupL.Add(group);
                 }
@@ -264,41 +276,50 @@ namespace WCO_Api.Database
 
         }
 
-        public async Task<bool> isAccountInGroup(Tournament_Account_SWEB ta)
+        public async Task<bool> isAccountInGroup(GroupWEB ta)
         {
-            SqlConnection myConnection = new();
+            try
+            {
+                SqlConnection myConnection = new();
 
-            myConnection.ConnectionString = CONNECTION_STRING;
+                myConnection.ConnectionString = CONNECTION_STRING;
 
-            string query = $"SELECT [group_id] " +
-                $"FROM [dbo].[Tournament_Account_S]" +
-                $"WHERE t_id = '{ta.TId}' and acc_nick = '{ta.acc_nick}' and acc_email = '{ta.acc_email}'";
+                string query = $"SELECT [group_id] " +
+                    $"FROM [dbo].[Tournament_Account_S]" +
+                    $"WHERE t_id = '{ta.GId.Substring(0, 6)}' and acc_nick = '{ta.acc_nick}' and acc_email = '{ta.acc_email}'";
 
-            SqlCommand sqlCmd = new(query, myConnection);
+                SqlCommand sqlCmd = new(query, myConnection);
 
-            myConnection.Open();
+                myConnection.Open();
 
-            SqlDataReader reader = sqlCmd.ExecuteReader();
+                SqlDataReader reader = sqlCmd.ExecuteReader();
 
-            bool isInGroup = false;
+                bool isInGroup = false;
 
 
-            while (reader.Read())
+                while (reader.Read())
+                {
+
+                    Console.WriteLine(reader.GetValue(0).ToString());
+                    //Se encuentra en un grupo
+                    if (reader.GetValue(0).ToString().Length != 0)
+                    {
+                        isInGroup = true;
+                    }
+                    //Sino no se encuentra en grupo
+
+                }
+
+                myConnection.Close();
+
+                return isInGroup;
+            }
+            catch (Exception)
             {
 
-                Console.WriteLine(reader.GetValue(0).ToString());
-                //Se encuentra en un grupo
-                if (reader.GetValue(0).ToString().Length != 0)
-                {
-                    isInGroup = true;
-                }
-                //Sino no se encuentra en grupo
-
+                return false;
             }
 
-            myConnection.Close();
-
-            return isInGroup;
 
         }
 
