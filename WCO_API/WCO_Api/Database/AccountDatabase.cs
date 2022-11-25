@@ -8,7 +8,7 @@ namespace WCO_Api.Database
     /// asociadas a Account con WCO DB.
     /// </summary>
     /// */
-    public class AccountDatabase
+    public class AccountDatabase : IAccountDatabase
     {
         string CONNECTION_STRING;
 
@@ -24,7 +24,7 @@ namespace WCO_Api.Database
         */
         public async Task<int> insertAccount(AccountWEB account)
         {
-           
+
             SqlTransaction transaction = null;
             SqlConnection myConnection = null;
             SqlCommand command = null;
@@ -226,7 +226,7 @@ namespace WCO_Api.Database
                     accIsAdmin = (bool)reader.GetValue(0);
 
                 }
-                
+
             }
 
             myConnection.Close();

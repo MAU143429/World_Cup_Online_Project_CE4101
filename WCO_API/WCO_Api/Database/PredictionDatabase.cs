@@ -3,7 +3,7 @@ using WCO_Api.WEBModels;
 
 namespace WCO_Api.Database
 {
-    public class PredictionDatabase
+    public class PredictionDatabase : IPredictionDatabase
     {
 
         string CONNECTION_STRING;
@@ -41,7 +41,7 @@ namespace WCO_Api.Database
                 //assosiate the command-variable with the transaction
                 command.Transaction = transaction;
                 //Se inserta a la tabla predicciones la prediccion general, y se revisa que id fue la prediccion que se acaba de hacer
-                
+
                 reader = command.ExecuteReader();
 
                 int thisPredId = 0;
@@ -57,7 +57,7 @@ namespace WCO_Api.Database
                 reader.Close();
 
                 //Añado a cada uno de los jugadores de la prediccion con sus respectivos goles y asistencias
-                
+
                 foreach (var predPlayer in prediction.predictionPlayers)
                 {
                     predPlayer.PrId = thisPredId;        //Se le pone el id de la predicción que se acaba de hacer
@@ -72,7 +72,7 @@ namespace WCO_Api.Database
                     command.ExecuteNonQuery();
 
                 }
-                
+
                 transaction.Commit();
 
                 return 1;
@@ -91,40 +91,40 @@ namespace WCO_Api.Database
 
         }
 
-            /*
-            SqlDataReader reader = null;
-            SqlConnection myConnection = new SqlConnection();
+        /*
+        SqlDataReader reader = null;
+        SqlConnection myConnection = new SqlConnection();
 
-            myConnection.ConnectionString = CONNECTION_STRING;
+        myConnection.ConnectionString = CONNECTION_STRING;
 
-            //Hace el insert a la tabla de partidos
+        //Hace el insert a la tabla de partidos
 
-            string query =
-                          $"INSERT INTO [dbo].[Prediction] ([goalsT1], [goalsT2], [points], [player_id], [acc_nick], [acc_email], [match_id] )" +
-                          $"VALUES ('{prediction.goalsT1}', '{prediction.goalsT2}', '{prediction.points}', '{prediction.PId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.match_id}');" +
-                          $"SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY];";
+        string query =
+                      $"INSERT INTO [dbo].[Prediction] ([goalsT1], [goalsT2], [points], [player_id], [acc_nick], [acc_email], [match_id] )" +
+                      $"VALUES ('{prediction.goalsT1}', '{prediction.goalsT2}', '{prediction.points}', '{prediction.PId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.match_id}');" +
+                      $"SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY];";
 
-            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+        SqlCommand sqlCmd = new SqlCommand(query, myConnection);
 
-            myConnection.Open();
+        myConnection.Open();
 
-            reader = sqlCmd.ExecuteReader();
+        reader = sqlCmd.ExecuteReader();
 
-            int thisPredId = 0;
+        int thisPredId = 0;
 
-            while (reader.Read())
-            {
-                thisPredId = Decimal.ToInt32((decimal)reader.GetValue(0));
-            }
+        while (reader.Read())
+        {
+            thisPredId = Decimal.ToInt32((decimal)reader.GetValue(0));
+        }
 
-            Console.WriteLine("EL ID DE LA PREDICCION QUE ACABA DE HACER ES");
-            Console.WriteLine(thisPredId);
+        Console.WriteLine("EL ID DE LA PREDICCION QUE ACABA DE HACER ES");
+        Console.WriteLine(thisPredId);
 
-            myConnection.Close();
+        myConnection.Close();
 
-            return thisPredId;
-            */
-        
+        return thisPredId;
+        */
+
 
         public async Task<int> insertPredictionPlayer(PredictionPlayerWEB predPlayer)
         {
@@ -197,7 +197,7 @@ namespace WCO_Api.Database
 
             reader = sqlCmd2.ExecuteReader();
 
-            List<PredictionPlayerWEB> predictionPlayers = new  List<PredictionPlayerWEB>();
+            List<PredictionPlayerWEB> predictionPlayers = new List<PredictionPlayerWEB>();
 
             while (reader.Read())
             {

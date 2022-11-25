@@ -4,7 +4,7 @@ using WCO_Api.WEBModels;
 
 namespace WCO_Api.Database
 {
-    public class MatchDatabase
+    public class MatchDatabase : IMatchDatabase
     {
 
         string CONNECTION_STRING;
@@ -47,7 +47,7 @@ namespace WCO_Api.Database
                 command.ExecuteNonQuery();
 
                 //Obtener id del ultimo match creado
-                
+
                 string query2 = "SELECT TOP 1 * FROM [dbo].[Match] ORDER BY [m_id] DESC;";
 
                 command = new SqlCommand(query2, myConnection);
@@ -68,7 +68,7 @@ namespace WCO_Api.Database
                 }
 
                 reader.Close();
-                
+
                 string query3 =
                         $"INSERT INTO [dbo].[Match_Team] ([team_id], [match_id])" +
                         $"VALUES ('{match.idTeam1}', '{MId}');" +
@@ -80,7 +80,7 @@ namespace WCO_Api.Database
                 command.Transaction = transaction;
 
                 command.ExecuteNonQuery();
-                
+
                 transaction.Commit();
 
                 return 1;
@@ -97,65 +97,65 @@ namespace WCO_Api.Database
                 myConnection.Close();
             }
 
-         }
+        }
 
-            /*
-            SqlDataReader reader = null;
-            SqlConnection myConnection = new SqlConnection();
+        /*
+        SqlDataReader reader = null;
+        SqlConnection myConnection = new SqlConnection();
 
-            myConnection.ConnectionString = CONNECTION_STRING;
+        myConnection.ConnectionString = CONNECTION_STRING;
 
-            //Hace el insert a la tabla de partidos
+        //Hace el insert a la tabla de partidos
 
-            string query =
-                          $"INSERT INTO [dbo].[Match] ([startTime], [date], [venue], [scoreT1], [scoreT2] , [bracket_id])" +
-                          $"VALUES ('{match.startTime}', '{match.date}', '{match.venue}', '{match.scoreT1}', '{match.scoreT2}' , '{match.bracketId}');";
+        string query =
+                      $"INSERT INTO [dbo].[Match] ([startTime], [date], [venue], [scoreT1], [scoreT2] , [bracket_id])" +
+                      $"VALUES ('{match.startTime}', '{match.date}', '{match.venue}', '{match.scoreT1}', '{match.scoreT2}' , '{match.bracketId}');";
 
-            SqlCommand sqlCmd = new SqlCommand(query, myConnection);
+        SqlCommand sqlCmd = new SqlCommand(query, myConnection);
 
-            myConnection.Open();
+        myConnection.Open();
 
-            var created = sqlCmd.ExecuteNonQuery();
-            myConnection.Close();
+        var created = sqlCmd.ExecuteNonQuery();
+        myConnection.Close();
 
-            string query2 = "SELECT TOP 1 * FROM [dbo].[Match] ORDER BY [m_id] DESC;";
+        string query2 = "SELECT TOP 1 * FROM [dbo].[Match] ORDER BY [m_id] DESC;";
 
-            SqlCommand sqlCmd2 = new SqlCommand(query2, myConnection);
+        SqlCommand sqlCmd2 = new SqlCommand(query2, myConnection);
 
-            myConnection.Open();
+        myConnection.Open();
 
-            var created2 = sqlCmd2.ExecuteNonQuery();
-            reader = sqlCmd2.ExecuteReader();
+        var created2 = sqlCmd2.ExecuteNonQuery();
+        reader = sqlCmd2.ExecuteReader();
 
-            int MId = 0;
+        int MId = 0;
 
-            while (reader.Read()) {
-                Console.WriteLine("EL ID ES");
-                Console.WriteLine(reader.GetValue(0));
-                MId = (int)reader.GetValue(0);
-            }
+        while (reader.Read()) {
+            Console.WriteLine("EL ID ES");
+            Console.WriteLine(reader.GetValue(0));
+            MId = (int)reader.GetValue(0);
+        }
 
-            myConnection.Close();
+        myConnection.Close();
 
-            //Relacionar talba Team_Match
+        //Relacionar talba Team_Match
 
-            string query3 =
-                          $"INSERT INTO [dbo].[Match_Team] ([team_id], [match_id])" +
-                          $"VALUES ('{match.idTeam1}', '{MId}');" +
-                          $"INSERT INTO [dbo].[Match_Team] ([team_id], [match_id])" +
-                          $"VALUES ('{match.idTeam2}', '{MId}');";
+        string query3 =
+                      $"INSERT INTO [dbo].[Match_Team] ([team_id], [match_id])" +
+                      $"VALUES ('{match.idTeam1}', '{MId}');" +
+                      $"INSERT INTO [dbo].[Match_Team] ([team_id], [match_id])" +
+                      $"VALUES ('{match.idTeam2}', '{MId}');";
 
-            SqlCommand sqlCmd3 = new SqlCommand(query3, myConnection);
+        SqlCommand sqlCmd3 = new SqlCommand(query3, myConnection);
 
-            myConnection.Open();
+        myConnection.Open();
 
-            var created3 = sqlCmd3.ExecuteNonQuery();
-            myConnection.Close();
+        var created3 = sqlCmd3.ExecuteNonQuery();
+        myConnection.Close();
 
 
-            return created;
-            */
-        
+        return created;
+        */
+
 
         /*
          * Query para obtener una lista de MatchOut respecto a un id de bracket
@@ -293,7 +293,7 @@ namespace WCO_Api.Database
             string query = $"SELECT * " +
                 $"FROM [dbo].[Player]" +
                 $"WHERE team_id = '{id}'";
-                
+
 
             SqlCommand sqlCmd = new SqlCommand(query, myConnection);
 

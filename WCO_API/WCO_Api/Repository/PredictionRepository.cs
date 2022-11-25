@@ -3,7 +3,7 @@ using WCO_Api.WEBModels;
 
 namespace WCO_Api.Repository
 {
-    public class PredictionRepository
+    public class PredictionRepository : IPredictionRepository
     {
         PredictionDatabase sQLDB = new PredictionDatabase();
 

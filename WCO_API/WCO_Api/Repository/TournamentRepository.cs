@@ -7,7 +7,7 @@ using WCO_Api.WEBModels;
 
 namespace WCO_Api.Repository
 {
-    public class TournamentRepository
+    public class TournamentRepository : ITournamentRepository
     {
 
         TournamentDatabase sQLDB = new TournamentDatabase();

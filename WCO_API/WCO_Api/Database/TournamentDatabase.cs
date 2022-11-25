@@ -4,7 +4,7 @@ using WCO_Api.WEBModels;
 
 namespace WCO_Api.Database
 {
-    public class TournamentDatabase
+    public class TournamentDatabase : ITournamentDatabase
     {
 
         string CONNECTION_STRING;
@@ -81,7 +81,8 @@ namespace WCO_Api.Database
                 Console.WriteLine(error);
                 return -1;
             }
-            finally {
+            finally
+            {
                 myConnection.Close();
             }
 

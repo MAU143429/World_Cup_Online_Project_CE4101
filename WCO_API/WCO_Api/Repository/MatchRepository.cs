@@ -3,7 +3,7 @@ using WCO_Api.WEBModels;
 
 namespace WCO_Api.Repository
 {
-    public class MatchRepository
+    public class MatchRepository : IMatchRepository
     {
 
         MatchDatabase sQLDB = new MatchDatabase();
@@ -38,7 +38,7 @@ namespace WCO_Api.Repository
             return await sQLDB.getPlayersbyBothTeamId(id1, id2);
         }
 
-        
+
 
     }
 }

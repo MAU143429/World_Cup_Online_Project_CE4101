@@ -7,9 +7,9 @@ namespace WCO_Api.Repository
     /// Class <c>AccountRepository</c> propiedad que instancia las peticiones requeridas por 
     /// el controlador de Account para comunicarse con WCO DB
     /// </summary>
-    public class AccountRepository
+    public class AccountRepository : IAccountRepository
     {
-        AccountDatabase sQLDB = new ();
+        AccountDatabase sQLDB = new();
 
         /// <summary>
         /// Method <c>createNewAccount</c> método que se comunica con la propiedad AccountDatabase para realizar la inserción 
@@ -20,12 +20,12 @@ namespace WCO_Api.Repository
             return await sQLDB.insertAccount(account);
         }
 
-        public async Task<AccountWEB> getLoginAccountWEB (string login)
+        public async Task<AccountWEB> getLoginAccountWEB(string login)
         {
             return await sQLDB.getAccountByEmail(login);
         }
 
-        public async Task<List<AccountWEB>> getAccountByNickname(string nick) 
+        public async Task<List<AccountWEB>> getAccountByNickname(string nick)
         {
             return await sQLDB.getAccountByNickname(nick);
         }
@@ -40,6 +40,6 @@ namespace WCO_Api.Repository
             return await sQLDB.getRoleAccountByEmail(email);
         }
 
-        
+
     }
 }
