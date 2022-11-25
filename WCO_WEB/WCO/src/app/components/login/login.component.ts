@@ -2,7 +2,7 @@ import { AccountService } from '../../services/account.service';
 import { CreateAccount } from '../../model/create-account';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit } from '@angular/core';
-import { Login } from 'src/app/model/login';
+import { Login } from '../../model/login';
 import { Router } from '@angular/router';
 var sha256 = require('js-sha256');
 

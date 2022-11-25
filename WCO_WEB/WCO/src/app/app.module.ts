@@ -7,7 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
@@ -27,6 +27,7 @@ import { ScoresComponent } from './components/scores/scores.component';
 import { GroupsComponent } from './components/groups/groups.component';
 import { GroupDetailsComponent } from './components/group-details/group-details.component';
 import { CreateGroupsComponent } from './components/create-groups/create-groups.component';
+import { NoopAnimationPlayer } from '@angular/animations';
 
 @NgModule({
   declarations: [
