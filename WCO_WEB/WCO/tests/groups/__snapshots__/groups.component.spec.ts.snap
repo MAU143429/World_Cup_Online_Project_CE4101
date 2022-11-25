@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GroupsComponent debe de hace match con el snapshot 1`] = `
+"<html lang=\\"en\\" dir=\\"ltr\\"><head><meta charset=\\"UTF-8\\"><meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1.0\\"></head><body><app-navbar></app-navbar><br><br><br><br><div class=\\"input-box\\"><div class=\\"title\\">Mis grupos</div><input type=\\"text\\" placeholder=\\"Ingrese ID de grupo\\" class=\\"code\\" style=\\"margin-left: 37%;\\"><input type=\\"submit\\" value=\\"Unirme Grupo\\" class=\\"inbtn\\"><input type=\\"submit\\" value=\\"Crear Grupo\\" routerlink=\\"/create-groups\\" class=\\"inbtn\\"></div><div class=\\"container\\"><div class=\\"content\\"><table id=\\"groups\\" class=\\"table table-bordered mt-4 mytable\\"><tr class=\\"table-primary mytable\\"><th>Nombre del Grupo</th><th>ID de invitación</th><th>Grupo de torneo</th><th>Detalles</th></tr><tr><td>Los Compas</td><td>5423JKD3D3F55FS4</td><td>Champions League</td><td><button routerlink=\\"/group-details\\" class=\\"viewbtn\\">Ver Grupo</button></td></tr><!--bindings={
+  \\"ng-reflect-ng-for-of\\": \\"[object Object]\\"
+}--></table></div></div></body></html>"
+`;
