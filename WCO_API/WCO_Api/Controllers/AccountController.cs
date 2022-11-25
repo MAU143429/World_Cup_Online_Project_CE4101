@@ -61,12 +61,6 @@ namespace WCO_Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            //Ver si alguien quiere meterse a un grupo en el que ya está
-            if (accountRepository.isAccountInGroup(group).Result)
-            {
-                return BadRequest("Ya se encuentra en un grupo para el torneo indicado!");
-            }
-
             var createdG = await accountRepository.createNewGroup(group);
 
             if (createdG == 1)
@@ -80,6 +74,15 @@ namespace WCO_Api.Controllers
 
         }
 
+        [HttpPost("isAccountInGroup")]
+        public async Task<bool> isAccountInGroup(GroupWEB group)
+        {
+            
+            //Ver si alguien quiere meterse a un grupo en el que ya está
+            return accountRepository.isAccountInGroup(group).Result;
+            
+        }
+
         [HttpPost("AddAccountToGroup")]
         public async Task<IActionResult> addAccountGroup(GroupWEB ta)
         {
@@ -89,17 +92,11 @@ namespace WCO_Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            //Ver si alguien quiere meterse a un grupo en el que ya está
-            if (accountRepository.isAccountInGroup(ta).Result) 
-            {
-                return BadRequest("Ya se encuentra en un grupo para el torneo indicado!");
-            }
-
             var createdG = await accountRepository.addAccountGroup(ta);
 
             if (createdG == 1)
             {
-                return Ok("Se unio a un grupo exitosamente");
+                return Ok( "Se unio a un grupo exitosamente");
             }
             else
             {

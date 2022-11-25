@@ -286,7 +286,7 @@ namespace WCO_Api.Database
 
                 string query = $"SELECT [group_id] " +
                     $"FROM [dbo].[Tournament_Account_S]" +
-                    $"WHERE t_id = '{ta.GId.Substring(0, 6)}' and acc_nick = '{ta.acc_nick}' and acc_email = '{ta.acc_email}'";
+                    $"WHERE t_id = '{ta.tId}' and acc_nick = '{ta.acc_nick}' and acc_email = '{ta.acc_email}'";
 
                 SqlCommand sqlCmd = new(query, myConnection);
 
