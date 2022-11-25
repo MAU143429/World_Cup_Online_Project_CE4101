@@ -128,6 +128,15 @@ namespace WCO_Api.Controllers
 
         }
 
+        [HttpGet("GetGroupsByNE/{nickname}/{email}")]
+        public async Task<List<GroupWEB>> getGroupsByNE(string nickname, string email)
+        {
+
+            return await accountRepository.getGroupsByNE(nickname, email);
+
+        }
+
+
         [HttpGet("GetScoreByGroupId/{GId}")]
         public async Task<List<Tournament_Account_SWEB>> getScoreByGroupId(string GId)
         {

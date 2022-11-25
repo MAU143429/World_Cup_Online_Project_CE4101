@@ -204,6 +204,66 @@ namespace WCO_Api.Database
 
         }
 
+        public async Task<List<GroupWEB?>> getGroupsByNE(string nickname, string email)
+        {
+            SqlConnection myConnection = new();
+            SqlDataReader reader = null;
+
+            myConnection.ConnectionString = CONNECTION_STRING;
+
+            myConnection.Open();
+
+            //Obtener lista con los codigos de grupo de un usuario
+
+            string query = $"SELECT group_id " +
+                $"FROM [dbo].[Tournament_Account_S]" +
+                $"WHERE acc_nick = '{nickname}' and acc_email = '{email}';";
+
+            SqlCommand sqlCmd = new(query, myConnection);
+
+            reader = sqlCmd.ExecuteReader();
+
+            List<string> groupsIds = new List<string>();
+
+            while (reader.Read())
+            {
+                groupsIds.Add(reader.GetValue(0).ToString());
+            }
+
+            reader.Close();
+
+            List<GroupWEB> groupL = new();
+
+            foreach (var inputGId in groupsIds)
+            {
+
+                string query2 = $"SELECT * " +
+                $"FROM [dbo].[Group]" +
+                $"WHERE g_id = '{inputGId}';";
+
+                sqlCmd = new(query2, myConnection);
+
+                reader = sqlCmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    GroupWEB group = new();
+
+                    group.GId = reader.GetValue(0).ToString();
+                    group.name = reader.GetValue(1).ToString();
+                    group.TId = reader.GetValue(2).ToString();
+
+                    groupL.Add(group);
+                }
+
+                reader.Close();
+
+            }
+
+            return groupL;
+
+        }
+
         public async Task<bool> isAccountInGroup(Tournament_Account_SWEB ta)
         {
             SqlConnection myConnection = new();

@@ -40,6 +40,11 @@ namespace WCO_Api.Repository
             return await sQLDB.getGroupById(GId);
         }
 
+        public async Task<List<GroupWEB>> getGroupsByNE(string nickname, string email)
+        {
+            return await sQLDB.getGroupsByNE(nickname, email);
+        }
+
         public async Task<List<Tournament_Account_SWEB>> getScoreByGroupId(string GId)
         {
             return await sQLDB.getScoreByGroupId(GId);
