@@ -74,16 +74,16 @@ namespace WCO_Api.Controllers
 
         }
 
-        [HttpPost("isAccountInGroup")]
-        public async Task<bool> isAccountInGroup(GroupWEB group)
+        [HttpGet("isAccountInGroup/{tId}/{nickname}/{email}")]
+        public async Task<bool> isAccountInGroup(string tId, string nickname, string email)
         {
             
             //Ver si alguien quiere meterse a un grupo en el que ya está
-            return accountRepository.isAccountInGroup(group).Result;
+            return accountRepository.isAccountInGroup(tId, nickname, email).Result;
             
         }
 
-        [HttpGet("AddAccountToGroup")]
+        [HttpPost("AddAccountToGroup")]
         public async Task<IActionResult> addAccountGroup(GroupWEB ta)
         {
             if (ta == null)

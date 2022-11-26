@@ -276,7 +276,7 @@ namespace WCO_Api.Database
 
         }
 
-        public async Task<bool> isAccountInGroup(GroupWEB ta)
+        public async Task<bool> isAccountInGroup(string tId, string nickname, string email)
         {
             try
             {
@@ -286,7 +286,7 @@ namespace WCO_Api.Database
 
                 string query = $"SELECT [group_id] " +
                     $"FROM [dbo].[Tournament_Account_S]" +
-                    $"WHERE t_id = '{ta.tId}' and acc_nick = '{ta.acc_nick}' and acc_email = '{ta.acc_email}'";
+                    $"WHERE t_id = '{tId}' and acc_nick = '{nickname}' and acc_email = '{email}'";
 
                 SqlCommand sqlCmd = new(query, myConnection);
 

@@ -30,9 +30,9 @@ namespace WCO_Api.Repository
             return await sQLDB.insertAccountGroup(ta);
         }
 
-        public async Task<bool> isAccountInGroup(GroupWEB ta)
+        public async Task<bool> isAccountInGroup(string tId, string nickname, string email)
         {
-            return await sQLDB.isAccountInGroup(ta);
+            return await sQLDB.isAccountInGroup(tId, nickname, email);
         }
 
         public async Task<List<GroupWEB>> getGroupById(string GId)
