@@ -332,7 +332,8 @@ namespace WCO_Api.Database
 
             string query = $"SELECT * " +
                 $"FROM [dbo].[Tournament_Account_S]" +
-                $"WHERE group_id = '{inputGId}';";
+                $"WHERE group_id = '{inputGId}'" +
+                $"ORDER BY points DESC;";
 
             SqlCommand sqlCmd = new(query, myConnection);
 
