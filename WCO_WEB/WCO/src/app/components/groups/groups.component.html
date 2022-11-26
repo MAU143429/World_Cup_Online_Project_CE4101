@@ -15,8 +15,8 @@
   <br>
   <div class="input-box">
     <div class="title">Mis grupos</div>
-    <input style="margin-left: 37%;" class="code" type="text" placeholder="Ingrese ID de grupo">
-    <input class="inbtn" type="submit" value="Unirme Grupo">
+    <input style="margin-left: 37%;" class="code" type="text" maxlength="12" [(ngModel)]= "groupCode" [ngModelOptions]="{standalone: true}" placeholder="Ingrese ID de grupo">
+    <input class="inbtn" type="submit" value="Unirme Grupo" (click)="joinGroup()">
     <input class="inbtn" type="submit" value="Crear Grupo" routerLink="/create-groups">
   </div>
   <div class="container">
@@ -32,8 +32,8 @@
       <tr *ngFor="let data of groupsData">
         <td>{{data.name}}</td>
           <td>{{data.gId}}</td>
-          <td>{{data.t_name}}</td>
-          <td><button class="viewbtn" routerLink="/group-details" >Ver Grupo</button></td>
+          <td>{{data.name}}</td>
+          <td><button class="viewbtn" (click)="showGroup(data.gId)" routerLink="/group-details" >Ver Grupo</button></td>
       </tr>
       </table>
     </div>

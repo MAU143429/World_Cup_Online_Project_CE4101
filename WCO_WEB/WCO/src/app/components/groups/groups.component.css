@@ -42,7 +42,7 @@ body{
   border: 1px solid #ccc;
   border-bottom-width: 2px;
   transition: all 0.3s ease;
-  color: white;
+  color: black;
 }
 .input-box .inbtn{
   height: 45px;
@@ -91,5 +91,14 @@ body{
   background-color: #1277D9;
   color: white;
   text-align: center;
+}
+
+::ng-deep snack-bar-container.red-snackbar {
+  background: #F44336;
+  color: white;
+}
+::ng-deep snack-bar-container.green-snackbar {
+  background: rgb(15, 206, 15);
+  color: white;
 }
 
