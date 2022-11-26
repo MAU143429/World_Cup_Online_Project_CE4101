@@ -3,32 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WCO_Api.Controllers;
+using WCO_Api.Repository;
 using WCO_Api.WEBModels;
+using WCO_API_Tests.RepositoryMock;
 using Xunit;
+using Moq;
 
-/**
- *        public int? PrId { get; set; }
 
-        public int goalsT1 { get; set; }
-
-        public int goalsT2 { get; set; }
-
-        public int? points { get; set; } = 0;
-
-        public int PId { get; set; }
-
-        public string acc_nick { get; set; }
-
-        public string acc_email { get; set; }
-
-        public int match_id { get; set; }
-
-        public List<PredictionPlayerWEB> predictionPlayers { get; set; }
- */
 namespace WCO_API_Tests.ControllersTest
 {
     public class PredictionControllerTest
     {
+        IPredictionRepository predictionRepository = new PredictionRepositoryMock();
         PredictionController predictionControllerMock;
         PredictionWEB predictionWEBMock;
         PredictionPlayerWEB predictionPlayerWEBMock1;
@@ -36,7 +22,7 @@ namespace WCO_API_Tests.ControllersTest
         List<PredictionPlayerWEB> predictionPlayerWEBsMock;
         public PredictionControllerTest()
         {
-            predictionControllerMock = new PredictionController();
+            predictionControllerMock = new PredictionController(predictionRepository);
             predictionPlayerWEBMock1 = new PredictionPlayerWEB() { PId = 4, assists = 0, goals = 3 };
             predictionPlayerWEBMock2 = new PredictionPlayerWEB() { PId = 1, goals = 0, assists = 2 };
             predictionPlayerWEBsMock = new List<PredictionPlayerWEB>()
@@ -55,31 +41,68 @@ namespace WCO_API_Tests.ControllersTest
         /// a la base de datos, es decir, ingresa MVP, marcador, jugadores goleadores y asistentes
         /// </summary>
         [Fact]
-        public async Task insertPredictionTest()
+        public async Task insertPredictionTestSuccess()
         {
             //Arrange
+
+            var mockRepo = new Mock<IPredictionRepository>();
+            mockRepo.Setup(repo => repo.getPredictionByNEM(this.predictionWEBMock.acc_nick, 
+                this.predictionWEBMock.acc_email, this.predictionWEBMock.match_id)).ReturnsAsync(this.predictionWEBMock);
+            mockRepo.Setup(repo => repo.createNewPrediction(this.predictionWEBMock)).ReturnsAsync(correctInsert());
+            var controller = new PredictionController(mockRepo.Object);
             //Act
-            var result = await this.predictionControllerMock.createPrediction(this.predictionWEBMock);
+            var result = await controller.createPrediction(this.predictionWEBMock);
             //Assert 
-            Assert.IsType<CreatedResult>(result);
+            var createdResult = Assert.IsType<CreatedResult>(result);
+
+            Assert.Equal("Se creo una prediccion exitosamente", createdResult.Value);
         }
 
-        /// <summary>
-        /// Method <c>getPredictionByNEMTest</c> método que hace la consulta de una predicción completa
-        /// a la base de datos, mediante llave primaria de usuario y partido. 
-        /// </summary>
         [Fact]
-        public async Task getPredictionByNEMTest() 
+        public async Task insertPredictionTestNotSuccess()
+        {
+            //Arrange
+
+            var mockRepo = new Mock<IPredictionRepository>();
+            mockRepo.Setup(repo => repo.getPredictionByNEM(this.predictionWEBMock.acc_nick,
+               this.predictionWEBMock.acc_email, this.predictionWEBMock.match_id)).ReturnsAsync(this.predictionWEBMock);
+            mockRepo.Setup(repo => repo.createNewPrediction(this.predictionWEBMock)).ReturnsAsync(incorrectInsert());
+            var controller = new PredictionController(mockRepo.Object);
+            //Act
+            var result = await controller.createPrediction(this.predictionWEBMock);
+            //Assert 
+            var output = Assert.IsType<ObjectResult>(result);
+
+            Assert.Equal(500, output.StatusCode.Value);
+        }
+
+
+
+        [Fact]
+        public async Task getPredictionByNEMTest()
         {
             //Arrange
             string nicknameMock = "manumora";
             string emailMock = "jj@gmail.com";
             int matchMock = 0;
+            var mockRepo = new Mock<IPredictionRepository>();
+            mockRepo.Setup(repo => repo.getPredictionByNEM(nicknameMock, emailMock, matchMock)).ReturnsAsync(this.predictionWEBMock);
+            var controller = new PredictionController(mockRepo.Object);
             //Act
-            var result = await this.predictionControllerMock.getPredictionByNEM(nicknameMock, emailMock, matchMock);
+            var result = await controller.getPredictionByNEM(nicknameMock, emailMock, matchMock);
             //Assert 
-            Assert.IsType<PredictionWEB>(result);
+            var output = Assert.IsType<PredictionWEB>(result);
 
+        }
+
+        private int correctInsert()
+        {
+            return 1;
+        }
+
+        private int incorrectInsert()
+        {
+            return -1;
         }
     }
 }
