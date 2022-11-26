@@ -31,6 +31,10 @@ namespace WCO_Api.Repository
         {
             return await sQLDB.setTournamentPoints(tId, pred, points);;
         }
-        
+
+        public Task<int> createPredictionPlayer(PredictionPlayerWEB predPlayer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

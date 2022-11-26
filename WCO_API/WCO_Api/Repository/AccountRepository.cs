@@ -55,7 +55,7 @@ namespace WCO_Api.Repository
             return await sQLDB.getScoreByTournamentId(tId);
         }
 
-        public async Task<AccountWEB> getLoginAccountWEB (string login)
+        public async Task<AccountWEB> getLoginAccountWEB(string login)
         {
             return await sQLDB.getAccountByEmail(login);
         }

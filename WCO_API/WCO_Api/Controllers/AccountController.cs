@@ -64,7 +64,7 @@ namespace WCO_Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var createdG = await accountRepository.createNewGroup(group);
+            var createdG = await _accountRepository.createNewGroup(group);
 
             if (createdG == 1)
             {
@@ -82,7 +82,7 @@ namespace WCO_Api.Controllers
         {
             
             //Ver si alguien quiere meterse a un grupo en el que ya está
-            return accountRepository.isAccountInGroup(tId, nickname, email).Result;
+            return _accountRepository.isAccountInGroup(tId, nickname, email).Result;
             
         }
 
@@ -95,7 +95,7 @@ namespace WCO_Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var createdG = await accountRepository.addAccountGroup(ta);
+            var createdG = await _accountRepository.addAccountGroup(ta);
 
             if (createdG == 1)
             {
@@ -130,7 +130,7 @@ namespace WCO_Api.Controllers
         public async Task<List<GroupWEB>> getGroupById(string GId)
         {
 
-            return await accountRepository.getGroupById(GId);
+            return await _accountRepository.getGroupById(GId);
 
         }
 
@@ -138,7 +138,7 @@ namespace WCO_Api.Controllers
         public async Task<List<GroupWEB>> getGroupsByNE(string nickname, string email)
         {
 
-            return await accountRepository.getGroupsByNE(nickname, email);
+            return await _accountRepository.getGroupsByNE(nickname, email);
 
         }
 
@@ -147,7 +147,7 @@ namespace WCO_Api.Controllers
         public async Task<List<Tournament_Account_SWEB>> getScoreByGroupId(string GId)
         {
 
-            return await accountRepository.getScoreByGroupId(GId);
+            return await _accountRepository.getScoreByGroupId(GId);
 
         }
 
@@ -155,7 +155,7 @@ namespace WCO_Api.Controllers
         public async Task<List<Tournament_Account_SWEB>> getScoreByTournamentId(string tId)
         {
 
-            return await accountRepository.getScoreByTournamentId(tId);
+            return await _accountRepository.getScoreByTournamentId(tId);
 
         }
 

@@ -412,6 +412,10 @@ namespace WCO_Api.Database
 
         }
 
+        public Task<int> insertPredictionPlayer(PredictionPlayerWEB predPlayer)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

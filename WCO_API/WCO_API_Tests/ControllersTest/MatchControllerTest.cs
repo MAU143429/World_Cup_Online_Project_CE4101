@@ -6,7 +6,7 @@ using WCO_Api.Controllers;
 using WCO_Api.Models;
 using WCO_Api.Repository;
 using WCO_Api.WEBModels;
-using WCO_API_Tests.RepositoryMock;
+
 using Xunit;
 using Moq;
 
@@ -14,15 +14,13 @@ namespace WCO_API_Tests.ControllersTest
 {
     public class MatchControllerTest
     {
-        ITournamentRepository _tournamentRepository = new TournamentRepositoryMock();
-        IMatchRepository _matchRepository = new MatchRepositoryMock();
         MatchController matchControllerMock;
         MatchWEB matchWEBMock;
 
 
         public MatchControllerTest()
         {
-            matchControllerMock = new MatchController(_matchRepository, _tournamentRepository);
+       
             matchWEBMock = new MatchWEB() 
             {   
                 startTime = "12:00", date = "11-12-2022", 

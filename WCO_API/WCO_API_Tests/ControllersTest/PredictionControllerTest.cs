@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using WCO_Api.Controllers;
 using WCO_Api.Repository;
 using WCO_Api.WEBModels;
-using WCO_API_Tests.RepositoryMock;
 using Xunit;
 using Moq;
 
@@ -14,7 +13,7 @@ namespace WCO_API_Tests.ControllersTest
 {
     public class PredictionControllerTest
     {
-        IPredictionRepository predictionRepository = new PredictionRepositoryMock();
+     
         PredictionController predictionControllerMock;
         PredictionWEB predictionWEBMock;
         PredictionPlayerWEB predictionPlayerWEBMock1;
@@ -22,7 +21,7 @@ namespace WCO_API_Tests.ControllersTest
         List<PredictionPlayerWEB> predictionPlayerWEBsMock;
         public PredictionControllerTest()
         {
-            predictionControllerMock = new PredictionController(predictionRepository);
+
             predictionPlayerWEBMock1 = new PredictionPlayerWEB() { PId = 4, assists = 0, goals = 3 };
             predictionPlayerWEBMock2 = new PredictionPlayerWEB() { PId = 1, goals = 0, assists = 2 };
             predictionPlayerWEBsMock = new List<PredictionPlayerWEB>()

@@ -14,9 +14,13 @@ namespace WCO_Api.Logic
         float playerGoalPts = 5f;              //Rule 4
         float playerAssistPts = 5f;            //Rule 5
 
-        bool guessAllGoals = true;
-        bool guessAllAssists = true;
+        bool guessAllGoals;
+        bool guessAllAssists;
 
+        public ScoreCalculator()
+        {
+            this.guessAllAssists = this.guessAllGoals = true;
+        }
         //Método para calcular el puntaje
         public float calculatePts(PredictionWEB adminPredResult, PredictionWEB userPred)
         {
