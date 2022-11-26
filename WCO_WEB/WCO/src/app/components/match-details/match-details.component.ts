@@ -58,7 +58,7 @@ export class MatchDetailsComponent implements OnInit {
     this.matchService
       .getMatchesById(localStorage.getItem('currentMatch'))
       .subscribe((data) => (this.matchData = data));
-    this.delay(50).then(() => {
+    this.delay(100).then(() => {
       var winT1: Dropdown = {
         text: this.matchData[0].teams[0].name,
         value: this.matchData[0].teams[0].teId,
@@ -67,7 +67,7 @@ export class MatchDetailsComponent implements OnInit {
         text: this.matchData[0].teams[1].name,
         value: this.matchData[0].teams[1].teId,
       };
-      var draw: Dropdown = { text: 'Empate', value: 0 };
+      var draw: Dropdown = { text: 'Empate', value: -1 };
       this.winOptions = [winT1, winT2, draw];
       this.matchService
         .getAllPlayersByTeamsId(
@@ -208,6 +208,10 @@ export class MatchDetailsComponent implements OnInit {
   addPrediction() {
     this.newPrediction.acc_email = localStorage.getItem('email');
     this.newPrediction.acc_nick = localStorage.getItem('nickname');
+    this.newPrediction.TId = localStorage.getItem('toID');
+    if (localStorage.getItem('scope') == 'admin') {
+      this.newPrediction.isAdmin = true;
+    }
     this.newPrediction.match_id = this.matchData[0].mId;
     this.associatePredictionsT1();
     this.delay(20).then(() => {

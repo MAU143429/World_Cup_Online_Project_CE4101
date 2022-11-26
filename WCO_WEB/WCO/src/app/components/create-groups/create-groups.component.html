@@ -16,15 +16,15 @@
 
           <div class="input-box">
             <span class="details" >Nombre del grupo <span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="text"  minlength="5" maxlength="30"   placeholder="Ingrese un nombre de grupo..." required>
+            <input type="text"  [(ngModel)]= "newGroup.name"  [ngModelOptions]="{standalone: true}" minlength="5" maxlength="30"   placeholder="Ingrese un nombre de grupo..." required>
           </div>
           <div class="input-box">
             <span class="details" >Torneo<span style="color: rgb(245, 59, 59);">*</span></span>
-            <mbsc-select [data]="allTournaments" [touchUi]="false"   placeholder="Seleccione el torneo" ></mbsc-select>
+            <mbsc-select [data]="allTournaments" [touchUi]="false"  [(ngModel)]= "newGroup.tId"  [ngModelOptions]="{standalone: true}"  placeholder="Seleccione el torneo" ></mbsc-select>
           </div>
         </div>
         <div class="button">
-          <input type="submit" value="Crear Grupo" >
+          <input type="submit" value="Crear Grupo" (click)="addGroup()">
         </div>
       </form>
     </div>

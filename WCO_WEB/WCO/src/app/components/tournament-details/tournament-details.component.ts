@@ -40,6 +40,7 @@ export class TournamentDetailsComponent implements OnInit {
    */
   redirectMatch(bracket: any) {
     localStorage.setItem('currentBracket', bracket.name);
+    localStorage.setItem('currentBracketID', bracket.bId);
   }
 
   /**

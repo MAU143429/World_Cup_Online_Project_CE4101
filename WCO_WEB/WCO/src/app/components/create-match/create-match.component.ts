@@ -6,6 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Dropdown } from 'src/app/model/dropdown';
 import { DbTeam } from 'src/app/model/db-team';
 import { Match } from '../../model/match';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-match',
@@ -15,6 +16,7 @@ import { Match } from '../../model/match';
 export class CreateMatchComponent implements OnInit {
   tournamentsData: Tournaments[] = [];
   bracket: any;
+  bracketID: any;
   datetime: string = '';
   newMatch: Match = new Match();
   allTournamentsTeams: DbTeam[] = [];
@@ -23,7 +25,8 @@ export class CreateMatchComponent implements OnInit {
   constructor(
     private matchservice: MatchesService,
     private service: TournamentService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +35,7 @@ export class CreateMatchComponent implements OnInit {
       .subscribe((data) => (this.tournamentsData = data));
 
     this.bracket = localStorage.getItem('currentBracket');
+    this.bracketID = localStorage.getItem('currentBracketID');
 
     this.service
       .getTournamentTeams(localStorage.getItem('toID'))
@@ -92,6 +96,15 @@ export class CreateMatchComponent implements OnInit {
       panelClass: 'green-snackbar',
     });
   }
+  /**
+   * Este metodo permite realizar un pequeño delay
+   * @param ms el tiempo del delay en ms
+   */
+  async delay(ms: number) {
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
+      () => console.log('fired')
+    );
+  }
 
   /**
    * Este metodo realiza todas las verificaciones para poder insertar un partido
@@ -107,7 +120,7 @@ export class CreateMatchComponent implements OnInit {
       this.newMatch.startTime = this.getTime(this.datetime);
       startD = new Date(this.newMatch.date);
     }
-    this.newMatch.bracketId = this.bracket.bId;
+    this.newMatch.bracketId = this.bracketID;
     const startTournamentDate = new Date(this.tournamentsData[0].startDate);
     const endTournamentDate = new Date(this.tournamentsData[0].endDate);
     const today = new Date();
@@ -141,8 +154,10 @@ export class CreateMatchComponent implements OnInit {
       this.matchservice
         .addNewMatch(this.newMatch)
         .subscribe((match) => console.log(match));
-
       this.openSuccess('Partido creado con éxito', 'Ok');
+      this.delay(50).then(() => {
+        this.router.navigate(['/tournament-details']);
+      });
     }
   }
 }

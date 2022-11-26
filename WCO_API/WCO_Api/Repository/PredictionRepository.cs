@@ -12,14 +12,25 @@ namespace WCO_Api.Repository
             return await sQLDB.insertPrediction(prediction);
         }
 
-        public async Task<int> createPredictionPlayer(PredictionPlayerWEB predPlayer)
-        {
-            return await sQLDB.insertPredictionPlayer(predPlayer);
-        }
-
         public async Task<PredictionWEB> getPredictionByNEM(string nickname, string email, int idMatch)
         {
             return await sQLDB.getPredictionByNEM(nickname, email, idMatch);
         }
+
+        public async Task<List<PredictionWEB>> getPredictionByMatchId(int idMatch)
+        {
+            return await sQLDB.getPredictionByMatchId(idMatch);
+        }
+
+        public async Task<int> setPredictionPoints(int? predId, float points)
+        {
+            return await sQLDB.setPredictionPoints(predId, points);
+        }
+
+        public async Task<int> setTournamentPoints(string tId,  PredictionWEB pred, float points)
+        {
+            return await sQLDB.setTournamentPoints(tId, pred, points);;
+        }
+        
     }
 }
