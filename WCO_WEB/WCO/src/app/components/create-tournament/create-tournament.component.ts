@@ -11,6 +11,7 @@ import { MatTable } from '@angular/material/table';
 import { Dropdown } from '../../model/dropdown';
 import { DbTeam } from '../../model/db-team';
 import { Type } from '../../interface/type';
+import { Router } from '@angular/router';
 
 export const ITEMS: Type[] = [
   { type: 'Selecciones' },
@@ -44,10 +45,21 @@ export class CreateTournamentComponent implements OnInit {
     private modalService: NgbModal,
     public dialog: MatDialog,
     private service: TournamentService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
+
+  /**
+   * Este metodo permite realizar un pequeño delay
+   * @param ms el tiempo del delay en ms
+   */
+  async delay(ms: number) {
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), ms)).then(
+      () => console.log('fired')
+    );
+  }
 
   /**
    * Este metodo permite la creacion de un pop up
@@ -202,8 +214,10 @@ export class CreateTournamentComponent implements OnInit {
       this.service
         .setTournament(this.newTournament)
         .subscribe((tournament) => console.log(tournament));
-
       this.openSuccess('Torneo creado con éxito', 'Ok');
+      this.delay(50).then(() => {
+        this.router.navigate(['/home']);
+      });
     }
   }
 

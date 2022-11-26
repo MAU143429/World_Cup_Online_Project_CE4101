@@ -1,1 +1,41 @@
-<p>group-details works!</p>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="group-details.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <app-navbar></app-navbar>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="input-box" *ngFor="let data of groupInfo">
+    <div class="title">{{data.name}}</div>
+  </div>
+
+  <div class="container">
+    <div class="content">
+      <span class="title">Puntuaciones de grupo</span>
+      <table id="scores" class="table table-bordered mt-4 mytable">
+        <tr class="table-primary mytable">
+          <th>Posición</th>
+          <th>Nickname</th>
+          <th>Puntaje</th>
+        </tr>
+        <tr *ngFor="let data of allScores; index as i">
+            <td>{{i + 1}}</td>
+            <td>{{data.acc_nick}}</td>
+            <td>{{data.points}} pts</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+
