@@ -109,7 +109,7 @@ namespace WCO_Api.Database
                 string query2 =
                           $"UPDATE [dbo].[Tournament_Account_S]" +
                           $"SET [group_id] = '{groupId}'" +
-                          $"WHERE [acc_nick] = '{group.acc_nick}' and [acc_email] = '{group.acc_email}' ";
+                          $"WHERE t_id = '{group.tId}' [acc_nick] = '{group.acc_nick}' and [acc_email] = '{group.acc_email}' ";
 
                 command = new SqlCommand(query2, myConnection);
 
