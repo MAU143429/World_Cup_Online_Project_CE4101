@@ -73,15 +73,39 @@ namespace WCO_Api.Database
 
                 }
 
-                //Cuando se hace una predicción, la tabla torneo puntaje se llena con el id del torneo, usuario y el puntaje
-                //Ver group_id de predicción, que procede con eso
-                string query3 = $"INSERT INTO [dbo].[Tournament_Account_S] ([t_id], [acc_nick], [acc_email], [points], [group_id] )" +
-                          $"VALUES ('{prediction.TId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.points}', NULL);";
+                //Veo si el usuario ya se encuentra en la tabla de puntajes
+                string queryExists = $"SELECT * " +
+                                    $"FROM [dbo].[Tournament_Account_S]" +
+                                    $"WHERE t_id = '{prediction.TId}' and acc_nick = '{prediction.acc_nick}' and acc_email = '{prediction.acc_email}'";
 
-                command = new SqlCommand(query3, myConnection);
+                command = new SqlCommand(queryExists, myConnection);
 
                 command.Transaction = transaction;
-                command.ExecuteNonQuery();
+
+                reader = command.ExecuteReader();
+
+                //Me dice si ya se encuentra o no
+                bool exist = false;
+
+                while (reader.Read())
+                {
+                    exist = true;
+                }
+
+                reader.Close();
+
+                if (!exist)     // Si no se encuentra, la crea
+                {
+                    //Cuando se hace una predicción, la tabla torneo puntaje se llena con el id del torneo, usuario y el puntaje
+                    //Ver group_id de predicción, que procede con eso
+                    string query3 = $"INSERT INTO [dbo].[Tournament_Account_S] ([t_id], [acc_nick], [acc_email], [points], [group_id] )" +
+                              $"VALUES ('{prediction.TId}', '{prediction.acc_nick}', '{prediction.acc_email}', '{prediction.points}', NULL);";
+
+                    command = new SqlCommand(query3, myConnection);
+
+                    command.Transaction = transaction;
+                    command.ExecuteNonQuery();
+                } //Sino no hace nada
 
                 transaction.Commit();
 
