@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupDetailsComponent } from './group-details.component';
+import { GroupDetailsComponent } from '../../src/app/components/group-details/group-details.component';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;

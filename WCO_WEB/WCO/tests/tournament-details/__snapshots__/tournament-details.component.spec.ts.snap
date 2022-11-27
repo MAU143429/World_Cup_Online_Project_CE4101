@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TournamentDetailsComponent debe de hace match con el snapshot 1`] = `
+"<html lang=\\"en\\" dir=\\"ltr\\"><head><meta charset=\\"UTF-8\\"><meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1.0\\"></head><body><app-navbar></app-navbar><br><br><br><div><div class=\\"title\\">Mundial</div><div class=\\"subtitle\\">10/10/2022 - 11/11/2022 &nbsp;&nbsp;&nbsp;&nbsp; Tipo de torneo: Selecciones</div><br></div><!--bindings={
+  \\"ng-reflect-ng-for-of\\": \\"[object Object]\\"
+}--><div class=\\"container\\"><div class=\\"content\\"><ngb-accordion role=\\"tablist\\" class=\\"accordion\\" ng-reflect-close-other-panels=\\"true\\" aria-multiselectable=\\"false\\"><!--container--><div class=\\"accordion-item\\"><div role=\\"tab\\" class=\\"accordion-header\\" id=\\"ngb-panel-1-header\\"><button type=\\"button\\" class=\\"accordion-button collapsed\\" ng-reflect-ngb-panel-toggle=\\"[object Object]\\" aria-expanded=\\"false\\" aria-controls=\\"ngb-panel-1\\"> <span>Final</span><!--bindings={
+  \\"ng-reflect-ng-template-outlet\\": \\"[object Object]\\"
+}--></button><!--bindings={
+  \\"ng-reflect-ng-template-outlet-context\\": \\"[object Object]\\"
+}--></div><!--bindings={
+  \\"ng-reflect-ng-if\\": \\"false\\"
+}--></div><!--bindings={
+  \\"ng-reflect-ng-for-of\\": \\"[object Object]\\"
+}--></ngb-accordion><!--bindings={
+  \\"ng-reflect-ng-for-of\\": \\"[object Object]\\"
+}--></div></div></body></html>"
+`;

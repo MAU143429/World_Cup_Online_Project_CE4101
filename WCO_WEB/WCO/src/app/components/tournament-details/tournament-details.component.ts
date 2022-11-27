@@ -48,6 +48,6 @@ export class TournamentDetailsComponent implements OnInit {
    * @param match numero del partido que se desea abrir
    */
   viewMatch(match: any) {
-    localStorage.setItem('currentMatch', match);
+    localStorage.setItem('currentMatch', match); //JSON.stringify()? en local storage no se puede guardar objetos
   }
 }

@@ -22,15 +22,15 @@
         <div class="tournament-details">
           <div class="input-box1">
             <span class="details" >Nombre del torneo<span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="text" [(ngModel)]= "newTournament.name" minlength="5" maxlength="30" [ngModelOptions]="{standalone: true}"  placeholder="Ingrese un nombre para el torneo aquí..." required>
+            <input type="text" [(ngModel)]= "newTournament.name" minlength="5" maxlength="30" [ngModelOptions]="{standalone: true}"  placeholder="Ingrese un nombre para el torneo aquí..." id="nameInput" required>
           </div>
           <div class="input-box">
             <span class="details">Fecha de inicio<span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="date"  [(ngModel)]= "newTournament.startDate" [ngModelOptions]="{standalone: true}" required>
+            <input type="date"  [(ngModel)]= "newTournament.startDate" [ngModelOptions]="{standalone: true}" id="startDateInput" required>
           </div>
           <div class="input-box">
             <span class="details"  >Fecha de final<span style="color: rgb(245, 59, 59);">*</span> </span>
-            <input type="date"  [(ngModel)]= "newTournament.endDate" [ngModelOptions]="{standalone: true}"  required>
+            <input type="date"  [(ngModel)]= "newTournament.endDate" [ngModelOptions]="{standalone: true}" id="endDateInput" required>
           </div>
           <div class="input-box2">
             <span class="details" >Descripción del torneo </span>
