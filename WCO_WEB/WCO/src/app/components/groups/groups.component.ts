@@ -31,15 +31,11 @@ export class GroupsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service
-      .getUserGroups(
-        localStorage.getItem('nickname'),
-        localStorage.getItem('email')
-      )
-      .subscribe((data) => (this.groupsData = data));
+    this.updateGroups();
   }
 
   joinGroup() {
+    this.verifyGroupData();
     // Verificar que se lleno el campo
     this.service
       .getGroupByID(this.groupCode)
@@ -47,19 +43,17 @@ export class GroupsComponent implements OnInit {
 
     this.delay(50).then(() => {
       if (this.groupCode == '') {
-        this.status = false;
         this.openError(
           'Falta al menos uno de los espacios requeridos!',
           'Intente de nuevo'
         );
       } else if (this.groupList.length == 0) {
         // Verificar que el grupo exista
-        this.status = false;
         this.openError(
           'Error en el código ingresado',
           'No hay ningún grupo asociado a este código'
         );
-      } else if (this.status) {
+      } else if (!this.status) {
         // Verificar que el usuario no este en otro grupo del mismo torneo
         this.openError(
           'Error al unirse al grupo',
