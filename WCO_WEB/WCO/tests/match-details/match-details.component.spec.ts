@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatchDetailsComponent } from './match-details.component';
+import { MatchDetailsComponent } from '../../src/app/components/match-details/match-details.component';
 import {
   HttpClientTestingModule,
   HttpTestingController,
