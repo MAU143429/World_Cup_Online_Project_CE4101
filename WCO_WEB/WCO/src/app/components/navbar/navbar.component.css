@@ -1,0 +1,12 @@
+.my-navbar {
+  border: 0;
+  border-radius: 0;
+  background-color: #1277D9;
+  font-weight: 500;
+  font-size: 18px;
+  position: fixed;
+  width: 100%;
+}
+.nav>li {
+  text-align:right;
+}

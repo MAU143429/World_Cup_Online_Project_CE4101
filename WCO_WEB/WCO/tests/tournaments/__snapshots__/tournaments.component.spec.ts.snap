@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TournamentsComponent debe de hace match con el snapshot 1`] = `
+"<html lang=\\"en\\" dir=\\"ltr\\"><head><meta charset=\\"UTF-8\\"><meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1.0\\"></head><body><app-navbar></app-navbar><br><br><br><br><div class=\\"input-box\\"><div class=\\"title\\">Todos los torneos</div><!--bindings={
+  \\"ng-reflect-ng-if\\": \\"false\\"
+}--></div><div class=\\"container\\"><div class=\\"content\\"><table id=\\"tournaments\\" class=\\"table table-bordered mt-4 mytable\\"><tr class=\\"table-primary mytable\\"><th>Nombre del Torneo</th><th>ID</th><th>Fecha de inicio</th><th>Fecha de final</th><th>Detalles</th></tr><tr><td>Mundial</td><td>1</td><td>10/10/2022</td><td>11/11/2022</td><td><button routerlink=\\"/tournament-details\\" class=\\"viewbtn\\">Ver Torneo</button></td></tr><!--bindings={
+  \\"ng-reflect-ng-for-of\\": \\"[object Object]\\"
+}--></table></div></div></body></html>"
+`;

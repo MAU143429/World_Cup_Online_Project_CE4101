@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---Referencia al archivo css que contiene el estilo--->
+    <link rel="stylesheet" href="tournament-details.component.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<!---Componentes que conforman la seccion de ver los detalles de un torneo--->
+
+<body>
+  <app-navbar></app-navbar>
+  <br>
+  <br>
+  <br>
+  <div *ngFor="let data of tournamentsData">
+    <div class="title">{{data.name}}</div>
+    <div class="subtitle">{{data.startDate}} - {{data.endDate}} &nbsp;&nbsp;&nbsp;&nbsp;   Tipo de torneo: {{data.type}}</div>
+    <br>
+  </div>
+  <div class="container">
+    <div class="content" >
+      <ngb-accordion  #acc="ngbAccordion" [closeOthers]="true" *ngFor="let bracket of matchData; index as i">
+        <ngb-panel>
+          <ng-template ngbPanelTitle class="bracket-title">
+            <span>{{bracketsData[i].name}}</span>
+          </ng-template>
+          <ng-template  ngbPanelContent>
+            <div *ngFor="let match of bracket">
+              <span (click)="viewMatch(match.mId)" routerLink="/match-details">{{match.teams[0].name}} &nbsp;&nbsp;&nbsp;&nbsp; VS&nbsp;&nbsp;&nbsp;&nbsp; {{match.teams[1].name}}&nbsp;&nbsp;&nbsp;&nbsp;  Sede: {{match.venue}} &nbsp;&nbsp;&nbsp;&nbsp;Horario: {{match.date}} a las {{match.startTime}}</span>
+            </div>
+            <input *ngIf="scope === 'admin'" class="create-match-btn" type="button"  value="+ Agregar Partido" (click)="redirectMatch(bracketsData[i])" routerLink="/create-match">
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+  </div>
+</body>
+</html>
